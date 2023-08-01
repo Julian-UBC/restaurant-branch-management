@@ -10,12 +10,7 @@ We are interested in creating an inventory-related database management system an
 4. Menu and Ingredients:the database keeps the menu for the chefs to see along with the ingredients needed
 5. Restaurant Reservation: the database allows customers and hosts to 
 
-## Users and their Access of the Database
-1. Managers: access to number of employee, their information and wages
-2. Admins: track the customer's loyalty and oversee the equipment
-3. Chefs: access menu items and see seasonal changes
-4. Hosts: access to reservations made
-5. Other employee: only view their personal information 
+## GUI Guide
 
 ## Technology
-The project will be developed using the CPSC department's Oracle database system, Java, and JDBC. 
+The project will be developed using the CPSC department's Oracle database system, Java, and JDBC. We will be using Java Swing for the GUI. 

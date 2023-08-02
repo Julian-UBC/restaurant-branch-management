@@ -240,3 +240,54 @@ INSERT INTO ChefInfo VALUES(222, "Shauna", "Stark", "888765432", "Pastry", 114)
 INSERT INTO ChefInfo VALUES(224, "Lauren", "Gordon", "888876543", "Prep", 114)
 INSERT INTO ChefInfo VALUES(226, "Edmun", "Gordon", "888887654", "Sous", 115)
 INSERT INTO ChefInfo VALUES(228, "Essa", "Cantrell", "888888765", "Prep", 115)
+
+-- populate table for ChefSpeciality
+
+INSERT INTO ChefSpeciality VALUES ("Head" , 39.95)
+INSERT INTO ChefSpeciality VALUES ("Sous" , 29.95)
+INSERT INTO ChefSpeciality VALUES ("Saucier" , 20.55)
+INSERT INTO ChefSpeciality VALUES ("Pastry" , 18.35)
+INSERT INTO ChefSpeciality VALUES ("Prep" , 17.25)
+INSERT INTO ChefSpeciality VALUES ("Line" , 16.75)
+
+-- populate table for Reservations
+
+INSERT INTO Reservations VALUES (1000, 1, 111, 11, '2023-08-01', '18:20:00', 4, "John")
+INSERT INTO Reservations VALUES (1001, 2, 113, 13, '2023-08-01', '19:00:00', 3, "Bob's birthday")
+INSERT INTO Reservations VALUES (1002, 1, 111, 11, '2023-08-03', '19:30:00', 8, "Marketing team social")
+INSERT INTO Reservations VALUES (1003, 4, 112, 12, '2023-08-04', '18:00:00', 2, "Wang's anniversary")
+INSERT INTO Reservations VALUES (1004, 3, 113, 13, '2023-08-04', '18:20:00', 3, "Tracy")
+INSERT INTO Reservations VALUES (1005, 2, 114, 14, '2023-08-05', '19:00:00', 6, "Bob's birthday")
+
+-- populate table for EquipmentsMain
+
+INSERT INTO EquipmentMain VALUES (1, "Table", "Good", 2020)
+INSERT INTO EquipmentMain VALUES (2, "Stand Mixer", "Fair", 2005)
+INSERT INTO EquipmentMain VALUES (3, "Chair", "Good", 2021)
+INSERT INTO EquipmentMain VALUES (4, "Christmas Lights", "Poor", 1999)
+INSERT INTO EquipmentMain VALUES (5, "Christmas Tree", "Very Good", 2022)
+
+-- populate table for EquipmentsName
+
+INSERT INTO EquipmentsName VALUES ("Table", "Furniture")
+INSERT INTO EquipmentsName VALUES ("Stand Mixer", "Appliance")
+INSERT INTO EquipmentsName VALUES ("Chair", "Furniture")
+INSERT INTO EquipmentsName VALUES ("Christmas Lights", "Decoration")
+INSERT INTO EquipmentsName VALUES ("Christmas Tree", "Decoration")
+
+-- populate table for EquipmentContained
+
+INSERT INTO EquipmentContained VALUES (111, 1)
+INSERT INTO EquipmentContained VALUES (111, 3)
+INSERT INTO EquipmentContained VALUES (112, 1)
+INSERT INTO EquipmentContained VALUES (112, 2)
+INSERT INTO EquipmentContained VALUES (112, 3)
+INSERT INTO EquipmentContained VALUES (113, 1)
+INSERT INTO EquipmentContained VALUES (113, 3)
+INSERT INTO EquipmentContained VALUES (114, 1)
+INSERT INTO EquipmentContained VALUES (114, 3)
+INSERT INTO EquipmentContained VALUES (115, 1)
+INSERT INTO EquipmentContained VALUES (115, 2)
+INSERT INTO EquipmentContained VALUES (115, 3)
+INSERT INTO EquipmentContained VALUES (115, 4)
+INSERT INTO EquipmentContained VALUES (115, 5)

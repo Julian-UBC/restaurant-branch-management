@@ -11,11 +11,6 @@ DROP TABLE Branches CASCADE CONSTRAINTS;
 -- 	Create Database Table
 --
 
--- Stub for branches
-CREATE TABLE Branches (
-    locID INTEGER PRIMARY KEY
-);
-
 -- Menu
 CREATE TABLE Menu (
     name        VARCHAR2(50) PRIMARY KEY,
@@ -44,6 +39,13 @@ CREATE TABLE IngredientsRequired (
         ON DELETE CASCADE
 --        ON UPDATE CASCADE
 );
+
+CREATE TABLE Branches (
+    locID			INTEGER	PRIMARY KEY,
+    streetAddress	VARCHAR2(50),
+    city			VARCHAR2(50),
+    province		VARCHAR2(50)
+)
 
 -- MenuServed
 CREATE TABLE MenuServed (
@@ -83,17 +85,148 @@ CREATE TABLE MembershipSubscribes (
 --        ON UPDATE CASCADE
 );
 
+-- WaitersTableSection
+CREATE TABLE WaitersTableSection (
+    tableSection	VARCHAR2(50)	PRIMARY KEY,
+    wages		    FLOAT
+)
+
+-- WaitersInfo
+CREATE TABLE WaitersInfo (
+    wID		        INTEGER	        PRIMARY KEY,
+    firstName	    VARCHAR2(50),
+    lastName	    VARCHAR2(50),
+    SIN		        CHAR(9)	        NOT NULL,
+    tableSection	VARCHAR2(50),
+    locID		    INTEGER,
+    UNIQUE (SIN),
+    FOREIGN KEY (tableSection)
+        REFERENCES WaitersTableSection (tableSection)
+        ON DELETE SET NULL,
+--        ON UPDATE CASCADE,
+    FOREIGN KEY (locID)
+        REFERENCES Branches (locID)
+        ON DELETE SET NULL
+--        ON UPDATE CASCADE
+)
+
+-- ChefSpecialty
+CREATE TABLE ChefSpecialty (
+    specialty	VARCHAR2(50),
+    wages		FLOAT,
+    PRIMARY KEY (specialty)
+)
+
+-- ChefInfo
+CREATE TABLE ChefInfo(
+    wID		    INTEGER	        PRIMARY KEY,
+    firstName	VARCHAR2(50),
+    lastName    VARCHAR2(50),
+    SIN         CHAR(9)         NOT NULL,
+    specialty   VARCHAR2(50),
+    locID       INTEGER,
+    UNIQUE (SIN),
+    FOREIGN KEY (specialty)
+        REFERENCES ChefSpecialty (specialty)
+        ON DELETE SET DEFAULT,
+--        ON UPDATE CASCADE,
+    FOREIGN KEY (locID)
+        REFERENCES Branches (locID)
+        ON DELETE SET NULL
+--        ON UPDATE CASCADE
+)
+
+-- Hosts
+CREATE TABLE Hosts(
+    wID       INTEGER       PRIMARY KEY,
+    firstName VARCHAR2(50),
+    lastName  VARCHAR2(50),
+    wages     FLOAT,
+    SIN       CHAR(9)       NOT NULL,
+    locID     INTEGER,
+    UNIQUE (SIN),
+    FOREIGN KEY (locID)
+        REFERENCES Branches (locID)
+        ON DELETE SET NULL
+--        ON UPDATE CASCADE
+)
+
+-- Manager
+CREATE TABLE Manager(
+    wID       INTEGER       PRIMARY KEY,
+    firstName VARCHAR2(50),
+    lastName  VARCHAR2(50),
+    SIN       CHAR(9)       NOT NULL,
+    rating    FLOAT,
+    locID     INTEGER,
+    UNIQUE (SIN),
+    FOREIGN KEY (locID)
+        REFERENCES Branches (locID)
+        ON DELETE SET NULL
+--        ON UPDATE CASCADE
+)
+
+-- EquipmentsName
+CREATE TABLE EquipmentsName(
+    name     VARCHAR2(50) PRIMARY KEY,
+    category VARCHAR2(50)
+)
+
+-- EquipmentsMain
+CREATE TABLE EquipmentsMain(
+    id 		    INTEGER 	    PRIMARY KEY,
+    name 		VARCHAR2(50),
+    condition	VARCHAR2(50),
+    yearBought	INTEGER,
+    FOREIGN KEY(name)
+        REFERENCES EquipmentsName (name)
+        ON DELETE CASCADE
+--        ON UPDATE CASCADE
+)
+
+-- EquipmentContained
+CREATE TABLE EquipmentContained(
+    locID 		INTEGER,
+    equipID 	INTEGER,
+    PRIMARY KEY (locID, equipID),
+    FOREIGN KEY (locID)
+        REFERENCES Branches (locID)
+        ON DELETE CASCADE,
+--        ON UPDATE CASCADE,
+    FOREIGN KEY (equipID)
+        REFERENCES EquipmentMain(id)
+        ON DELETE CASCADE
+--        ON UPDATE CASCADE
+)
+
+-- Reservations
+CREATE TABLE Reservations(
+    rID             INTEGER,
+    cID             INTEGER     NOT NULL,
+    locID           INTEGER     NOT NULL,
+    wID             INTEGER     NOT NULL,
+    date            DATE,
+    time            TIME,
+    numOfPeople     INTEGER,
+    reservationName CHAR(50),
+    PRIMARY KEY (rID),
+    FOREIGN KEY (cID)
+        REFERENCES Customers (cID)
+        ON DELETE CASCADE,
+--        ON UPDATE CASCADE,
+    FOREIGN KEY (locID)
+        REFERENCES Branches (locID)
+        ON DELETE CASCADE,
+--        ON UPDATE CASCADE,
+    FOREIGN KEY (wID)
+        REFERENCES Employee (wID)
+        ON DELETE CASCADE
+--        ON UPDATE CASCADE
+)
 
 --
 -- Populate Database Table
 --
-
--- Stub for branches
-INSERT INTO Branches VALUES (111);
-INSERT INTO Branches VALUES (112);
-INSERT INTO Branches VALUES (113);
-INSERT INTO Branches VALUES (114);
-INSERT INTO Branches VALUES (115);
 
 -- Menu
 INSERT INTO Menu VALUES ('Miso and mango soup', 7.89, 'Main Dish');
@@ -142,6 +275,13 @@ INSERT INTO IngredientsRequired VALUES ('Courgette and ginger cake', 'Sugar', 1)
 INSERT INTO IngredientsRequired VALUES ('Courgette and ginger cake', 'Courgette', 2);
 INSERT INTO IngredientsRequired VALUES ('Courgette and ginger cake', 'Ginger', 1);
 
+-- Branches
+INSERT INTO Branches VALUES(111, "792 Montreal Road", "Ottawa", "Ontario")
+INSERT INTO Branches VALUES(112, "1257 Beaver Creek", "Thornhill", "Ontario")
+INSERT INTO Branches VALUES(113, "792 Montreal Road", "Vancouver", "British Columbia")
+INSERT INTO Branches VALUES(114, "1221 Robson Street", "Vancouver", "British Columbia")
+INSERT INTO Branches VALUES(115, "4795 Robson Street", "Vancouver", "British Columbia")
+
 -- MenuServed
 INSERT INTO MenuServed VALUES ('Miso and mango soup', 111);
 INSERT INTO MenuServed VALUES ('Haddock and pepper pie', 111);
@@ -173,3 +313,93 @@ INSERT INTO MembershipSubscribes VALUES (1, 'Silver');
 INSERT INTO MembershipSubscribes VALUES (3, 'Gold');
 INSERT INTO MembershipSubscribes VALUES (4, 'Bronze');
 INSERT INTO MembershipSubscribes VALUES (5, 'Silver');
+
+-- populate table for Hosts
+INSERT INTO Hosts VALUES(11, "Tom", "John", 21.53, "203948576", 111);
+INSERT INTO Hosts VALUES(12, "Jim", "Jones", 19.98, "564738291", 112);
+INSERT INTO Hosts VALUES(13, "Anna", "Hills", 21.21, "543526169", 113);
+INSERT INTO Hosts VALUES(14, "Tim", "Jones", 20.12, "123456787", 114);
+INSERT INTO Hosts VALUES(15, "Tina", "John", 20.34, "123456765", 115);
+
+-- populate table for WaitersInfo
+INSERT INTO WaitersInfo VALUES(1, "Joe", "Smith", "123456789", "VIP Second Floor", 111);
+INSERT INTO WaitersInfo VALUES(2, "Tom", "Miller", "234567891", "First Floor General", 112);
+INSERT INTO WaitersInfo VALUES(3, "Tina", "Johnson", "345678901", "First Floor General", 113);
+INSERT INTO WaitersInfo VALUES(4, "Alex", "Wang", "456789012", "Second Floor General", 114);
+INSERT INTO WaitersInfo VALUES(5, "Jenny", "Kim", "567890123", "VIP First Floor", 115);
+
+-- populate table for WaitersTableSection
+INSERT INTO WaitersTableSection VALUES("VIP Second Floor", 23.31);
+INSERT INTO WaitersTableSection VALUES("First Floor General", 18.23);
+INSERT INTO WaitersTableSection VALUES("First Floor Banquet", 20.31);
+INSERT INTO WaitersTableSection VALUES("Second Floor General", 18.55);
+INSERT INTO WaitersTableSection VALUES("VIP First Floor", 23.11);
+
+-- populate table for Managers
+INSERT INTO Managers VALUES(16, "Jamilah", "Gayle", 25.5, "112345678", 113);
+INSERT INTO Managers VALUES(17, "Kris", "Lena", 26.12, "111234567", 115);
+INSERT INTO Managers VALUES(18, "Joost", "Taavetti", 24.33, "111123456", 112);
+INSERT INTO Managers VALUES(19, "Helga", "Aitor", 25.41, "111112345", 111);
+INSERT INTO Managers VALUES(20, "Davide", "Artie", 24.61, "111111234", 114);
+
+-- populate table for ChefInfo
+INSERT INTO ChefInfo VALUES(200, "Oliwer", "Dennir", "987654321", "Head", 111);
+INSERT INTO ChefInfo VALUES(204, "Janice", "Patel", "998765432", "Sous", 111);
+INSERT INTO ChefInfo VALUES(206, "Sion", "Jordan", "999876543", "Saucier", 111);
+INSERT INTO ChefInfo VALUES(208, "Kelly", "Weis", "999987654", "Pastry", 111);
+INSERT INTO ChefInfo VALUES(210, "Whitney", "Dunn", "999998765", "Prep", 111);
+INSERT INTO ChefInfo VALUES(212, "Jerry", "Dunn", "999999876", "Sous", 112);
+INSERT INTO ChefInfo VALUES(214, "Diana", "Cherry", "999999987", "Pastry", 112);
+INSERT INTO ChefInfo VALUES(216, "Eryn", "Knapp", "999999998", "Prep", 112);
+INSERT INTO ChefInfo VALUES(218, "Eryn", "Le", "999999999", "Sous", 113);
+INSERT INTO ChefInfo VALUES(220, "Jakob", "Singh", "887654321", "Prep", 113);
+INSERT INTO ChefInfo VALUES(222, "Shauna", "Stark", "888765432", "Pastry", 114);
+INSERT INTO ChefInfo VALUES(224, "Lauren", "Gordon", "888876543", "Prep", 114);
+INSERT INTO ChefInfo VALUES(226, "Edmun", "Gordon", "888887654", "Sous", 115);
+INSERT INTO ChefInfo VALUES(228, "Essa", "Cantrell", "888888765", "Prep", 115);
+
+-- populate table for ChefSpeciality
+INSERT INTO ChefSpeciality VALUES ("Head" , 39.95);
+INSERT INTO ChefSpeciality VALUES ("Sous" , 29.95);
+INSERT INTO ChefSpeciality VALUES ("Saucier" , 20.55);
+INSERT INTO ChefSpeciality VALUES ("Pastry" , 18.35);
+INSERT INTO ChefSpeciality VALUES ("Prep" , 17.25);
+INSERT INTO ChefSpeciality VALUES ("Line" , 16.75);
+
+-- populate table for Reservations
+INSERT INTO Reservations VALUES (1000, 1, 111, 11, '2023-08-01', '18:20:00', 4, "John");
+INSERT INTO Reservations VALUES (1001, 2, 113, 13, '2023-08-01', '19:00:00', 3, "Bob's birthday");
+INSERT INTO Reservations VALUES (1002, 1, 111, 11, '2023-08-03', '19:30:00', 8, "Marketing team social");
+INSERT INTO Reservations VALUES (1003, 4, 112, 12, '2023-08-04', '18:00:00', 2, "Wang's anniversary");
+INSERT INTO Reservations VALUES (1004, 3, 113, 13, '2023-08-04', '18:20:00', 3, "Tracy");
+INSERT INTO Reservations VALUES (1005, 2, 114, 14, '2023-08-05', '19:00:00', 6, "Bob's birthday");
+
+-- populate table for EquipmentsMain
+INSERT INTO EquipmentMain VALUES (1, "Table", "Good", 2020);
+INSERT INTO EquipmentMain VALUES (2, "Stand Mixer", "Fair", 2005);
+INSERT INTO EquipmentMain VALUES (3, "Chair", "Good", 2021);
+INSERT INTO EquipmentMain VALUES (4, "Christmas Lights", "Poor", 1999);
+INSERT INTO EquipmentMain VALUES (5, "Christmas Tree", "Very Good", 2022);
+
+-- populate table for EquipmentsName
+INSERT INTO EquipmentsName VALUES ("Table", "Furniture");
+INSERT INTO EquipmentsName VALUES ("Stand Mixer", "Appliance");
+INSERT INTO EquipmentsName VALUES ("Chair", "Furniture");
+INSERT INTO EquipmentsName VALUES ("Christmas Lights", "Decoration");
+INSERT INTO EquipmentsName VALUES ("Christmas Tree", "Decoration");
+
+-- populate table for EquipmentContained
+INSERT INTO EquipmentContained VALUES (111, 1);
+INSERT INTO EquipmentContained VALUES (111, 3);
+INSERT INTO EquipmentContained VALUES (112, 1);
+INSERT INTO EquipmentContained VALUES (112, 2);
+INSERT INTO EquipmentContained VALUES (112, 3);
+INSERT INTO EquipmentContained VALUES (113, 1);
+INSERT INTO EquipmentContained VALUES (113, 3);
+INSERT INTO EquipmentContained VALUES (114, 1);
+INSERT INTO EquipmentContained VALUES (114, 3);
+INSERT INTO EquipmentContained VALUES (115, 1);
+INSERT INTO EquipmentContained VALUES (115, 2);
+INSERT INTO EquipmentContained VALUES (115, 3);
+INSERT INTO EquipmentContained VALUES (115, 4);
+INSERT INTO EquipmentContained VALUES (115, 5);

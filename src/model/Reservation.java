@@ -11,10 +11,10 @@ class Reservations {
     private final LocalDate rDate;
     private final LocalTime rTime;
     private final int numOfPeople;
-    private final char reservationName;
+    private final String reservationName;
 
     public Reservations(int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople,
-            char reservationName) {
+            String reservationName) {
         this.rID = rID;
         this.cID = cID;
         this.locID = locID;
@@ -53,7 +53,7 @@ class Reservations {
         return numOfPeople;
     }
 
-    public char getReservationName() {
+    public String getReservationName() {
         return reservationName;
     }
 }

@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-class Reservations {
+publci class Reservations {
     private final int rID;
     private final int cID;
     private final int locID;

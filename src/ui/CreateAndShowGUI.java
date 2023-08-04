@@ -144,7 +144,13 @@ public class CreateAndShowGUI implements ActionListener {
     }
 
     private void show(JPanel popUp) {
-        popUp.add(new JLabel("show"));
+        popUp.add(new JLabel("Group Table by 'TBD'"));
+        Object[] options = {"Yes", "Cancel"};
+        int n = JOptionPane.showOptionDialog(null, popUp, "Show", JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+        if (n == 1) {//tba
+        }
     }
 
     private void select(JPanel popUp) {

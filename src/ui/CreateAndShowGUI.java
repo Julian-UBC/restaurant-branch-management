@@ -150,8 +150,8 @@ public class CreateAndShowGUI implements ActionListener {
     }
 
     private void show(JPanel popUp) {
-        popUp.add(new JLabel("Group Table by 'TBD'"));
-        Object[] options = {"Yes", "Cancel"};
+        popUp.add(new JLabel("Show the Earliest Reservation Times Grouped by Location"));
+        Object[] options = {"Show", "Cancel"};
         int n = JOptionPane.showOptionDialog(null, popUp, "Show", JOptionPane.YES_NO_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, options, null);
 

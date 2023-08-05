@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-public class Menu {
+public class Menus {
     private List<String> columns;
     private List<Vector<Object>> tuples;
 
-    public Menu() {
+    public Menus() {
         columns = new ArrayList<>();
         columns.add("Name");
         columns.add("Cost");
@@ -31,8 +31,6 @@ public class Menu {
     }
 
     public List<Vector<Object>> getTuples() {
-
-
         return Collections.unmodifiableList(tuples);
     }
 }

@@ -1,6 +1,8 @@
 package ui;
 
-import model.Menu;
+import model.Branches;
+import model.Menus;
+import model.Reservations;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -28,7 +30,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
     private String tableShown;
 
-    private Menu menu;
+    private Menus menus;
+    private Reservations reservations;
+    private Branches branches;
 
     public CreateAndShowGUI() {
         initializeInstances();
@@ -53,7 +57,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
 
     private void initializeInstances() {
-        menu = new Menu();
+        menus = new Menus();
+        reservations = new Reservations();
+        branches = new Branches();
     }
 
     // create a table on the left side
@@ -119,26 +125,32 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
         switch (tableShown) {
             case "Menu":
-                for (String column : menu.getColumns()) {
+                for (String column : menus.getColumns()) {
                     model.addColumn(column);
                 }
 
-                for (Vector<Object> tuple : menu.getTuples()) {
+                for (Vector<Object> tuple : menus.getTuples()) {
                     model.addRow(tuple);
                 }
                 break;
             case "Reservations":
-                model.addColumn("Column 3");
-                model.addColumn("Column 4");
+                for (String column : reservations.getColumns()) {
+                    model.addColumn(column);
+                }
 
-                model.addRow(new Object[]{"Row 1 - Col 3", "Row 1 - Col 4"});
-                Vector<Object> row2 = new Vector<>();
-                row2.add("Row 2 - Col 3");
-                row2.add("Row 2 - Col 4");
-                model.addRow(row2);
+                for (Vector<Object> tuple : reservations.getTuples()) {
+                    model.addRow(tuple);
+                }
                 break;
             case "Branch":
-                //
+                for (String column : branches.getColumns()) {
+                    model.addColumn(column);
+                }
+
+                for (Vector<Object> tuple : branches.getTuples()) {
+                    model.addRow(tuple);
+                }
+                break;
             default:
                 //
         }

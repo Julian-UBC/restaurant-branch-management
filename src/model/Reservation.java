@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Reservations {
+public class Reservation {
     private final int rID;
     private final int cID;
     private final int locID;
@@ -13,8 +13,8 @@ public class Reservations {
     private final int numOfPeople;
     private final String reservationName;
 
-    public Reservations(int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople,
-                        String reservationName) {
+    public Reservation(int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople,
+                       String reservationName) {
         this.rID = rID;
         this.cID = cID;
         this.locID = locID;

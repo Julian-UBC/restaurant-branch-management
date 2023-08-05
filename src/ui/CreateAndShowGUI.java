@@ -5,12 +5,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Vector;
 
-public class CreateAndShowGUI implements ActionListener {
+public class CreateAndShowGUI implements ActionListener, ItemListener {
     private static final int WIDTH=1000;
     private static final int HEIGHT=700;
-
 
     private JTable table;
     private DefaultTableModel model;
@@ -23,6 +24,7 @@ public class CreateAndShowGUI implements ActionListener {
     private JButton filterButton;
     private JButton selectOption1;
     private JButton selectOption2;
+    private JPanel insertPanel;
 
     public CreateAndShowGUI() {
         JFrame frame = new JFrame();
@@ -109,11 +111,106 @@ public class CreateAndShowGUI implements ActionListener {
     }
     
     private void insert(JPanel popUp) {
-        popUp.add(new JLabel("attribute"));
-        JTextField name = new JTextField(6);
+        // creating drop down option for users to input the new row
+        JPanel dropDownPane = new JPanel();
+        String attributeItems[] = {"Insert to Branch", "Insert to Menu", "Insert to Reservation"};
+        JComboBox dropDown = new JComboBox(attributeItems);
+        dropDown.setEditable(false);
+        dropDown.addItemListener(this);
+        dropDownPane.add(dropDown);
         
-        popUp.add(name);
-        JOptionPane.showConfirmDialog(null,popUp);
+        // creates panel containing insert to branch, menu and reservation
+        insertPanel = new JPanel(new CardLayout());
+        JPanel insertBranch = insertToBranch(new JPanel());
+        insertPanel.add(insertBranch, "Insert to Branch");
+        JPanel insertMenu = insertToMenu(new JPanel());
+        insertPanel.add(insertMenu, "Insert to Menu");
+        JPanel insertReservation = insertToReservations(new JPanel());
+        insertPanel.add(insertReservation, "Insert to Reservation");
+        popUp.add(dropDownPane, BorderLayout.PAGE_START);
+        popUp.add(insertPanel, BorderLayout.CENTER);
+        
+        //ask user to confirm insert
+        Object[] options = { "Insert", "Cancel" };
+        int n = JOptionPane.showOptionDialog(null, popUp, "Insert", JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+        if (n==1) {//tba
+        }
+    }
+    
+    private JPanel insertToBranch(JPanel panel) {
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JLabel locId = new JLabel("Location ID:");
+        JTextField enterLocID = new JTextField();
+        JLabel streetAddress = new JLabel("Street Address:");
+        JTextField enterStreetAddress = new JTextField();
+        JLabel city = new JLabel("City:");
+        JTextField enterCity = new JTextField();
+        JLabel province = new JLabel("Province:");
+        JTextField enterProvince = new JTextField();
+        
+        panel.add(locId);
+        panel.add(enterLocID);
+        panel.add(streetAddress);
+        panel.add(enterStreetAddress);
+        panel.add(city);
+        panel.add(enterCity);
+        panel.add(province);
+        panel.add(enterProvince);
+        return panel;
+    }
+    
+    private JPanel insertToMenu (JPanel panel) {
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JLabel name = new JLabel("name:");
+        JTextField enterName = new JTextField();
+        JLabel cost = new JLabel("cost:");
+        JTextField enterCost = new JTextField();
+        JLabel category = new JLabel("category:");
+        JTextField enterCategory = new JTextField();
+
+        panel.add(name);
+        panel.add(enterName);
+        panel.add(cost);
+        panel.add(enterCost);
+        panel.add(category);
+        panel.add(enterCategory);
+        return panel;
+    }
+    
+    private JPanel insertToReservations(JPanel panel) {
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JLabel rId = new JLabel("Reservation ID:");
+        JTextField enterRId = new JTextField();
+        JLabel cId = new JLabel("Customer ID:");
+        JTextField enterCId = new JTextField();
+        JLabel locId = new JLabel("Location ID:");
+        JTextField enterLocID = new JTextField();
+        JLabel wId = new JLabel("Employee ID:");
+        JTextField enterWId = new JTextField();
+        JLabel date = new JLabel("Date:");
+        JTextField enterDate = new JTextField();
+        JLabel time = new JLabel("Time:");
+        JTextField enterTime = new JTextField();
+        JLabel numOfPeople = new JLabel("Number of People:");
+        JTextField enterNumOfPeople = new JTextField();
+
+        panel.add(rId);
+        panel.add(enterRId);
+        panel.add(cId);
+        panel.add(enterCId);
+        panel.add(locId);
+        panel.add(enterLocID);
+        panel.add(wId);
+        panel.add(enterWId);
+        panel.add(date);
+        panel.add(enterDate);
+        panel.add(time);
+        panel.add(enterTime);
+        panel.add(numOfPeople);
+        panel.add(enterNumOfPeople);
+        return panel;
     }
     
     private void update(JPanel popUp) {
@@ -214,7 +311,7 @@ public class CreateAndShowGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == insertButton) {
-            insert(new JPanel());
+            insert(new JPanel(new BorderLayout()));
         }
         if (e.getSource() == updateButton) {
             update(new JPanel());
@@ -237,5 +334,11 @@ public class CreateAndShowGUI implements ActionListener {
         if (e.getSource() == selectOption2) {
             selectOption(2);
         }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        CardLayout cl = (CardLayout)(insertPanel.getLayout());
+        cl.show(insertPanel, (String)e.getItem());
     }
 }

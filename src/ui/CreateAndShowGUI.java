@@ -220,7 +220,13 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         dropDown.setEditable(false);
         dropDown.addActionListener(this);
         dropDownPane.add(dropDown);
+        JTextField newValue = new JTextField(20);
+        newValue.setToolTipText("Enter new value here");
+
+        popUp.setLayout(new BoxLayout(popUp, BoxLayout.Y_AXIS));
+        popUp.add(new JLabel("Select the attribute you would like to update and enter the new value."));
         popUp.add(dropDownPane);
+        popUp.add(newValue);
         Object[] options = { "Update", "Cancel" };
         int n = JOptionPane.showOptionDialog(null, popUp, "update", JOptionPane.YES_NO_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, options, null);
@@ -241,8 +247,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
 
     private void show(JPanel popUp) {
-        popUp.add(new JLabel("Group Table by 'TBD'"));
-        Object[] options = {"Yes", "Cancel"};
+        popUp.add(new JLabel("Show the Earliest Reservation Times Grouped by Location"));
+        Object[] options = {"Show", "Cancel"};
         int n = JOptionPane.showOptionDialog(null, popUp, "Show", JOptionPane.YES_NO_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, options, null);
 

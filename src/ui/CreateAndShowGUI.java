@@ -1,5 +1,7 @@
 package ui;
 
+import model.Menu;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -15,39 +17,45 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
     private JTable table;
     private DefaultTableModel model;
-    
+
+    private JButton selectButton;
     private JButton insertButton;
     private JButton deleteButton;
     private JButton updateButton;
     private JButton showButton;
-    private JButton selectButton;
     private JButton filterButton;
-    private JButton selectOption1;
-    private JButton selectOption2;
     private JPanel insertPanel;
 
     private String tableShown;
-    private JPanel panel;
+
+    private Menu menu;
 
     public CreateAndShowGUI() {
-        JFrame frame = new JFrame();
+        initializeInstances();
 
-        JPanel pane = new JPanel();
         JPanel leftPane = createTablePanel();
         JPanel rightPane = createButtonPanel();
-        
+
+        JPanel pane = new JPanel();
         pane.add(leftPane, BorderLayout.LINE_START);
         pane.add(rightPane, BorderLayout.LINE_END);
-        JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
 
+        JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
         sp.setOrientation(SwingConstants.VERTICAL);
+
+        JFrame frame = new JFrame();
         frame.add(sp);
         frame.setTitle("Restaurant Management");
         frame.setSize(WIDTH,HEIGHT);
         frame.setBackground(Color.decode("#FE5F55"));
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+
+    private void initializeInstances() {
+        menu = new Menu();
+    }
+
     // create a table on the left side
     private JPanel createTablePanel() {
         table = new JTable();
@@ -56,7 +64,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.setLayout(new BorderLayout());
 
         model = new DefaultTableModel();
-
+        showTable("Menu");
         table.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -77,6 +85,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         g.fill = GridBagConstraints.HORIZONTAL;
         g.insets = new Insets(5,5,5,5);
 
+        selectButton = new JButton("Select");
+        selectButton.addActionListener(this);
         insertButton = new JButton("Insert");
         insertButton.addActionListener(this);
         updateButton = new JButton("Update");
@@ -85,15 +95,11 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         deleteButton.addActionListener(this);
         showButton = new JButton("Show");
         showButton.addActionListener(this);
-        selectButton = new JButton("Select");
-        selectButton.addActionListener(this);
         filterButton = new JButton("Filter");
         filterButton.addActionListener(this);
-        selectOption1 = new JButton("Option 1");
-        selectOption1.addActionListener(this);
-        selectOption2 = new JButton("Option 2");
-        selectOption2.addActionListener(this);
 
+        panel.add(selectButton, g);
+        g.gridy++;
         panel.add(insertButton,g);
         g.gridy++;
         panel.add(updateButton, g);
@@ -102,15 +108,64 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         g.gridy++;
         panel.add(showButton,g);
         g.gridy++;
-        panel.add(selectButton, g);
-        g.gridy++;
         panel.add(filterButton,g);
         g.gridy++;
-        panel.add(selectOption1, g);
-        g.gridy++;
-        panel.add(selectOption2,g);
-        g.gridy++;
         return panel;
+    }
+
+    // Display the appropriate columns and rows in the table
+    private void showTable(String instance) {
+        tableShown = instance;
+
+        switch (tableShown) {
+            case "Menu":
+                for (String column : menu.getColumns()) {
+                    model.addColumn(column);
+                }
+
+                for (Vector<Object> tuple : menu.getTuples()) {
+                    model.addRow(tuple);
+                }
+                break;
+            case "Reservations":
+                model.addColumn("Column 3");
+                model.addColumn("Column 4");
+
+                model.addRow(new Object[]{"Row 1 - Col 3", "Row 1 - Col 4"});
+                Vector<Object> row2 = new Vector<>();
+                row2.add("Row 2 - Col 3");
+                row2.add("Row 2 - Col 4");
+                model.addRow(row2);
+                break;
+            case "Branch":
+                //
+            default:
+                //
+        }
+    }
+
+    private void select(JPanel popUp) {
+        JPanel dropDownPane = new JPanel();
+
+        String[] attribute = {"Menu", "Reservations", "Branch"};
+        JComboBox dropDown = new JComboBox(attribute);
+
+        dropDown.setSelectedItem(tableShown);
+        dropDown.setEditable(false);
+        dropDown.addActionListener(this);
+
+        dropDownPane.add(dropDown);
+        popUp.add(dropDownPane);
+
+        Object[] options = { "Show", "Cancel" };
+        int n = JOptionPane.showOptionDialog(null, popUp, "Select", JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+        if (n == 0) {
+            model = new DefaultTableModel();
+            showTable((String) dropDown.getSelectedItem());
+            table.setModel(model);
+        }
     }
     
     private void insert(JPanel popUp) {
@@ -292,27 +347,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
     }
 
-    private void select(JPanel popUp) {
-        JPanel dropDownPane = new JPanel();
 
-        String[] attribute = {"Menu", "Reservations", "Branch"};
-        JComboBox dropDown = new JComboBox(attribute);
-
-        dropDown.setSelectedIndex(0);
-        dropDown.setEditable(false);
-        dropDown.addActionListener(this);
-
-        dropDownPane.add(dropDown);
-        popUp.add(dropDownPane);
-
-        Object[] options = { "Show", "Cancel" };
-        int n = JOptionPane.showOptionDialog(null, popUp, "Select", JOptionPane.YES_NO_OPTION,
-                JOptionPane.PLAIN_MESSAGE, null, options, null);
-
-        if (n == 0) {
-            showTable((String) dropDown.getSelectedItem());
-        }
-    }
 
     private void filter(JPanel popUp) {
         JPanel dropDownPane = new JPanel();
@@ -327,67 +362,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 JOptionPane.PLAIN_MESSAGE, null, options, null);
 
         if (n==1) {//tba
-        }
-    }
-
-    public void showTable(String instance) {
-        // Clear the existing columns and rows from the model
-        model.setColumnCount(0);
-        model.setRowCount(0);
-
-        tableShown = instance;
-
-        switch (tableShown) {
-            case "Menu":
-                model.addColumn("Column 1");
-                model.addColumn("Column 2");
-
-                model.addRow(new Object[]{"Row 1 - Col 1", "Row 1 - Col 2"});
-                Vector<Object> row1 = new Vector<>();
-                row1.add("Row 2 - Col 1");
-                row1.add("Row 2 - Col 2");
-                model.addRow(row1);
-                break;
-            case "Reservations":
-                model.addColumn("Column 3");
-                model.addColumn("Column 4");
-
-                model.addRow(new Object[]{"Row 1 - Col 3", "Row 1 - Col 4"});
-                Vector<Object> row2 = new Vector<>();
-                row2.add("Row 2 - Col 3");
-                row2.add("Row 2 - Col 4");
-                model.addRow(row2);
-                break;
-            case "Branch":
-                //
-            default:
-                //
-        }
-    }
-
-    private void selectOption(int option) {
-        // Clear the existing columns and rows from the model
-        model.setColumnCount(0);
-        model.setRowCount(0);
-
-        if (option == 1) {
-            model.addColumn("Column 1");
-            model.addColumn("Column 2");
-
-            model.addRow(new Object[]{"Row 1 - Col 1", "Row 1 - Col 2"});
-            Vector<Object> row2 = new Vector<>();
-            row2.add("Row 2 - Col 1");
-            row2.add("Row 2 - Col 2");
-            model.addRow(row2);
-        } else {
-            model.addColumn("Column 3");
-            model.addColumn("Column 4");
-
-            model.addRow(new Object[]{"Row 1 - Col 3", "Row 1 - Col 4"});
-            Vector<Object> row2 = new Vector<>();
-            row2.add("Row 2 - Col 3");
-            row2.add("Row 2 - Col 4");
-            model.addRow(row2);
         }
     }
     
@@ -410,12 +384,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
         if (e.getSource() == filterButton) {
             filter(new JPanel());
-        }
-        if (e.getSource() == selectOption1) {
-            selectOption(1);
-        }
-        if (e.getSource() == selectOption2) {
-            selectOption(2);
         }
     }
 

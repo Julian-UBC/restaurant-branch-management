@@ -26,6 +26,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton selectOption2;
     private JPanel insertPanel;
 
+    private String tableShown;
+    private JPanel panel;
+
     public CreateAndShowGUI() {
         JFrame frame = new JFrame();
 
@@ -291,17 +294,23 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
     private void select(JPanel popUp) {
         JPanel dropDownPane = new JPanel();
-        String[] attribute = {"menu", "reservation", "branch"};
+
+        String[] attribute = {"Menu", "Reservations", "Branch"};
         JComboBox dropDown = new JComboBox(attribute);
+
+        dropDown.setSelectedIndex(0);
         dropDown.setEditable(false);
         dropDown.addActionListener(this);
+
         dropDownPane.add(dropDown);
         popUp.add(dropDownPane);
+
         Object[] options = { "Show", "Cancel" };
         int n = JOptionPane.showOptionDialog(null, popUp, "Select", JOptionPane.YES_NO_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, options, null);
 
-        if (n==1) {//tba
+        if (n == 0) {
+            showTable((String) dropDown.getSelectedItem());
         }
     }
 
@@ -318,6 +327,41 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 JOptionPane.PLAIN_MESSAGE, null, options, null);
 
         if (n==1) {//tba
+        }
+    }
+
+    public void showTable(String instance) {
+        // Clear the existing columns and rows from the model
+        model.setColumnCount(0);
+        model.setRowCount(0);
+
+        tableShown = instance;
+
+        switch (tableShown) {
+            case "Menu":
+                model.addColumn("Column 1");
+                model.addColumn("Column 2");
+
+                model.addRow(new Object[]{"Row 1 - Col 1", "Row 1 - Col 2"});
+                Vector<Object> row1 = new Vector<>();
+                row1.add("Row 2 - Col 1");
+                row1.add("Row 2 - Col 2");
+                model.addRow(row1);
+                break;
+            case "Reservations":
+                model.addColumn("Column 3");
+                model.addColumn("Column 4");
+
+                model.addRow(new Object[]{"Row 1 - Col 3", "Row 1 - Col 4"});
+                Vector<Object> row2 = new Vector<>();
+                row2.add("Row 2 - Col 3");
+                row2.add("Row 2 - Col 4");
+                model.addRow(row2);
+                break;
+            case "Branch":
+                //
+            default:
+                //
         }
     }
 
@@ -349,6 +393,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == selectButton) {
+            select(new JPanel());
+        }
         if (e.getSource() == insertButton) {
             insert(new JPanel(new BorderLayout()));
         }
@@ -360,9 +407,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
         if (e.getSource() == showButton) {
             show(new JPanel());
-        }
-        if (e.getSource() == selectButton) {
-            select(new JPanel());
         }
         if (e.getSource() == filterButton) {
             filter(new JPanel());

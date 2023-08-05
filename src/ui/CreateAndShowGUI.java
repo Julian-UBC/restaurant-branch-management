@@ -129,14 +129,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         insertPanel.add(insertReservation, "Insert to Reservation");
         popUp.add(dropDownPane, BorderLayout.PAGE_START);
         popUp.add(insertPanel, BorderLayout.CENTER);
-        
-        //ask user to confirm insert
-        Object[] options = { "Insert", "Cancel" };
-        int n = JOptionPane.showOptionDialog(null, popUp, "Insert", JOptionPane.YES_NO_OPTION,
-                JOptionPane.PLAIN_MESSAGE, null, options, null);
 
-        if (n==1) {//tba
-        }
+        JOptionPane.showOptionDialog(null, popUp,"Insert", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
     }
     
     private JPanel insertToBranch(JPanel panel) {
@@ -150,6 +145,17 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JLabel province = new JLabel("Province:");
         JTextField enterProvince = new JTextField();
         
+        // get all the user input
+        JButton insertButton = new JButton("Insert");
+        insertButton.addActionListener(e -> {
+            String getLocId = enterLocID.getText();
+            String getStreetAddress = enterStreetAddress.getText();
+            String getCity = enterCity.getText();
+            String getProvince = enterProvince.getText();
+            JOptionPane.showMessageDialog(null,"Added");
+            model.addRow(new Object[]{getLocId, getStreetAddress, getCity, getProvince});
+        });
+        
         panel.add(locId);
         panel.add(enterLocID);
         panel.add(streetAddress);
@@ -158,6 +164,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(enterCity);
         panel.add(province);
         panel.add(enterProvince);
+        panel.add(insertButton);
         return panel;
     }
     
@@ -170,12 +177,23 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JLabel category = new JLabel("category:");
         JTextField enterCategory = new JTextField();
 
+        // get all the user input
+        JButton insertButton = new JButton("Insert");
+        insertButton.addActionListener(e -> {
+            String getName = enterName.getText();
+            String getCost = enterCost.getText();
+            String getCategory = enterCategory.getText();
+            JOptionPane.showMessageDialog(null,"Added");
+            model.addRow(new Object[]{getName, getCost, getCategory});
+        });
+
         panel.add(name);
         panel.add(enterName);
         panel.add(cost);
         panel.add(enterCost);
         panel.add(category);
         panel.add(enterCategory);
+        panel.add(insertButton);
         return panel;
     }
     
@@ -196,6 +214,20 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JLabel numOfPeople = new JLabel("Number of People:");
         JTextField enterNumOfPeople = new JTextField();
 
+        // get all the user input
+        JButton insertButton = new JButton("Insert");
+        insertButton.addActionListener(e -> {
+            String getRId = enterRId.getText();
+            String getCId = enterCId.getText();
+            String getLocId = enterLocID.getText();
+            String getWId = enterWId.getText();
+            String getDate = enterDate.getText();
+            String getTime = enterTime.getText();
+            String getNum = enterNumOfPeople.getText();
+            JOptionPane.showMessageDialog(null,"Added");
+            model.addRow(new Object[]{getRId, getCId, getLocId, getWId, getDate, getTime, getNum});
+        });
+
         panel.add(rId);
         panel.add(enterRId);
         panel.add(cId);
@@ -210,6 +242,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(enterTime);
         panel.add(numOfPeople);
         panel.add(enterNumOfPeople);
+        panel.add(insertButton);
         return panel;
     }
     

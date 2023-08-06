@@ -1,16 +1,14 @@
 package ui;
 
-import model.Branches;
+import model.Branch;
 import model.Menus;
-import model.Reservations;
+import model.Reservation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
+import java.util.Objects;
 import java.util.Vector;
 
 public class CreateAndShowGUI implements ActionListener, ItemListener {
@@ -26,13 +24,14 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton updateButton;
     private JButton showButton;
     private JButton filterButton;
+    private JButton projectionButton;
     private JPanel insertPanel;
-
+    private JPanel projectPanel;
     private String tableShown;
 
     private Menus menus;
-    private Reservations reservations;
-    private Branches branches;
+    private Reservation reservations;
+    private Branch branches;
 
     public CreateAndShowGUI() {
         initializeInstances();
@@ -57,9 +56,10 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
 
     private void initializeInstances() {
+        tableShown = "Menu";
         menus = new Menus();
-        reservations = new Reservations();
-        branches = new Branches();
+        //reservations = new Reservation();
+        branches = new Branch();
     }
 
     // create a table on the left side
@@ -103,6 +103,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         showButton.addActionListener(this);
         filterButton = new JButton("Filter");
         filterButton.addActionListener(this);
+        projectionButton = new JButton("Projection");
+        projectionButton.addActionListener(this);
 
         panel.add(selectButton, g);
         g.gridy++;
@@ -115,6 +117,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(showButton,g);
         g.gridy++;
         panel.add(filterButton,g);
+        g.gridy++;
+        panel.add(projectionButton, g);
         g.gridy++;
         return panel;
     }
@@ -134,6 +138,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 }
                 break;
             case "Reservations":
+                /*
                 for (String column : reservations.getColumns()) {
                     model.addColumn(column);
                 }
@@ -141,7 +146,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 for (Vector<Object> tuple : reservations.getTuples()) {
                     model.addRow(tuple);
                 }
-                break;
+                break; */
             case "Branch":
                 for (String column : branches.getColumns()) {
                     model.addColumn(column);
@@ -218,7 +223,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         // get all the user input
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
-            String getLocId = enterLocID.getText();
+            int getLocId = Integer.parseInt(enterLocID.getText());
             String getStreetAddress = enterStreetAddress.getText();
             String getCity = enterCity.getText();
             String getProvince = enterProvince.getText();
@@ -359,7 +364,117 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
     }
 
+    private void projectionButton(JPanel popUp) {
+        // creates panel containing insert to branch, menu and reservation
+        projectPanel = new JPanel(new CardLayout());
+        JPanel projectBranch = projectBranch(new JPanel());
+        projectPanel.add(projectBranch, "Project Branch");
+        JPanel projectMenu = projectMenu(new JPanel());
+        projectPanel.add(projectMenu, "Project Menu");
+        JPanel projectReservation = projectReservation(new JPanel());
+        projectPanel.add(projectReservation, "Project Reservation");
+        
+        if (Objects.equals(tableShown, "Branch")) {
+            CardLayout cl = (CardLayout)(projectPanel.getLayout());
+            cl.show(projectPanel, "Project Branch");
+            
+        } else if (Objects.equals(tableShown, "Menu")) {
+            CardLayout cl = (CardLayout)(projectPanel.getLayout());
+            cl.show(projectPanel, "Project Menu");
+        } else {
+            CardLayout cl = (CardLayout)(projectPanel.getLayout());
+            cl.show(projectPanel, "Project Reservation");
+        }
+        popUp.add(projectPanel, BorderLayout.CENTER);
+        JOptionPane.showOptionDialog(null, popUp,"Projection", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
+    }
+    
+    private JPanel projectBranch(JPanel panel) {
+        //create the checkboxes for each attribute
+        JLabel label = new JLabel("Branch: ");
+        JCheckBox locIdBox = new JCheckBox("location Id");
+        JCheckBox streetAddressBox = new JCheckBox("street Address");
+        JCheckBox cityBox = new JCheckBox("city");
+        JCheckBox provinceBox = new JCheckBox("province");
 
+        JButton insertButton = new JButton("Insert");
+        insertButton.addActionListener(e -> {
+            // if locIdBox.getState() { // add column locIdBox to table
+            // if streetAddressBox.getState() { // add column locIdBox to table
+            // if cityBox.getState() { // add column locIdBox to table
+            // if provinceBox.getState() { // add column locIdBox to table
+            JOptionPane.showMessageDialog(null,"Added");
+        });
+        
+        //add to popUp
+        panel.add(label);
+        panel.add(locIdBox);
+        panel.add(streetAddressBox);
+        panel.add(cityBox);
+        panel.add(provinceBox);
+        panel.add(insertButton);
+        
+        return panel;
+    }
+
+    private JPanel projectMenu(JPanel panel) {
+        //create the checkboxes for each attribute
+        JLabel label = new JLabel("Menu: ");
+        JCheckBox nameBox = new JCheckBox("Name");
+        JCheckBox categoryBox = new JCheckBox("Category");
+        JCheckBox costBox = new JCheckBox("Cost");
+
+        JButton insertButton = new JButton("Insert");
+        insertButton.addActionListener(e -> {
+            // if locIdBox.getState() { // add column locIdBox to table
+            // if streetAddressBox.getState() { // add column locIdBox to table
+            // if cityBox.getState() { // add column locIdBox to table
+            // if provinceBox.getState() { // add column locIdBox to table
+            JOptionPane.showMessageDialog(null,"Added");
+        });
+
+        //add to popUp
+        panel.add(label);
+        panel.add(nameBox);
+        panel.add(categoryBox);
+        panel.add(costBox);
+        panel.add(insertButton);
+        
+        return panel;
+    }
+
+    private JPanel projectReservation(JPanel panel) {
+        //create the checkboxes for each attribute
+        JLabel label = new JLabel("Reservation: ");
+        JCheckBox rIdBox = new JCheckBox("reservation id");
+        JCheckBox cIDBox = new JCheckBox("customer id");
+        JCheckBox widBox = new JCheckBox("employee id");
+        JCheckBox dateBox = new JCheckBox("date");
+        JCheckBox timeBox = new JCheckBox("date");
+        JCheckBox numOfPeopleBox = new JCheckBox("number of people");
+
+        JButton insertButton = new JButton("Insert");
+        insertButton.addActionListener(e -> {
+            // if locIdBox.getState() { // add column locIdBox to table
+            // if streetAddressBox.getState() { // add column locIdBox to table
+            // if cityBox.getState() { // add column locIdBox to table
+            // if provinceBox.getState() { // add column locIdBox to table
+            JOptionPane.showMessageDialog(null,"Added");
+        });
+
+        //add to popUp
+        panel.add(label);
+        panel.add(rIdBox);
+        panel.add(cIDBox);
+        panel.add(widBox);
+        panel.add(dateBox);
+        panel.add(timeBox);
+        panel.add(numOfPeopleBox);
+        panel.add(insertButton);
+        
+        return panel;
+    }
 
     private void filter(JPanel popUp) {
         JPanel dropDownPane = new JPanel();
@@ -396,6 +511,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
         if (e.getSource() == filterButton) {
             filter(new JPanel());
+        }
+        if (e.getSource() == projectionButton) {
+            projectionButton(new JPanel());
         }
     }
 

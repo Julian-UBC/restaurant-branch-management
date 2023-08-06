@@ -1,11 +1,9 @@
 package model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Vector;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
 
 
 public class Reservation {
@@ -24,7 +22,7 @@ public class Reservation {
         columns.add("Reservation Name");
 
         tuples = new ArrayList<>();
-        
+
         for (int i = 0; i < 2; i++) {
             Vector<Object> tuple = new Vector<>();
             tuple.add(0, "rID " + i);
@@ -37,6 +35,7 @@ public class Reservation {
             tuple.add(7, "reservationName" + i);
 
             tuples.add(tuple);
+        }
     }
 
    public List<String> getColumns() {

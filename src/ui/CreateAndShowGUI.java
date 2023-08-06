@@ -323,25 +323,47 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     
     private void update(JPanel popUp) {
         JPanel dropDownPane = new JPanel();
-        String[] attribute = {"atttribute1", "attribute2"};
-        JComboBox dropDown = new JComboBox(attribute);
+        String[] attributes = new String[0];
+
+        switch (tableShown) {
+            case "Menu" -> attributes = new String[]{"Name", "Cost", "Category"};
+            case "Reservations" ->
+                    attributes = new String[]{"Reservation ID", "Customer ID", "Worker ID", "Reservation Date", "Reservation Time", "Number of People", "Reservation Name"};
+            case "Branch" -> attributes = new String[]{"LocID", "StreetAddress", "City", "Province"};
+            default -> {
+            }
+        }
+
+        JComboBox dropDown = new JComboBox(attributes);
         dropDown.setEditable(false);
         dropDown.addActionListener(this);
         dropDownPane.add(dropDown);
-        JTextField newValue = new JTextField(20);
+
+        JTextField newValue = new JTextField(5);
+        newValue.addActionListener((this)); //not sure if this is needed
         newValue.setToolTipText("Enter new value here");
 
-        popUp.setLayout(new BoxLayout(popUp, BoxLayout.Y_AXIS));
-        popUp.add(new JLabel("Select the attribute you would like to update and enter the new value."));
-        popUp.add(dropDownPane);
+        popUp.setLayout(new BorderLayout());
+        popUp.add(new JLabel("Select the table and attribute you would like to update and enter the new value."), BorderLayout.PAGE_START);
+        popUp.add(dropDownPane, BorderLayout.LINE_START);
         popUp.add(newValue);
-        Object[] options = { "Update", "Cancel" };
-        int n = JOptionPane.showOptionDialog(null, popUp, "update", JOptionPane.YES_NO_OPTION,
+
+        Object[] options = {"Update", "Cancel"};
+        int n = JOptionPane.showOptionDialog(null, popUp, "Update", JOptionPane.YES_NO_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, options, null);
-        
-        if (n==1) {//tba
-        } 
-        
+
+        String updatedValue = newValue.getText();
+        if (n == 0) {
+            DefaultTableModel selectedTuple = (DefaultTableModel) table.getModel();
+            if (table.getSelectedRowCount() == 1) {
+                int columnNum = table.getColumn(Objects.requireNonNull(dropDown.getSelectedItem())).getModelIndex();
+                //not working
+
+                selectedTuple.setValueAt(updatedValue, table.getSelectedRow(), columnNum);
+
+            }
+        }
+
     }
     
     private void delete() {

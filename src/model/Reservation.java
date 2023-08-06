@@ -2,58 +2,48 @@ package model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class Reservation {
-    private final int rID;
-    private final int cID;
-    private final int locID;
-    private final int wID;
-    private final LocalDate rDate;
-    private final LocalTime rTime;
-    private final int numOfPeople;
-    private final String reservationName;
+    private List<String> columns;
+    private List<Vector<Object>> tuples;
 
-    public Reservation(int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople,
-                       String reservationName) {
-        this.rID = rID;
-        this.cID = cID;
-        this.locID = locID;
-        this.wID = wID;
-        this.rDate = rDate;
-        this.rTime = rTime;
-        this.numOfPeople = numOfPeople;
-        this.reservationName = reservationName;
+    public Reservation() {
+        columns = new ArrayList<>();
+        columns.add("Reservation ID");
+        columns.add("Customer ID");
+        columns.add("Location ID");
+        columns.add("Worker ID");
+        columns.add("Reservation Date");
+        columns.add("Reservation Time");
+        columns.add("Number of People");
+        columns.add("Reservation Name");
+
+        tuples = new ArrayList<>();
+        
+        for (int i = 0; i < 2; i++) {
+            Vector<Object> tuple = new Vector<>();
+            tuple.add(0, "rID " + i);
+            tuple.add(1, "cID " + i);
+            tuple.add(2, "locID " + i);
+            tuple.add(3, "wID " + i);
+            tuple.add(4, "rDate " + i);
+            tuple.add(5, "rTime" + i);
+            tuple.add(6, "numOfPeople" + i);
+            tuple.add(7, "reservationName" + i);
+
+            tuples.add(tuple);
     }
 
-    public int getRID() {
-        return rID;
-    }
-
-    public int getCID() {
-        return cID;
-    }
-
-    public int getLocID() {
-        return locID;
-    }
-
-    public int getWID() {
-        return wID;
-    }
-
-    public LocalDate getRDate() {
-        return rDate;
-    }
-
-    public LocalTime getRTime() {
-        return rTime;
-    }
-
-    public int getNumOfPeople() {
-        return numOfPeople;
-    }
-
-    public String getReservationName() {
-        return reservationName;
-    }
+   public List<String> getColumns() {
+        return Collections.unmodifiableList(columns);
+   }
+        
+   public List<Vector<Object>> getTuples() {
+        return Collections.unmodifiableList(tuples);
+   }
 }

@@ -23,7 +23,7 @@ public class Reservation {
 
         tuples = new ArrayList<>();
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 7; i++) {
             Vector<Object> tuple = new Vector<>();
             tuple.add(0, "rID " + i);
             tuple.add(1, "cID " + i);

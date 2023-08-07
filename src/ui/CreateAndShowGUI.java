@@ -1,5 +1,6 @@
 package ui;
 
+import delegates.RestaurantDelegate;
 import model.Branch;
 import model.Menus;
 import model.Reservation;
@@ -33,7 +34,10 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private Reservation reservations;
     private Branch branches;
 
-    public CreateAndShowGUI() {
+    private RestaurantDelegate delegate = null;
+
+    public CreateAndShowGUI(RestaurantDelegate delegate) {
+        this.delegate = delegate;
         initializeInstances();
 
         JPanel leftPane = createTablePanel();

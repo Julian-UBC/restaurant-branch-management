@@ -8,8 +8,8 @@ import ui.CreateAndShowGUI;
 import ui.LoginWindow;
 
 public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
-    private DatabaseConnectionHandler dbHandler = null;
-    private LoginWindow loginWindow = null;
+    private DatabaseConnectionHandler dbHandler;
+    private LoginWindow loginWindow;
 
     public Restaurant() {
         dbHandler = new DatabaseConnectionHandler();
@@ -91,7 +91,7 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     /**
      * Main method called at launch time
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         new Restaurant();
     }
 

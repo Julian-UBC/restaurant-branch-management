@@ -34,7 +34,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JPanel insertPanel;
     private String tableShown = "Menu";
 
-    private RestaurantDelegate delegate = null;
+    private RestaurantDelegate delegate;
 
     public CreateAndShowGUI(RestaurantDelegate delegate) {
         this.delegate = delegate;
@@ -193,7 +193,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private void insert(JPanel popUp) {
         // creating drop down option for users to input the new row
         JPanel dropDownPane = new JPanel();
-        String attributeItems[] = {"Insert to Branch", "Insert to Menu", "Insert to Reservation"};
+        String[] attributeItems = {"Insert to Branch", "Insert to Menu", "Insert to Reservation"};
         JComboBox dropDown = new JComboBox(attributeItems);
         dropDown.setEditable(false);
         dropDown.addItemListener(this);
@@ -270,7 +270,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
             String getName = enterName.getText();
-            Float getCost = Float.valueOf(enterCost.getText());
+            float getCost = Float.parseFloat(enterCost.getText());
             String getCategory = enterCategory.getText();
             Menu newMenu = new Menu(getName, getCost, getCategory);
             delegate.insertMenu(newMenu);
@@ -430,11 +430,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             //
         }
 
-        if (table.getSelectedRowCount() == 1) {
-            tableModel.removeRow(table.getSelectedRow());
-        } else {
-            // do nothing or throw error
-        }
+        refreshTable();
     }
 
     private void show(JPanel popUp) {
@@ -561,7 +557,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
     private void filter(JPanel popUp) {
         JPanel dropDownPane = new JPanel();
-        String[] attribute = {"atttribute1", "attribute2"};
+        String[] attribute = {"attribute1", "attribute2"};
         JComboBox dropDown = new JComboBox(attribute);
         dropDown.setEditable(false);
         dropDown.addActionListener(this);

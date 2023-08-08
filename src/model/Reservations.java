@@ -33,10 +33,10 @@ public class Reservations {
 
     public void addReservation(Reservation reservation) {
         Vector<Object> tuple = new Vector<>();
-        tuple.add(0, reservation.getrId());
-        tuple.add(1, reservation.getcId());
+        tuple.add(0, reservation.getRId());
+        tuple.add(1, reservation.getCId());
         tuple.add(2, reservation.getLocId());
-        tuple.add(3, reservation.getwId());
+        tuple.add(3, reservation.getWId());
         tuple.add(4, reservation.getDate());
         tuple.add(5, reservation.getTime());
         tuple.add(6, reservation.getNumOfPeople());

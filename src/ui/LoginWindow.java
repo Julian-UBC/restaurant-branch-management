@@ -91,7 +91,7 @@ public class LoginWindow extends JFrame implements ActionListener {
         // stop application when closed
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // size the window to obtain a best fit for the components
+        // size the window to obtain best fit for the components
         this.pack();
 
         // center the frame

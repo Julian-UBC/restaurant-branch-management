@@ -7,7 +7,7 @@ package delegates;
  * class (in this case Bank).
  *
  * LoginWindow calls the methods that we have listed below but
- * Bank is the actual class that will implement the methods.
+ * Restaurant is the actual class that will implement the methods.
  *
  * Source: https://github.students.cs.ubc.ca/CPSC304/CPSC304_Java_Project
  *

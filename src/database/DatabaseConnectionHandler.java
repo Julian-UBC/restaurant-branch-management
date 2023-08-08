@@ -24,16 +24,6 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void close() {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-        }
-    }
-
     public boolean login(String username, String password) {
         try {
             if (connection != null) {
@@ -183,10 +173,10 @@ public class DatabaseConnectionHandler {
         try {
             String query = "INSERT INTO reservations VALUES (?,?,?,?,?,?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, model.getrId());
-            ps.setInt(2, model.getcId());
+            ps.setInt(1, model.getRId());
+            ps.setInt(2, model.getCId());
             ps.setInt(3, model.getLocId());
-            ps.setInt(4, model.getwId());
+            ps.setInt(4, model.getWId());
             ps.setDate(5, Date.valueOf(model.getDate()));
             ps.setTime(6, Time.valueOf(model.getTime()));
             ps.setInt(7,model.getNumOfPeople());

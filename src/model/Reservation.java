@@ -32,11 +32,11 @@ public class Reservation {
         this.reservationName = reservationName;
     }
 
-    public int getrId() {
+    public int getRId() {
         return rId;
     }
 
-    public int getcId() {
+    public int getCId() {
         return cId;
     }
 
@@ -44,7 +44,7 @@ public class Reservation {
         return locId;
     }
 
-    public int getwId() {
+    public int getWId() {
         return wId;
     }
 

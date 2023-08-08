@@ -3,11 +3,7 @@ package controller;
 import database.DatabaseConnectionHandler;
 import delegates.LoginWindowDelegate;
 import delegates.RestaurantDelegate;
-import model.Branch;
-import model.Branches;
-import model.Menu;
-import model.Menus;
-import model.Reservation;
+import model.*;
 import ui.CreateAndShowGUI;
 import ui.LoginWindow;
 
@@ -46,6 +42,22 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
         }
     }
 
+    @Override
+    public Menus showMenus() {
+        return dbHandler.getMenusInfo();
+    }
+
+    @Override
+    public Reservations showReservations() {
+        return dbHandler.getReservationsInfo();
+    }
+
+    @Override
+    public Branches showBranches() {
+        return dbHandler.getBranchesInfo();
+    }
+
+    @Override
     public void insertBranch(Branch model) {
         dbHandler.insertBranch(model);
     }
@@ -59,17 +71,6 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     public void insertReservation(Reservation model) {
         dbHandler.insertReservation(model);
     }
-    
-    @Override
-    public Branches showBranches() {
-        return null;
-    }
-
-    @Override
-    public Menus showMenus() {
-        return dbHandler.getMenusInfo();
-    }
-
 
     /**
      * Main method called at launch time

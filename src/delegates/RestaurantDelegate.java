@@ -13,12 +13,15 @@ import model.*;
  */
 
 public interface RestaurantDelegate {
-    public Branches showBranches();
     public Menus showMenus();
+    public Reservations showReservations();
+    public Branches showBranches();
 
-    void insertBranch(Branch newBranch);
 
-    void insertMenu(Menu newMenu);
+    public void insertBranch(Branch newBranch);
 
-    void insertReservation(Reservation newReservation);
+    public void insertMenu(Menu newMenu);
+
+    public void insertReservation(Reservation newReservation);
+
 }

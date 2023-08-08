@@ -17,17 +17,6 @@ public class Branches {
         columns.add("Province");
 
         tuples = new ArrayList<>();
-
-        for (int i = 0; i < 2; i++) {
-            Branch branch = new Branch(i, "streetaddress " + i, "city " + i, "province " + i);
-
-            Vector<Object> tuple = new Vector<>();
-            tuple.add(0, branch.getLocId());
-            tuple.add(1, branch.getStreetAddress());
-            tuple.add(2, branch.getCity());
-            tuple.add(3, branch.getProvince());
-            tuples.add(tuple);
-        }
     }
 
     public List<String> getColumns() {
@@ -36,5 +25,15 @@ public class Branches {
 
     public List<Vector<Object>> getTuples() {
         return Collections.unmodifiableList(tuples);
+    }
+
+    public void addBranches(Branch branch) {
+        Vector<Object> tuple = new Vector<>();
+        tuple.add(0, branch.getLocId());
+        tuple.add(1, branch.getStreetAddress());
+        tuple.add(2, branch.getCity());
+        tuple.add(3, branch.getProvince());
+
+        tuples.add(tuple);
     }
 }

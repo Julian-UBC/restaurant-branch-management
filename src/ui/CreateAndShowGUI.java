@@ -34,15 +34,10 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JPanel insertPanel;
     private String tableShown = "Menu";
 
-//    private Menus menus;
-    private Reservations reservations;
-    private Branches branches;
-
     private RestaurantDelegate delegate = null;
 
     public CreateAndShowGUI(RestaurantDelegate delegate) {
         this.delegate = delegate;
-        initializeInstances();
 
         JPanel leftPane = createTablePanel();
         JPanel rightPane = createButtonPanel();
@@ -61,12 +56,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         frame.setBackground(Color.decode("#FE5F55"));
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    private void initializeInstances() {
-//        menus = new Menus();
-        reservations = new Reservations();
-        branches = new Branches();
     }
 
     // create a table on the left side
@@ -149,6 +138,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 }
             }
             case "Reservations" -> {
+                Reservations reservations = delegate.showReservations();
                 for (String column : reservations.getColumns()) {
                     model.addColumn(column);
                 }
@@ -158,6 +148,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 }
             }
             case "Branch" -> {
+                Branches branches = delegate.showBranches();
                 for (String column : branches.getColumns()) {
                     model.addColumn(column);
                 }

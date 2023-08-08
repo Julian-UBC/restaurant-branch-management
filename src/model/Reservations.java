@@ -21,21 +21,6 @@ public class Reservations {
         columns.add("Reservation Name");
 
         tuples = new ArrayList<>();
-
-        for (int i = 0; i < 2; i++) {
-            Reservation reservation = new Reservation(i, i, i, i, "date " + i, "time " + i, i, "reservationName " + i);
-
-            Vector<Object> tuple = new Vector<>();
-            tuple.add(0, reservation.getrId());
-            tuple.add(1, reservation.getcId());
-            tuple.add(2, reservation.getLocId());
-            tuple.add(3, reservation.getwId());
-            tuple.add(4, reservation.getDate());
-            tuple.add(5, reservation.getTime());
-            tuple.add(6, reservation.getNumOfPeople());
-            tuple.add(7, reservation.getReservationName());
-            tuples.add(tuple);
-        }
     }
 
     public List<String> getColumns() {
@@ -44,5 +29,19 @@ public class Reservations {
 
     public List<Vector<Object>> getTuples() {
         return Collections.unmodifiableList(tuples);
+    }
+
+    public void addReservation(Reservation reservation) {
+        Vector<Object> tuple = new Vector<>();
+        tuple.add(0, reservation.getrId());
+        tuple.add(1, reservation.getcId());
+        tuple.add(2, reservation.getLocId());
+        tuple.add(3, reservation.getwId());
+        tuple.add(4, reservation.getDate());
+        tuple.add(5, reservation.getTime());
+        tuple.add(6, reservation.getNumOfPeople());
+        tuple.add(7, reservation.getReservationName());
+        
+        tuples.add(tuple);
     }
 }

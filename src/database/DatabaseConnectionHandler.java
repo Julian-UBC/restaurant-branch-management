@@ -1,9 +1,6 @@
 package database;
 
-import model.Branch;
-import model.Menu;
-import model.Menus;
-import model.Reservation;
+import model.*;
 import util.PrintablePreparedStatement;
 
 import java.sql.*;
@@ -84,6 +81,62 @@ public class DatabaseConnectionHandler {
         return menus;
     }
 
+    public Reservations getReservationsInfo() {
+        Reservations reservations = new Reservations();
+
+        try {
+            String query = "SELECT * FROM Reservations";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Reservation reservation = new Reservation(rs.getInt("rID"),
+                                                            rs.getInt("cID"),
+                                                            rs.getInt("locID"),
+                                                            rs.getInt("wID"),
+                                                            rs.getDate("rDate").toString(),
+                                                            rs.getDate("rTime").toString(),
+                                                            rs.getInt("numOfPeople"),
+                                                            rs.getString("reservationName"));
+
+                reservations.addReservation(reservation);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return reservations;
+    }
+
+    public Branches getBranchesInfo() {
+        Branches branches = new Branches();
+
+        try {
+            String query = "SELECT * FROM Branches";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Branch branch = new Branch(rs.getInt("locID"),
+                                            rs.getString("streetAddress"),
+                                            rs.getString("city"),
+                                            rs.getString("province"));
+
+                branches.addBranches(branch);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return branches;
+    }
+
     public void insertBranch(Branch model) {
         try {
             String query = "INSERT INTO branch VALUES (?,?,?,?,?)";
@@ -143,5 +196,4 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
     }
-    
 }

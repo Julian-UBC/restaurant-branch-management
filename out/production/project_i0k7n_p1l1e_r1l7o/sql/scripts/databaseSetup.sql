@@ -360,7 +360,7 @@ INSERT INTO ChefSpecialty VALUES ('Saucier' , 20.55);
 INSERT INTO ChefSpecialty VALUES ('Pastry' , 18.35);
 INSERT INTO ChefSpecialty VALUES ('Prep' , 17.25);
 INSERT INTO ChefSpecialty VALUES ('Line' , 16.75);
-INSERT INTO ChefSpecialty VALUES ('Cook', 16.55)
+INSERT INTO ChefSpecialty VALUES ('Cook', 16.55);
 
 -- populate table for ChefInfo
 INSERT INTO ChefInfo VALUES(200, 'Oliwer', 'Dennir', '987654321', 'Head', 111);

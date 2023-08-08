@@ -1,6 +1,7 @@
 package ui;
 
 import Delegate.RestaurantDelegate;
+import model.Menu;
 import model.*;
 
 import javax.swing.*;
@@ -10,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -233,6 +236,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             String getCity = enterCity.getText();
             String getProvince = enterProvince.getText();
             JOptionPane.showMessageDialog(null,"Added");
+            Branch newBranch = new Branch(getLocId, getStreetAddress, getCity, getProvince);
+            delegate.insertBranch(newBranch);
             model.addRow(new Object[]{getLocId, getStreetAddress, getCity, getProvince});
         });
         
@@ -261,8 +266,10 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
             String getName = enterName.getText();
-            String getCost = enterCost.getText();
+            Float getCost = Float.valueOf(enterCost.getText());
             String getCategory = enterCategory.getText();
+            Menu newMenu = new Menu(getName, getCost, getCategory);
+            delegate.insertMenu(newMenu);
             JOptionPane.showMessageDialog(null,"Added");
             model.addRow(new Object[]{getName, getCost, getCategory});
         });
@@ -288,22 +295,30 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JLabel wId = new JLabel("Employee ID:");
         JTextField enterWId = new JTextField();
         JLabel date = new JLabel("Date:");
-        JTextField enterDate = new JTextField();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        JFormattedTextField enterDate = new JFormattedTextField (dateFormat);
         JLabel time = new JLabel("Time:");
-        JTextField enterTime = new JTextField();
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        JFormattedTextField  enterTime = new JFormattedTextField (timeFormat);
         JLabel numOfPeople = new JLabel("Number of People:");
         JTextField enterNumOfPeople = new JTextField();
+        JLabel reservationName = new JLabel("Reservation Name:");
+        JTextField enterReservationName = new JTextField();
 
         // get all the user input
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
-            String getRId = enterRId.getText();
-            String getCId = enterCId.getText();
-            String getLocId = enterLocID.getText();
-            String getWId = enterWId.getText();
+            int getRId = Integer.parseInt(enterRId.getText());
+            int getCId = Integer.parseInt(enterCId.getText());
+            int getLocId = Integer.parseInt(enterLocID.getText());
+            int getWId = Integer.parseInt(enterWId.getText());
             String getDate = enterDate.getText();
             String getTime = enterTime.getText();
-            String getNum = enterNumOfPeople.getText();
+            int getNum = Integer.parseInt(enterNumOfPeople.getText());
+            String getName = enterReservationName.getText();
+            Reservation newReservation = new Reservation(getRId, getCId, getLocId, getWId, 
+                    getDate, getTime, getNum, getName);
+            delegate.insertReservation(newReservation);
             JOptionPane.showMessageDialog(null,"Added");
             model.addRow(new Object[]{getRId, getCId, getLocId, getWId, getDate, getTime, getNum});
         });
@@ -322,6 +337,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(enterTime);
         panel.add(numOfPeople);
         panel.add(enterNumOfPeople);
+        panel.add(reservationName);
+        panel.add(enterReservationName);
         panel.add(insertButton);
         return panel;
     }

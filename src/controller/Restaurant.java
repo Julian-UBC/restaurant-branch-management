@@ -4,6 +4,8 @@ import Delegate.RestaurantDelegate;
 import database.DatabaseConnectionHandler;
 import delegates.LoginWindowDelegate;
 import model.Branch;
+import model.Menu;
+import model.Reservation;
 import ui.CreateAndShowGUI;
 import ui.LoginWindow;
 
@@ -51,10 +53,19 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     public void deleteBranch(int branchId) {
 
     }
+    
+    public void insertBranch(Branch model) {
+        dbHandler.insertBranch(model);
+    }
 
     @Override
-    public void insertBranch(Branch model) {
+    public void insertMenu(Menu model) {
+        dbHandler.insertMenu(model);
+    }
 
+    @Override
+    public void insertReservation(Reservation model) {
+        dbHandler.insertReservation(model);
     }
 
     @Override

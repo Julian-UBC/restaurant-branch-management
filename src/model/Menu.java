@@ -13,7 +13,19 @@ public class Menu {
 
     public Menu(String name, float cost, String category) {
         this.name = name;
+        this.cost = cost;
         this.category = category;
-        cost = 0.0f;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

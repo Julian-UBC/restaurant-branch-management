@@ -1,11 +1,13 @@
 package database;
 
-import model.Branch;
 import model.Menu;
-import model.Reservation;
+import model.Menus;
 import util.PrintablePreparedStatement;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DatabaseConnectionHandler {
     private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
@@ -51,12 +53,36 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    private void rollbackConnection() {
+//    private void rollbackConnection() {
+//        try {
+//            connection.rollback();
+//        } catch (SQLException e) {
+//            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+//        }
+//    }
+
+    public Menus getMenusInfo() {
+        Menus menus = new Menus();
+
         try {
-            connection.rollback();
+            String query = "SELECT * FROM Menu";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Menu menu = new Menu(rs.getString("name"),
+                        rs.getFloat("cost"),
+                        rs.getString("category"));
+                menus.addMenu(menu);
+            }
+
+            rs.close();
+            ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+
+        return menus;
     }
 
     public void insertBranch(Branch model) {

@@ -1,7 +1,6 @@
 package ui;
 
-import Delegate.RestaurantDelegate;
-import model.Menu;
+import delegates.RestaurantDelegate;
 import model.*;
 
 import javax.swing.*;
@@ -32,9 +31,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton projectionButton;
     private JButton groupByButton;
     private JPanel insertPanel;
-    private String tableShown;
+    private String tableShown = "Menu";
 
-    private Menus menus;
+//    private Menus menus;
     private Reservations reservations;
     private Branches branches;
 
@@ -64,8 +63,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
 
     private void initializeInstances() {
-        tableShown = "Menu";
-        menus = new Menus();
+//        menus = new Menus();
         reservations = new Reservations();
         branches = new Branches();
     }
@@ -78,7 +76,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.setLayout(new BorderLayout());
 
         model = new DefaultTableModel();
-        showTable("Menu");
+        showTable(tableShown);
         table.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -139,11 +137,14 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
         switch (tableShown) {
             case "Menu" -> {
+                Menus menus = delegate.showMenus();
                 for (String column : menus.getColumns()) {
                     model.addColumn(column);
+                    System.out.println(column);
                 }
                 for (Vector<Object> tuple : menus.getTuples()) {
                     model.addRow(tuple);
+                    System.out.println(tuple);
                 }
             }
             case "Reservations" -> {

@@ -1,5 +1,8 @@
 package delegates;
 
+import model.Branches;
+import model.Menus;
+
 /**
  * This interface uses the delegation design pattern where instead of having
  * the TerminalTransactions class try to do everything, it will only
@@ -11,5 +14,6 @@ package delegates;
  */
 
 public interface RestaurantDelegate {
-    public void showBranch();
+    public Branches showBranches();
+    public Menus showMenus();
 }

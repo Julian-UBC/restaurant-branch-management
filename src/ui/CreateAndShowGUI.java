@@ -1,9 +1,7 @@
 package ui;
 
 import Delegate.RestaurantDelegate;
-import model.Branch;
-import model.Menus;
-import model.Reservation;
+import model.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -34,8 +32,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private String tableShown;
 
     private Menus menus;
-    private Reservation reservations;
-    private Branch branches;
+    private Reservations reservations;
+    private Branches branches;
 
     private RestaurantDelegate delegate = null;
 
@@ -65,8 +63,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private void initializeInstances() {
         tableShown = "Menu";
         menus = new Menus();
-        reservations = new Reservation();
-        branches = new Branch();
+        reservations = new Reservations();
+        branches = new Branches();
     }
 
     // create a table on the left side

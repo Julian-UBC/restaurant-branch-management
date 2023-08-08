@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class Branches {
-    private List<String> columns;
+    final private List<String> columns;
     private List<Vector<Object>> tuples;
 
     public Branches() {
@@ -19,11 +19,13 @@ public class Branches {
         tuples = new ArrayList<>();
 
         for (int i = 0; i < 2; i++) {
+            Branch branch = new Branch(i, "streetaddress " + i, "city " + i, "province " + i);
+
             Vector<Object> tuple = new Vector<>();
-            tuple.add(0, "locid " + i);
-            tuple.add(1, "streetaddress " + i);
-            tuple.add(2, "city " + i);
-            tuple.add(3, "province " + i);
+            tuple.add(0, branch.getLocId());
+            tuple.add(1, branch.getStreetAddress());
+            tuple.add(2, branch.getCity());
+            tuple.add(3, branch.getProvince());
             tuples.add(tuple);
         }
     }

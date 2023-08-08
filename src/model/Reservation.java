@@ -1,48 +1,66 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
-
-
 public class Reservation {
-    private List<String> columns;
-    private List<Vector<Object>> tuples;
+    private int rId;
+    private int cId;
+    private int locId;
+    private int wId;
+    private String date;
+    private String time;
+    private int numOfPeople;
+    private String reservationName;
 
-    public Reservation() {
-        columns = new ArrayList<>();
-        columns.add("Reservation ID");
-        columns.add("Customer ID");
-        columns.add("Location ID");
-        columns.add("Worker ID");
-        columns.add("Reservation Date");
-        columns.add("Reservation Time");
-        columns.add("Number of People");
-        columns.add("Reservation Name");
-
-        tuples = new ArrayList<>();
-
-        for (int i = 0; i < 2; i++) {
-            Vector<Object> tuple = new Vector<>();
-            tuple.add(0, "rID " + i);
-            tuple.add(1, "cID " + i);
-            tuple.add(2, "locID " + i);
-            tuple.add(3, "wID " + i);
-            tuple.add(4, "rDate " + i);
-            tuple.add(5, "rTime" + i);
-            tuple.add(6, "numOfPeople" + i);
-            tuple.add(7, "reservationName" + i);
-
-            tuples.add(tuple);
-        }
+    public Reservation(int rId, int cId, int locId, int wId) {
+        this.rId = rId;
+        this.cId = cId;
+        this.locId = locId;
+        this.wId = wId;
+        this.date = "";
+        this.time = "";
+        this.numOfPeople = 0;
+        this.reservationName = "";
     }
 
-   public List<String> getColumns() {
-        return Collections.unmodifiableList(columns);
-   }
-        
-   public List<Vector<Object>> getTuples() {
-        return Collections.unmodifiableList(tuples);
-   }
+    public Reservation(int rId, int cId, int locId, int wId, String date, String time, int numOfPeople, String reservationName) {
+        this.rId = rId;
+        this.cId = cId;
+        this.locId = locId;
+        this.wId = wId;
+        this.date = date;
+        this.time = time;
+        this.numOfPeople = numOfPeople;
+        this.reservationName = reservationName;
+    }
+
+    public int getrId() {
+        return rId;
+    }
+
+    public int getcId() {
+        return cId;
+    }
+
+    public int getLocId() {
+        return locId;
+    }
+
+    public int getwId() {
+        return wId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public int getNumOfPeople() {
+        return numOfPeople;
+    }
+
+    public String getReservationName() {
+        return reservationName;
+    }
 }

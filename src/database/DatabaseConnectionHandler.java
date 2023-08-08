@@ -251,4 +251,33 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
     }
+
+    public Menus showDivision() {
+        Menus menus = new Menus();
+
+        try {
+            String query = "SELECT name " +
+                            "FROM Menu m " +
+                            "WHERE NOT EXISTS (" +
+                                                "(SELECT locID FROM Branches b) " +
+                                                "MINUS " +
+                                                "(SELECT locID " +
+                                                "FROM MenuServed ms " +
+                                                "WHERE m.name = ms.menuName))";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Menu menu = new Menu(rs.getString("name"));
+                menus.addMenu(menu);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return menus;
+    }
 }

@@ -17,11 +17,13 @@ import java.util.Objects;
 import java.util.Vector;
 
 public class CreateAndShowGUI implements ActionListener, ItemListener {
-    private static final int WIDTH=1000;
+    private static final int WIDTH=1200;
     private static final int HEIGHT=700;
 
     private JTable table;
     private DefaultTableModel model;
+    private JPanel insertPanel;
+    private String tableShown = "Menu";
 
     private JButton selectButton;
     private JButton insertButton;
@@ -31,8 +33,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton filterButton;
     private JButton projectionButton;
     private JButton groupByButton;
-    private JPanel insertPanel;
-    private String tableShown = "Menu";
+    private JButton divisionButton;
 
     private RestaurantDelegate delegate;
 
@@ -103,6 +104,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         projectionButton.addActionListener(this);
         groupByButton = new JButton("Group By");
         groupByButton.addActionListener(this);
+        divisionButton = new JButton("Show menus that are served in all branches");
+        divisionButton.addActionListener(this);
 
         panel.add(selectButton, g);
         g.gridy++;
@@ -117,6 +120,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(filterButton,g);
         g.gridy++;
         panel.add(projectionButton, g);
+        g.gridy++;
+        panel.add(divisionButton, g);
         g.gridy++;
         return panel;
     }
@@ -584,7 +589,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
     
     private void division() {
-        
+        new ShowDivision(delegate);
     }
     
     @Override
@@ -612,6 +617,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
         if(e.getSource() == groupByButton) {
             groupByButton();
+        }
+        if(e.getSource() == divisionButton) {
+            division();
         }
     }
 

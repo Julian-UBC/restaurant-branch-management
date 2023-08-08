@@ -5,6 +5,12 @@ public class Menu {
     private float cost;
     private String category;
 
+    public Menu(String name) {
+        this.name = name;
+        category = "";
+        cost = 0.0f;
+    }
+
     public Menu(String name, String category) {
         this.name = name;
         this.category = category;

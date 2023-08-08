@@ -24,4 +24,6 @@ public interface RestaurantDelegate {
     void deleteMenu(String tblName);
     void deleteReservation(int tblRId);
     void deleteBranch(int tblLocId);
+
+    Menus showMenusFromAllBranches();
 }

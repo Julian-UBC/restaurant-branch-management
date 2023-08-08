@@ -88,6 +88,11 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
         dbHandler.deleteBranch(tblLocId);
     }
 
+    @Override
+    public Menus showMenusFromAllBranches() {
+        return dbHandler.showDivision();
+    }
+
     /**
      * Main method called at launch time
      */

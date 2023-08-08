@@ -412,6 +412,24 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private void delete() {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 
+        switch (tableShown) {
+            case "Menu" -> {
+                String tblName = tableModel.getValueAt(table.getSelectedRow(), 0).toString();
+                delegate.deleteMenu(tblName);
+            }
+            case "Reservations" -> {
+                int tblRId = Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                delegate.deleteReservation(tblRId);
+            }
+            case "Branch" -> {
+                int tblLocId = Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                delegate.deleteBranch(tblLocId);
+            }
+            default -> {
+            }
+            //
+        }
+
         if (table.getSelectedRowCount() == 1) {
             tableModel.removeRow(table.getSelectedRow());
         } else {

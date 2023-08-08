@@ -73,6 +73,21 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
         dbHandler.insertReservation(model);
     }
 
+    @Override
+    public void deleteMenu(String tblName) {
+        dbHandler.deleteMenu(tblName);
+    }
+
+    @Override
+    public void deleteReservation(int tblRId) {
+        dbHandler.deleteReservation(tblRId);
+    }
+
+    @Override
+    public void deleteBranch(int tblLocId) {
+        dbHandler.deleteBranch(tblLocId);
+    }
+
     /**
      * Main method called at launch time
      */

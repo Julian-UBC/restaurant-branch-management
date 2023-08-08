@@ -1,6 +1,7 @@
 package ui;
 
 import delegates.RestaurantDelegate;
+import model.Menu;
 import model.*;
 
 import javax.swing.*;

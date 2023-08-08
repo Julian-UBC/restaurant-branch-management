@@ -1,13 +1,12 @@
 package database;
 
+import model.Branch;
 import model.Menu;
 import model.Menus;
+import model.Reservation;
 import util.PrintablePreparedStatement;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DatabaseConnectionHandler {
     private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
@@ -53,13 +52,13 @@ public class DatabaseConnectionHandler {
         }
     }
 
-//    private void rollbackConnection() {
-//        try {
-//            connection.rollback();
-//        } catch (SQLException e) {
-//            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-//        }
-//    }
+    private void rollbackConnection() {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
 
     public Menus getMenusInfo() {
         Menus menus = new Menus();

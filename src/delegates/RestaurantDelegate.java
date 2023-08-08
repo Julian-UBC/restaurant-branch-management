@@ -1,7 +1,6 @@
 package delegates;
 
-import model.Branches;
-import model.Menus;
+import model.*;
 
 /**
  * This interface uses the delegation design pattern where instead of having
@@ -16,4 +15,10 @@ import model.Menus;
 public interface RestaurantDelegate {
     public Branches showBranches();
     public Menus showMenus();
+
+    void insertBranch(Branch newBranch);
+
+    void insertMenu(Menu newMenu);
+
+    void insertReservation(Reservation newReservation);
 }

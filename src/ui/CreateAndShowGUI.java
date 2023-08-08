@@ -31,6 +31,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton filterButton;
     private JButton projectionButton;
     private JButton groupByButton;
+    private JButton joinButton;
     private JPanel insertPanel;
     private String tableShown = "Menu";
 
@@ -103,6 +104,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         projectionButton.addActionListener(this);
         groupByButton = new JButton("Group By");
         groupByButton.addActionListener(this);
+        joinButton = new JButton("Join");
+        joinButton.addActionListener(this);
 
         panel.add(selectButton, g);
         g.gridy++;
@@ -117,6 +120,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(filterButton,g);
         g.gridy++;
         panel.add(projectionButton, g);
+        g.gridy++;
+        panel.add(joinButton, g);
         g.gridy++;
         return panel;
     }

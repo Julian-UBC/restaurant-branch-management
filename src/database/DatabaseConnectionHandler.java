@@ -1,5 +1,7 @@
 package database;
 
+import util.PrintablePreparedStatement;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -31,26 +33,26 @@ public class DatabaseConnectionHandler {
         }
     }
 
-//    public void deleteBranch(int branchId) {
-////        try {
-////            String query = "DELETE FROM branch WHERE branch_id = ?";
-////            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-////            ps.setInt(1, branchId);
-////
-////            int rowCount = ps.executeUpdate();
-////            if (rowCount == 0) {
-////                System.out.println(WARNING_TAG + " Branch " + branchId + " does not exist!");
-////            }
-////
-////            connection.commit();
-////
-////            ps.close();
-////        } catch (SQLException e) {
-////            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-////            rollbackConnection();
-////        }
-//    }
-//
+    public void deleteBranch(int branchId) {
+        try {
+            String query = "DELETE FROM branch WHERE branch_id = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, branchId);
+
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 0) {
+                System.out.println(WARNING_TAG + " Branch " + branchId + " does not exist!");
+            }
+
+            connection.commit();
+
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
 //    public void insertBranch(BranchModel model) {
 ////        try {
 ////            String query = "INSERT INTO branch VALUES (?,?,?,?,?)";
@@ -122,23 +124,23 @@ public class DatabaseConnectionHandler {
 ////        }
 //    }
 
-    public boolean login(String username, String password) {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-
-            connection = DriverManager.getConnection(ORACLE_URL, username, password);
-            connection.setAutoCommit(false);
-
-            System.out.println("\nConnected to Oracle!");
-            return true;
-        } catch (SQLException e) {
-            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            return false;
-        }
-    }
-
+//    public boolean login(String username, String password) {
+//        try {
+//            if (connection != null) {
+//                connection.close();
+//            }
+//
+//            connection = DriverManager.getConnection(ORACLE_URL, username, password);
+//            connection.setAutoCommit(false);
+//
+//            System.out.println("\nConnected to Oracle!");
+//            return true;
+//        } catch (SQLException e) {
+//            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+//            return false;
+//        }
+//    }
+//
     private void rollbackConnection() {
         try  {
             connection.rollback();
@@ -147,25 +149,26 @@ public class DatabaseConnectionHandler {
         }
     }
 
-//    public void databaseSetup() {
-////        dropBranchTableIfExists();
-////
-////        try {
-////            String query = "CREATE TABLE branch (branch_id integer PRIMARY KEY, branch_name varchar2(20) not null, branch_addr varchar2(50), branch_city varchar2(20) not null, branch_phone integer)";
-////            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-////            ps.executeUpdate();
-////            ps.close();
-////        } catch (SQLException e) {
-////            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-////        }
-////
-////        BranchModel branch1 = new BranchModel("123 Charming Ave", "Vancouver", 1, "First Branch", 1234567);
-////        insertBranch(branch1);
-////
-////        BranchModel branch2 = new BranchModel("123 Coco Ave", "Vancouver", 2, "Second Branch", 1234568);
-////        insertBranch(branch2);
-//    }
+
+    public void databaseSetup() {
+//        dropBranchTableIfExists();
 //
+//        try {
+//            String query = "CREATE TABLE branch (branch_id integer PRIMARY KEY, branch_name varchar2(20) not null, branch_addr varchar2(50), branch_city varchar2(20) not null, branch_phone integer)";
+//            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+//            ps.executeUpdate();
+//            ps.close();
+//        } catch (SQLException e) {
+//            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+//        }
+//
+//        BranchModel branch1 = new BranchModel("123 Charming Ave", "Vancouver", 1, "First Branch", 1234567);
+//        insertBranch(branch1);
+//
+//        BranchModel branch2 = new BranchModel("123 Coco Ave", "Vancouver", 2, "Second Branch", 1234568);
+//        insertBranch(branch2);
+    }
+}
 //    private void dropBranchTableIfExists() {
 ////        try {
 ////            String query = "select table_name from user_tables";
@@ -185,4 +188,4 @@ public class DatabaseConnectionHandler {
 ////            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
 ////        }
 //    }
-}
+//}

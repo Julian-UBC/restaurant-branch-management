@@ -1,6 +1,6 @@
 package ui;
 
-import delegates.RestaurantDelegate;
+import Delegate.RestaurantDelegate;
 import model.Branch;
 import model.Menus;
 import model.Reservation;
@@ -8,7 +8,10 @@ import model.Reservation;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -26,8 +29,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton showButton;
     private JButton filterButton;
     private JButton projectionButton;
+    private JButton groupByButton;
     private JPanel insertPanel;
-    private JPanel projectPanel;
     private String tableShown;
 
     private Menus menus;
@@ -36,7 +39,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
     private RestaurantDelegate delegate = null;
 
-    public CreateAndShowGUI(RestaurantDelegate delegate) {
+    public CreateAndShowGUI() {
         this.delegate = delegate;
         initializeInstances();
 
@@ -47,7 +50,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         pane.add(leftPane, BorderLayout.LINE_START);
         pane.add(rightPane, BorderLayout.LINE_END);
 
-        JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
+        JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, leftPane, rightPane);
         sp.setOrientation(SwingConstants.VERTICAL);
 
         JFrame frame = new JFrame();
@@ -62,7 +65,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private void initializeInstances() {
         tableShown = "Menu";
         menus = new Menus();
-        //reservations = new Reservation();
+        reservations = new Reservation();
         branches = new Branch();
     }
 
@@ -109,6 +112,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         filterButton.addActionListener(this);
         projectionButton = new JButton("Projection");
         projectionButton.addActionListener(this);
+        groupByButton = new JButton("Group By");
+        groupByButton.addActionListener(this);
 
         panel.add(selectButton, g);
         g.gridy++;
@@ -132,17 +137,15 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         tableShown = instance;
 
         switch (tableShown) {
-            case "Menu":
+            case "Menu" -> {
                 for (String column : menus.getColumns()) {
                     model.addColumn(column);
                 }
-
                 for (Vector<Object> tuple : menus.getTuples()) {
                     model.addRow(tuple);
                 }
-                break;
-            case "Reservations":
-                /*
+            }
+            case "Reservations" -> {
                 for (String column : reservations.getColumns()) {
                     model.addColumn(column);
                 }
@@ -150,18 +153,18 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 for (Vector<Object> tuple : reservations.getTuples()) {
                     model.addRow(tuple);
                 }
-                break; */
-            case "Branch":
+            }
+            case "Branch" -> {
                 for (String column : branches.getColumns()) {
                     model.addColumn(column);
                 }
-
                 for (Vector<Object> tuple : branches.getTuples()) {
                     model.addRow(tuple);
                 }
-                break;
-            default:
-                //
+            }
+            default -> {
+            }
+            //
         }
     }
 
@@ -392,7 +395,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
     private void projectionButton(JPanel popUp) {
         // creates panel containing insert to branch, menu and reservation
-        projectPanel = new JPanel(new CardLayout());
+        JPanel projectPanel = new JPanel(new CardLayout());
         JPanel projectBranch = projectBranch(new JPanel());
         projectPanel.add(projectBranch, "Project Branch");
         JPanel projectMenu = projectMenu(new JPanel());
@@ -518,6 +521,22 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
     }
     
+    private void groupByButton() {
+        // show to table 
+    }
+    
+    private void having() {
+        
+    }
+    
+    private void nestedAggregation() {
+        
+    }
+    
+    private void division() {
+        
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectButton) {
@@ -540,6 +559,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
         if (e.getSource() == projectionButton) {
             projectionButton(new JPanel());
+        }
+        if(e.getSource() == groupByButton) {
+            groupByButton();
         }
     }
 

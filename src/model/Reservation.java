@@ -1,48 +1,60 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 
 public class Reservation {
-    private List<String> columns;
-    private List<Vector<Object>> tuples;
+    int rId;
+    int cId;
+    int locId;
+    int wId;
+    LocalDate date;
+    LocalTime time;
+    int NumOfPeople;
+    String reservationName;
 
-    public Reservation() {
-        columns = new ArrayList<>();
-        columns.add("Reservation ID");
-        columns.add("Customer ID");
-        columns.add("Location ID");
-        columns.add("Worker ID");
-        columns.add("Reservation Date");
-        columns.add("Reservation Time");
-        columns.add("Number of People");
-        columns.add("Reservation Name");
-
-        tuples = new ArrayList<>();
-
-        for (int i = 0; i < 2; i++) {
-            Vector<Object> tuple = new Vector<>();
-            tuple.add(0, "rID " + i);
-            tuple.add(1, "cID " + i);
-            tuple.add(2, "locID " + i);
-            tuple.add(3, "wID " + i);
-            tuple.add(4, "rDate " + i);
-            tuple.add(5, "rTime" + i);
-            tuple.add(6, "numOfPeople" + i);
-            tuple.add(7, "reservationName" + i);
-
-            tuples.add(tuple);
-        }
+    public Reservation(int rId, int cId, int locId, int wId, LocalDate date, LocalTime time, 
+                       int NumOfPeople, String reservationName) {
+        this.rId = rId;
+        this.cId = cId;
+        this.locId = locId;
+        this.wId = wId;
+        this.date = date;
+        this.time = time;
+        this.NumOfPeople = NumOfPeople;
+        this.reservationName = reservationName;
     }
 
-   public List<String> getColumns() {
-        return Collections.unmodifiableList(columns);
-   }
-        
-   public List<Vector<Object>> getTuples() {
-        return Collections.unmodifiableList(tuples);
-   }
+    public int getrId() {
+        return rId;
+    }
+
+    public int getcId() {
+        return cId;
+    }
+
+    public int getLocId() {
+        return locId;
+    }
+
+    public int getwId() {
+        return wId;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public int getNumOfPeople() {
+        return NumOfPeople;
+    }
+
+    public String getReservationName() {
+        return reservationName;
+    }
 }

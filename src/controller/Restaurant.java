@@ -53,7 +53,16 @@ public class Restaurant implements RestaurantDelegate {
     }
 
     @Override
-    public void deleteBranch(int branchId) {
+    public void login(String username, String password) {
+        boolean didConnect = dbHandler.login(username, password);
+
+        if (didConnect) {
+            // Once connected, remove login window and start text transaction flow
+            loginWindow.dispose();
+
+            new CreateAndShowGUI(this);
+        } else {
+            loginWindow.handleLoginFailed();
 
     }
 

@@ -33,26 +33,43 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void deleteBranch(int branchId) {
+    public boolean login(String username, String password) {
         try {
-            String query = "DELETE FROM branch WHERE branch_id = ?";
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, branchId);
-
-            int rowCount = ps.executeUpdate();
-            if (rowCount == 0) {
-                System.out.println(WARNING_TAG + " Branch " + branchId + " does not exist!");
+            if (connection != null) {
+                connection.close();
             }
 
-            connection.commit();
+            connection = DriverManager.getConnection(ORACLE_URL, username, password);
+            connection.setAutoCommit(false);
 
-            ps.close();
+            System.out.println("\nConnected to Oracle!");
+            return true;
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-            rollbackConnection();
+            return false;
         }
     }
 
+//    public void deleteBranch(int branchId) {
+////        try {
+////            String query = "DELETE FROM branch WHERE branch_id = ?";
+////            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+////            ps.setInt(1, branchId);
+////
+////            int rowCount = ps.executeUpdate();
+////            if (rowCount == 0) {
+////                System.out.println(WARNING_TAG + " Branch " + branchId + " does not exist!");
+////            }
+////
+////            connection.commit();
+////
+////            ps.close();
+////        } catch (SQLException e) {
+////            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+////            rollbackConnection();
+////        }
+//    }
+//
 //    public void insertBranch(BranchModel model) {
 ////        try {
 ////            String query = "INSERT INTO branch VALUES (?,?,?,?,?)";
@@ -124,23 +141,6 @@ public class DatabaseConnectionHandler {
 ////        }
 //    }
 
-//    public boolean login(String username, String password) {
-//        try {
-//            if (connection != null) {
-//                connection.close();
-//            }
-//
-//            connection = DriverManager.getConnection(ORACLE_URL, username, password);
-//            connection.setAutoCommit(false);
-//
-//            System.out.println("\nConnected to Oracle!");
-//            return true;
-//        } catch (SQLException e) {
-//            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
-//            return false;
-//        }
-//    }
-//
     private void rollbackConnection() {
         try  {
             connection.rollback();

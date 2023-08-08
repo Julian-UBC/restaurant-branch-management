@@ -39,7 +39,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
     private RestaurantDelegate delegate = null;
 
-    public CreateAndShowGUI() {
+    public CreateAndShowGUI(RestaurantDelegate delegate) {
         this.delegate = delegate;
         initializeInstances();
 

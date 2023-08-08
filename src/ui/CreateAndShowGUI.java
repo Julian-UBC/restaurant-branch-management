@@ -34,7 +34,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton projectionButton;
     private JButton groupByButton;
     private JButton joinButton;
-    private JButton divisionButton;
+    private JButton moreButton;
 
     private RestaurantDelegate delegate;
 
@@ -107,8 +107,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         groupByButton.addActionListener(this);
         joinButton = new JButton("Join");
         joinButton.addActionListener(this);
-        divisionButton = new JButton("Show menus that are served in all branches");
-        divisionButton.addActionListener(this);
+        moreButton = new JButton("More");
+        moreButton.addActionListener(this);
 
         panel.add(selectButton, g);
         g.gridy++;
@@ -126,7 +126,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         g.gridy++;
         panel.add(joinButton, g);
         g.gridy++;
-        panel.add(divisionButton, g);
+        panel.add(moreButton, g);
         g.gridy++;
         return panel;
     }
@@ -593,10 +593,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         
     }
     
-    private void division() {
-        new ShowDivision(delegate);
-    }
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectButton) {
@@ -623,8 +619,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         if(e.getSource() == groupByButton) {
             groupByButton();
         }
-        if(e.getSource() == divisionButton) {
-            division();
+        if(e.getSource() == moreButton) {
+            new MoreWindow(delegate);
         }
     }
 

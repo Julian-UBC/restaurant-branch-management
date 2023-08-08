@@ -4,6 +4,8 @@ import model.*;
 import util.PrintablePreparedStatement;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class DatabaseConnectionHandler {
     private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
@@ -89,13 +91,16 @@ public class DatabaseConnectionHandler {
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
             while(rs.next()) {
                 Reservation reservation = new Reservation(rs.getInt("rID"),
                                                             rs.getInt("cID"),
                                                             rs.getInt("locID"),
                                                             rs.getInt("wID"),
-                                                            rs.getDate("rDate").toString(),
-                                                            rs.getDate("rTime").toString(),
+                                                            dateFormat.format(rs.getDate("rDate")),
+                                                            timeFormat.format(rs.getDate("rTime")),
                                                             rs.getInt("numOfPeople"),
                                                             rs.getString("reservationName"));
 
@@ -139,7 +144,7 @@ public class DatabaseConnectionHandler {
 
     public void insertBranch(Branch model) {
         try {
-            String query = "INSERT INTO branch VALUES (?,?,?,?,?)";
+            String query = "INSERT INTO branches VALUES (?,?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, model.getLocId());
             ps.setString(2, model.getStreetAddress());
@@ -158,7 +163,7 @@ public class DatabaseConnectionHandler {
 
     public void insertMenu(Menu model) {
         try {
-            String query = "INSERT INTO branch VALUES (?,?,?,?,?)";
+            String query = "INSERT INTO menu VALUES (?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(1, model.getName());
             ps.setFloat(2, model.getCost());
@@ -176,7 +181,7 @@ public class DatabaseConnectionHandler {
 
     public void insertReservation(Reservation model) {
         try {
-            String query = "INSERT INTO branch VALUES (?,?,?,?,?)";
+            String query = "INSERT INTO reservations VALUES (?,?,?,?,?,?,?,?)";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, model.getrId());
             ps.setInt(2, model.getcId());

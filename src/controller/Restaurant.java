@@ -15,6 +15,7 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
         dbHandler = new DatabaseConnectionHandler();
         loginWindow = new LoginWindow();
         loginWindow.showFrame(this);
+//        new CreateAndShowGUI(this);
     }
 
     /**

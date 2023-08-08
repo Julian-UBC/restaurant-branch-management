@@ -130,11 +130,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 Menus menus = delegate.showMenus();
                 for (String column : menus.getColumns()) {
                     model.addColumn(column);
-                    System.out.println(column);
                 }
                 for (Vector<Object> tuple : menus.getTuples()) {
                     model.addRow(tuple);
-                    System.out.println(tuple);
                 }
             }
             case "Reservations" -> {
@@ -160,6 +158,12 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             }
             //
         }
+    }
+
+    private void refreshTable() {
+        model = new DefaultTableModel();
+        showTable(tableShown);
+        table.setModel(model);
     }
 
     private void select(JPanel popUp) {
@@ -228,10 +232,17 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             String getStreetAddress = enterStreetAddress.getText();
             String getCity = enterCity.getText();
             String getProvince = enterProvince.getText();
-            JOptionPane.showMessageDialog(null,"Added");
             Branch newBranch = new Branch(getLocId, getStreetAddress, getCity, getProvince);
             delegate.insertBranch(newBranch);
-            model.addRow(new Object[]{getLocId, getStreetAddress, getCity, getProvince});
+
+            // Remove inputs
+            enterLocID.setText("");
+            enterStreetAddress.setText("");
+            enterCity.setText("");
+            enterProvince.setText("");
+
+            // Display the new tuple
+            refreshTable();
         });
         
         panel.add(locId);
@@ -263,8 +274,14 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             String getCategory = enterCategory.getText();
             Menu newMenu = new Menu(getName, getCost, getCategory);
             delegate.insertMenu(newMenu);
-            JOptionPane.showMessageDialog(null,"Added");
-            model.addRow(new Object[]{getName, getCost, getCategory});
+
+            // Remove inputs
+            enterName.setText("");
+            enterCost.setText("");
+            enterCategory.setText("");
+
+            // Display the new tuple
+            refreshTable();
         });
 
         panel.add(name);
@@ -312,8 +329,19 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             Reservation newReservation = new Reservation(getRId, getCId, getLocId, getWId, 
                     getDate, getTime, getNum, getName);
             delegate.insertReservation(newReservation);
-            JOptionPane.showMessageDialog(null,"Added");
-            model.addRow(new Object[]{getRId, getCId, getLocId, getWId, getDate, getTime, getNum});
+
+            // Remove inputs
+            enterRId.setText("");
+            enterCId.setText("");
+            enterLocID.setText("");
+            enterWId.setText("");
+            enterDate.setText("");
+            enterTime.setText("");
+            enterNumOfPeople.setText("");
+            enterReservationName.setText("");
+
+            // Display the new tuple
+            refreshTable();
         });
 
         panel.add(rId);

@@ -6,11 +6,17 @@ public class Branch {
     private String city;
     private String province;
 
+    public Branch(int locId) {
+        this.locId = locId;
+        this.streetAddress = "";
+        this.city = "";
+        this.province = "";
+    }
 
     public Branch(int locId, String streetAddress, String city, String province) {
         this.locId = locId;
         this.streetAddress = streetAddress;
-        this.city  = city;
+        this.city = city;
         this.province = province;
     }
 

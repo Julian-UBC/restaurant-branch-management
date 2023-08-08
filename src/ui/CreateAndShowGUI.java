@@ -1,7 +1,6 @@
 package ui;
 
 import Delegate.RestaurantDelegate;
-import model.Menu;
 import model.*;
 
 import javax.swing.*;
@@ -11,8 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -33,16 +30,14 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton groupByButton;
     private JPanel insertPanel;
     private String tableShown;
-    private Branches branches;
+
     private Menus menus;
     private Reservations reservations;
-    private RestaurantDelegate delegate = null;
-    
-    public CreateAndShowGUI() {
-        
-    }
+    private Branches branches;
 
-    public void setUpDatabase(RestaurantDelegate delegate) {
+    private RestaurantDelegate delegate = null;
+
+    public CreateAndShowGUI(RestaurantDelegate delegate) {
         this.delegate = delegate;
         initializeInstances();
 
@@ -138,7 +133,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     // Display the appropriate columns and rows in the table
     private void showTable(String instance) {
         tableShown = instance;
-        
+
         switch (tableShown) {
             case "Menu" -> {
                 for (String column : menus.getColumns()) {
@@ -158,8 +153,12 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 }
             }
             case "Branch" -> {
-                // delegate.showBranch();
-                // tba
+                for (String column : branches.getColumns()) {
+                    model.addColumn(column);
+                }
+                for (Vector<Object> tuple : branches.getTuples()) {
+                    model.addRow(tuple);
+                }
             }
             default -> {
             }
@@ -233,8 +232,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             String getStreetAddress = enterStreetAddress.getText();
             String getCity = enterCity.getText();
             String getProvince = enterProvince.getText();
-            Branch newBranch = new Branch(getLocId, getStreetAddress, getCity, getProvince);
-            delegate.insertBranch(newBranch);
             JOptionPane.showMessageDialog(null,"Added");
             model.addRow(new Object[]{getLocId, getStreetAddress, getCity, getProvince});
         });
@@ -264,10 +261,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
             String getName = enterName.getText();
-            float getCost = Float.parseFloat(enterCost.getText());
+            String getCost = enterCost.getText();
             String getCategory = enterCategory.getText();
-            Menu menu = new Menu(getName, getCost, getCategory);
-            delegate.insertMenu(menu);
             JOptionPane.showMessageDialog(null,"Added");
             model.addRow(new Object[]{getName, getCost, getCategory});
         });
@@ -298,23 +293,17 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JTextField enterTime = new JTextField();
         JLabel numOfPeople = new JLabel("Number of People:");
         JTextField enterNumOfPeople = new JTextField();
-        JLabel reservationName = new JLabel("Name of Reservation:");
-        JTextField enterReservationName = new JTextField();
 
         // get all the user input
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
-            int getRId = Integer.parseInt(enterRId.getText());
-            int getCId = Integer.parseInt(enterCId.getText());
-            int getLocId = Integer.parseInt(enterLocID.getText());
-            int getWId = Integer.parseInt(enterWId.getText());
-            LocalDate getDate = LocalDate.parse(enterDate.getText());
-            LocalTime getTime = LocalTime.parse(enterTime.getText());
-            int getNum = Integer.parseInt(enterNumOfPeople.getText());
-            String getName= enterReservationName.getText();
-            Reservation newReservation = new Reservation(getRId, getCId, getLocId, getWId, getDate,
-                    getTime, getNum, getName);
-            delegate.insertReservation(newReservation);
+            String getRId = enterRId.getText();
+            String getCId = enterCId.getText();
+            String getLocId = enterLocID.getText();
+            String getWId = enterWId.getText();
+            String getDate = enterDate.getText();
+            String getTime = enterTime.getText();
+            String getNum = enterNumOfPeople.getText();
             JOptionPane.showMessageDialog(null,"Added");
             model.addRow(new Object[]{getRId, getCId, getLocId, getWId, getDate, getTime, getNum});
         });
@@ -333,8 +322,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(enterTime);
         panel.add(numOfPeople);
         panel.add(enterNumOfPeople);
-        panel.add(reservationName);
-        panel.add(enterReservationName);
         panel.add(insertButton);
         return panel;
     }
@@ -438,7 +425,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JCheckBox cityBox = new JCheckBox("city");
         JCheckBox provinceBox = new JCheckBox("province");
 
-        JButton insertButton = new JButton("Show");
+        JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
             // if locIdBox.getState() { // add column locIdBox to table
             // if streetAddressBox.getState() { // add column locIdBox to table
@@ -465,7 +452,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JCheckBox categoryBox = new JCheckBox("Category");
         JCheckBox costBox = new JCheckBox("Cost");
 
-        JButton insertButton = new JButton("Show");
+        JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
             // if locIdBox.getState() { // add column locIdBox to table
             // if streetAddressBox.getState() { // add column locIdBox to table
@@ -494,7 +481,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JCheckBox timeBox = new JCheckBox("date");
         JCheckBox numOfPeopleBox = new JCheckBox("number of people");
 
-        JButton insertButton = new JButton("Show");
+        JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
             // if locIdBox.getState() { // add column locIdBox to table
             // if streetAddressBox.getState() { // add column locIdBox to table
@@ -581,5 +568,4 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         CardLayout cl = (CardLayout)(insertPanel.getLayout());
         cl.show(insertPanel, (String)e.getItem());
     }
-
 }

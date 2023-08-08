@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class Menus {
-    private List<String> columns;
+    final private List<String> columns;
     private List<Vector<Object>> tuples;
 
     public Menus() {
@@ -19,9 +19,10 @@ public class Menus {
 
         for (int i = 0; i < 2; i++) {
             Vector<Object> tuple = new Vector<>();
-            tuple.add(0, "name " + i);
-            tuple.add(1, "cost " + i);
-            tuple.add(2, "category " + i);
+            Menu menu = new Menu("name " + i, i, "category " + i);
+            tuple.add(0, menu.getName());
+            tuple.add(1, menu.getCost());
+            tuple.add(2, menu.getCategory());
             tuples.add(tuple);
         }
     }

@@ -4,16 +4,28 @@ public class Menu {
     private String name;
     private float cost;
     private String category;
-    
-    public Menu(String name, float cost, String category) {
+
+    public Menu(String name, String category) {
         this.name = name;
         this.category = category;
-        this.cost = cost;
+        cost = 0.0f;
     }
 
-    public String getName(){
+    public Menu(String name, float cost, String category) {
+        this.name = name;
+        this.cost = cost;
+        this.category = category;
+    }
+
+    public String getName() {
         return name;
     }
-    public float getCost() { return cost;}
-    public String getCategory() {return category;}
+
+    public float getCost() {
+        return cost;
+    }
+
+    public String getCategory() {
+        return category;
+    }
 }

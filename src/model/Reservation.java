@@ -1,28 +1,34 @@
 package model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-
 public class Reservation {
-    int rId;
-    int cId;
-    int locId;
-    int wId;
-    LocalDate date;
-    LocalTime time;
-    int NumOfPeople;
-    String reservationName;
+    private int rId;
+    private int cId;
+    private int locId;
+    private int wId;
+    private String date;
+    private String time;
+    private int numOfPeople;
+    private String reservationName;
 
-    public Reservation(int rId, int cId, int locId, int wId, LocalDate date, LocalTime time, 
-                       int NumOfPeople, String reservationName) {
+    public Reservation(int rId, int cId, int locId, int wId) {
+        this.rId = rId;
+        this.cId = cId;
+        this.locId = locId;
+        this.wId = wId;
+        this.date = "";
+        this.time = "";
+        this.numOfPeople = 0;
+        this.reservationName = "";
+    }
+
+    public Reservation(int rId, int cId, int locId, int wId, String date, String time, int numOfPeople, String reservationName) {
         this.rId = rId;
         this.cId = cId;
         this.locId = locId;
         this.wId = wId;
         this.date = date;
         this.time = time;
-        this.NumOfPeople = NumOfPeople;
+        this.numOfPeople = numOfPeople;
         this.reservationName = reservationName;
     }
 
@@ -42,16 +48,16 @@ public class Reservation {
         return wId;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
 
     public int getNumOfPeople() {
-        return NumOfPeople;
+        return numOfPeople;
     }
 
     public String getReservationName() {

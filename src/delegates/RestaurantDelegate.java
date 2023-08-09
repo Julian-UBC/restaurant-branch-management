@@ -2,6 +2,9 @@ package delegates;
 
 import model.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 /**
  * This interface uses the delegation design pattern where instead of having
  * the CreateAndShowGUI class try to do everything, it will only
@@ -24,6 +27,9 @@ public interface RestaurantDelegate {
     void deleteMenu(String tblName);
     void deleteReservation(int tblRId);
     void deleteBranch(int tblLocId);
+    void updateMenu(String ogName, String name, float cost, String category);
+    void updateReservation(int ogrID, int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople, String reservationName);
+    void updateBranch(int oglocID, int locID, String streetAddress, String city, String province);
 
     Menus showMenusFromAllBranches();
 

@@ -20,6 +20,10 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
         loginWindow = new LoginWindow();
         loginWindow.showFrame(this);
     }
+    
+    public static void main(String[] args) {
+        new Restaurant();
+    }
 
     /**
      * LoginWindowDelegate Implementation

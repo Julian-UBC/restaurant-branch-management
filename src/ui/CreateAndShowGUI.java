@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -65,6 +66,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     // create a table on the left side
     private JPanel createTablePanel() {
         table = new JTable();
+        table.setDefaultEditor(Object.class, null);
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(800,600));
         panel.setLayout(new BorderLayout());
@@ -1033,9 +1035,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 filterConditions.add("rDate = '" + enterDate.getText() + "'");
             }
 
-//            if (!Objects.equals(enterTime.getText(), "")) {
-//                filterConditions.add("rTime = '" + Time.valueOf(enterTime.getText()) + "'");
-//            }
+            if (!Objects.equals(enterTime.getText(), "")) {
+                filterConditions.add("rTime = '" + Time.valueOf(enterTime.getText()) + "'");
+            }
 
             if (!Objects.equals(enterNumOfPeople.getText(), "")) {
                 filterConditions.add("numOfPeople = " + enterNumOfPeople.getText());

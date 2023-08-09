@@ -629,7 +629,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JCheckBox locIDBox = new JCheckBox("location id");
         JCheckBox widBox = new JCheckBox("employee id");
         JCheckBox dateBox = new JCheckBox("date");
-        JCheckBox timeBox = new JCheckBox("date");
+        JCheckBox timeBox = new JCheckBox("time");
         JCheckBox numOfPeopleBox = new JCheckBox("number of people");
         JCheckBox reservationNameBox = new JCheckBox("name of reservation");
 

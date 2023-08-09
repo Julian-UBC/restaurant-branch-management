@@ -316,6 +316,28 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
     }
+    
+    public MenuSorted showGroupBy() {
+        MenuSorted MenuSorted = new MenuSorted();
+        try {
+            String query = "SELECT AVG(cost), category " +
+                    "FROM Menu m " +
+                    "GROUP BY category"; 
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Menu menu = new Menu(rs.getString("name"));
+                MenuSorted.addSortedMenu(menu);
+            }
+
+            rs.close();
+            ps.close();
+        } catch(SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return MenuSorted;
+    }
 
     public Menus showDivision() {
         Menus menus = new Menus();
@@ -345,7 +367,7 @@ public class DatabaseConnectionHandler {
 
         return menus;
     }
-
+    /*
     public MenusAvgCost showAvgCostMenu() {
         MenusAvgCost menus = new MenusAvgCost();
 
@@ -370,4 +392,5 @@ public class DatabaseConnectionHandler {
 
         return menus;
     }
+    */
 }

@@ -107,14 +107,21 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     }
 
     @Override
+    public MenuSorted showGroupBy() {
+        return dbHandler.showGroupBy();
+    }
+
+    @Override
     public Menus showMenusFromAllBranches() {
         return dbHandler.showDivision();
     }
-
+    /*
     @Override
     public MenusAvgCost showAvgCostMenuHaving() {
         return dbHandler.showAvgCostMenu();
     }
+    
+     */
 
     /**
      * Main method called at launch time

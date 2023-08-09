@@ -124,6 +124,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         g.gridy++;
         panel.add(projectionButton, g);
         g.gridy++;
+        panel.add(groupByButton, g);
+        g.gridy++;
         panel.add(joinButton, g);
         g.gridy++;
         panel.add(moreButton, g);
@@ -336,6 +338,11 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             String getTime = enterTime.getText();
             int getNum = Integer.parseInt(enterNumOfPeople.getText());
             String getName = enterReservationName.getText();
+            
+            // turn string getDate to LocalDate
+            
+            // turn string getTime to LocalTime
+            
             Reservation newReservation = new Reservation(getRId, getCId, getLocId, getWId, 
                     getDate, getTime, getNum, getName);
             delegate.insertReservation(newReservation);

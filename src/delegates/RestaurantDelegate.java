@@ -31,7 +31,9 @@ public interface RestaurantDelegate {
     void updateReservation(int ogrID, int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople, String reservationName);
     void updateBranch(int oglocID, int locID, String streetAddress, String city, String province);
 
+    MenuSorted showGroupBy();
+
     Menus showMenusFromAllBranches();
 
-    MenusAvgCost showAvgCostMenuHaving();
+    //MenusAvgCost showAvgCostMenuHaving();
 }

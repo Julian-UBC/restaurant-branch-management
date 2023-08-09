@@ -92,7 +92,6 @@ CREATE TABLE MembershipSubscribes (
     FOREIGN KEY (cID)
         REFERENCES Customers (cID)
         ON DELETE CASCADE
---        ON UPDATE CASCADE
 );
 
 -- WaitersTableSection
@@ -113,11 +112,9 @@ CREATE TABLE WaitersInfo (
     FOREIGN KEY (tableSection)
         REFERENCES WaitersTableSection (tableSection)
         ON DELETE SET NULL,
---        ON UPDATE CASCADE,
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE SET NULL
---        ON UPDATE CASCADE
 );
 
 -- ChefSpecialty
@@ -140,11 +137,9 @@ CREATE TABLE ChefInfo(
     FOREIGN KEY (specialty)
         REFERENCES ChefSpecialty (specialty),
 --        ON DELETE SET DEFAULT,
---        ON UPDATE CASCADE,
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE SET NULL
---        ON UPDATE CASCADE
 );
 
 -- Hosts
@@ -174,7 +169,6 @@ CREATE TABLE Managers(
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE SET NULL
---        ON UPDATE CASCADE
 );
 
 -- EquipmentsName
@@ -192,7 +186,6 @@ CREATE TABLE EquipmentsMain(
     FOREIGN KEY(name)
         REFERENCES EquipmentsName (name)
         ON DELETE CASCADE
---        ON UPDATE CASCADE
 );
 
 -- EquipmentContained
@@ -203,11 +196,9 @@ CREATE TABLE EquipmentContained(
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE CASCADE,
---        ON UPDATE CASCADE,
     FOREIGN KEY (equipID)
         REFERENCES EquipmentsMain(id)
         ON DELETE CASCADE
---        ON UPDATE CASCADE
 );
 
 -- Reservations
@@ -224,16 +215,88 @@ CREATE TABLE Reservations(
     FOREIGN KEY (cID)
         REFERENCES Customers (cID)
         ON DELETE CASCADE,
---        ON UPDATE CASCADE,
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE CASCADE,
---        ON UPDATE CASCADE,
     FOREIGN KEY (wID)
         REFERENCES Hosts (wID)
         ON DELETE CASCADE
---        ON UPDATE CASCADE
 );
+
+--
+-- ON UPDATE CASCADE --> Trigger
+--
+
+CREATE TRIGGER MenuUpdate
+AFTER UPDATE OF name ON Menu
+FOR EACH ROW
+BEGIN
+	UPDATE IngredientsRequired SET menuName = :new.name WHERE menuName = :old.name;
+	UPDATE MenuServed SET menuName = :new.name WHERE menuName = :old.name;
+END;
+
+CREATE TRIGGER IngredientsUpdate
+AFTER UPDATE OF name ON Ingredients
+FOR EACH ROW
+BEGIN
+	UPDATE IngredientsRequired SET ingredientsName = :new.name WHERE ingredientsName = :old.name;
+END;
+
+CREATE TRIGGER BranchUpdate
+AFTER UPDATE OF locID ON Branches
+FOR EACH ROW
+BEGIN
+	UPDATE MenuServed SET locID = :new.locID WHERE locID = :old.locID;
+	UPDATE WaitersInfo SET locID = :new.locID WHERE locID = :old.locID;
+	UPDATE ChefInfo SET locID = :new.locID WHERE locID = :old.locID;
+	UPDATE Hosts SET locID = :new.locID WHERE locID = :old.locID;
+	UPDATE Managers SET locID = :new.locID WHERE locID = :old.locID;
+	UPDATE EquipmentContained SET locID = :new.locID WHERE locID = :old.locID;
+	UPDATE Reservations SET locID = :new.locID WHERE locID = :old.locID;
+END;
+
+CREATE TRIGGER CustomerUpdate
+AFTER UPDATE OF cID ON Customers
+FOR EACH ROW
+BEGIN
+	UPDATE MembershipSubscribes SET cID = :new.cID WHERE cID = :old.cID;
+	UPDATE Reservations SET cID = :new.cID WHERE cID = :old.cID;
+END;
+
+CREATE TRIGGER TableUpdate
+AFTER UPDATE OF tableSection ON WaitersTableSection
+FOR EACH ROW
+BEGIN
+	UPDATE WaitersInfo SET tableSection = :new.tableSection WHERE tableSection = :old.tableSection;
+END;
+
+CREATE TRIGGER SpecialityUpdate
+AFTER UPDATE OF specialty ON ChefSpecialty
+FOR EACH ROW
+BEGIN
+	UPDATE ChefInfo SET specialty = :new.specialty WHERE specialty = :old.specialty;
+END;
+
+CREATE TRIGGER EquipmentNameUpdate
+AFTER UPDATE OF name ON EquipmentsName
+FOR EACH ROW
+BEGIN
+	UPDATE EquipmentsMain SET name = :new.name WHERE name = :old.name;
+END;
+
+CREATE TRIGGER EquipmentMainUpdate
+AFTER UPDATE OF id ON EquipmentsMain
+FOR EACH ROW
+BEGIN
+	UPDATE EquipmentContained SET equipID = :new.id WHERE equipID = :old.id;
+END;
+
+CREATE TRIGGER HostUpdate
+AFTER UPDATE OF wID ON Hosts
+FOR EACH ROW
+BEGIN
+	UPDATE Reservations SET wID = :new.wID WHERE wID = :old.wID;
+END;
 
 --
 -- Populate Database Table

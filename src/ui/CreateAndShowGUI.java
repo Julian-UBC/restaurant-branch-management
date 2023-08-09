@@ -36,6 +36,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton filterButton;
     private JButton projectionButton;
     private JButton groupByButton;
+    private JButton nestedButton;
     private JButton joinButton;
     private JButton moreButton;
 
@@ -106,6 +107,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         projectionButton.addActionListener(this);
         groupByButton = new JButton("Group By");
         groupByButton.addActionListener(this);
+        nestedButton = new JButton("Nested");
+        nestedButton.addActionListener(this);
         joinButton = new JButton("Join");
         joinButton.addActionListener(this);
         moreButton = new JButton("More");
@@ -124,6 +127,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(projectionButton, g);
         g.gridy++;
         panel.add(groupByButton, g);
+        g.gridy++;
+        panel.add(nestedButton, g);
         g.gridy++;
         panel.add(joinButton, g);
         g.gridy++;
@@ -549,13 +554,15 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JPanel projectBranch(JPanel panel) {
         //create the checkboxes for each attribute
         JLabel label = new JLabel("Branch: ");
-        JCheckBox locIdBox = new JCheckBox("location Id");
-        JCheckBox streetAddressBox = new JCheckBox("street Address");
-        JCheckBox cityBox = new JCheckBox("city");
-        JCheckBox provinceBox = new JCheckBox("province");
-
+        CheckboxGroup branchGroup = new CheckboxGroup();
+        Checkbox locIdBox = new Checkbox("location id", false, branchGroup);
+        Checkbox streetAddressBox = new Checkbox("street address", false, branchGroup);
+        Checkbox cityBox = new Checkbox("C", false, branchGroup);
+        Checkbox provinceBox = new Checkbox("province", false, branchGroup);
+        
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
+            if (locIdBox.getState()) 
             // if locIdBox.getState() { // add column locIdBox to table
             // if streetAddressBox.getState() { // add column locIdBox to table
             // if cityBox.getState() { // add column locIdBox to table
@@ -852,6 +859,19 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         table.setModel(model);
     }
     
+    private void nestedGroupButton() {
+        // clear table
+        model = new DefaultTableModel();
+        MenuSorted groupMenu = delegate.showNestedAggregation();
+        model.addColumn("Category");
+        model.addColumn("Cost");
+        for (Vector<Object> tuple : groupMenu.getTuples()) {
+            model.addRow(tuple);
+        }
+
+        table.setModel(model);
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectButton) {
@@ -874,6 +894,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
         if(e.getSource() == groupByButton) {
             groupByButton();
+        }
+        if(e.getSource() == nestedButton) {
+            nestedGroupButton();
         }
         if(e.getSource() == moreButton) {
             new MoreWindow(delegate);

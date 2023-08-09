@@ -8,7 +8,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseConnectionHandler {
@@ -319,6 +318,62 @@ public class DatabaseConnectionHandler {
         }
     }
     
+    public void projectBranch(List<String> attributes) {
+        try {
+            StringBuilder query = new StringBuilder("SELECT 1=1");
+            for (String attr: attributes) {
+                if (attr.equals("locId")) { query.append(" AND locID");}
+                if (attr.equals("streetAddress")) { query.append(" AND streetAddress");}
+                if (attr.equals("city")) { query.append(" AND city");}
+                if (attr.equals("province")) { query.append(" AND province");}
+            }
+            query.append(", FROM BRANCHES");
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query.toString()), query.toString(), false);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+
+            }
+
+            rs.close();
+            ps.close();
+        } catch(SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
+
+    public void projectMenu() {
+
+    }
+
+    public void projectReservation() {
+
+    }
+    public MenuSorted showNestedAggregation() {
+        MenuSorted MenuSorted = new MenuSorted();
+        try {
+            String query = "SELECT category, AVG(cost) " +
+                    "FROM Menu m " +
+                    "GROUP BY category " +
+                    "HAVING AVG(cost) <=" + "ALL(" +
+                        "SELECT AVG(m2.cost)" +
+                        "FROM Menu m2 " +
+                        "GROUP BY category)";
+            System.out.println(query);
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                AvgCostHaving menu = new AvgCostHaving(rs.getString("CATEGORY"), rs.getFloat("AVG(COST)"));
+                MenuSorted.addSortedMenu(menu);
+            }
+
+            rs.close();
+            ps.close();
+        } catch(SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return MenuSorted;
+    }
     public MenuSorted showGroupBy() {
         MenuSorted MenuSorted = new MenuSorted();
         try {

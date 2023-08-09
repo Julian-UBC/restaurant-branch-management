@@ -112,6 +112,11 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     }
 
     @Override
+    public MenuSorted showNestedAggregation() {
+        return dbHandler.showNestedAggregation();
+    }
+
+    @Override
     public Menus showMenusFromAllBranches() {
         return dbHandler.showDivision();
     }

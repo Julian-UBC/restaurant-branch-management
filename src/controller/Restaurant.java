@@ -7,6 +7,9 @@ import model.*;
 import ui.CreateAndShowGUI;
 import ui.LoginWindow;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     private DatabaseConnectionHandler dbHandler;
     private LoginWindow loginWindow;
@@ -86,6 +89,21 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     @Override
     public void deleteBranch(int tblLocId) {
         dbHandler.deleteBranch(tblLocId);
+    }
+
+    @Override
+    public void updateMenu(String ogName, String name, float cost, String category) {
+        dbHandler.updateMenu(ogName,name,cost,category);
+    }
+
+    @Override
+    public void updateReservation(int ogrID, int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople, String reservationName) {
+        dbHandler.updateReservation(ogrID, rID, cID, locID, wID, rDate, rTime, numOfPeople, reservationName);
+    }
+
+    @Override
+    public void updateBranch(int oglocID, int locID, String streetAddress, String city, String province) {
+        dbHandler.updateBranch(oglocID, locID, streetAddress, city, province);
     }
 
     @Override

@@ -6,6 +6,8 @@ import util.PrintablePreparedStatement;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class DatabaseConnectionHandler {
     private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
@@ -246,6 +248,69 @@ public class DatabaseConnectionHandler {
             connection.commit();
 
             ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+    public void updateMenu(String ogName, String name, float cost, String category) {
+        try{
+            String query = "UPDATE Menu SET name = ?, cost = ?, category = ? WHERE name = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1,name);
+            ps.setFloat(2, cost);
+            ps.setString(3, category);
+            ps.setString(4, ogName);
+
+            ps.executeUpdate();
+            connection.commit();
+
+            ps.close();
+
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+    public void updateReservation(int ogrID, int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople, String reservationName) {
+        try {
+            String query = "UPDATE Reservations SET rID = ?, cID = ?, locID = ?, wID = ?, rDate =?, rTime = ?, numOfPeople =?, reservationName =? WHERE rID = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, rID);
+            ps.setInt(2, cID);
+            ps.setInt(3, locID);
+            ps.setInt(4, wID);
+            ps.setDate(5, Date.valueOf(rDate));
+            ps.setTime(6, Time.valueOf(rTime));
+            ps.setInt(7, numOfPeople);
+            ps.setString(8, reservationName);
+            ps.setInt(9, ogrID);
+
+            ps.executeUpdate();
+            connection.commit();
+
+            ps.close();
+
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    public void updateBranch(int oglocID, int locID, String streetAddress, String city, String province) {
+        try{
+            String query = "UPDATE Branches SET locID = ?, streetAddress = ?, city = ?, province =? WHERE locID = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1,locID);
+            ps.setString(2, streetAddress);
+            ps.setString(3, city);
+            ps.setString(4, province);
+            ps.setInt(5, oglocID);
+
+            ps.executeUpdate();
+            connection.commit();
+            ps.close();
+
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();

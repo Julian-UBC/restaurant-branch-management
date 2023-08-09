@@ -382,7 +382,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         switch (tableShown) {
             case "Menu" -> attributes = new String[]{"Name", "Cost", "Category"};
             case "Reservations" ->
-                    attributes = new String[]{"Reservation ID", "Customer ID", "BranchID", "Host", "Date", "Time", "Number of People", "Reservation Name"};
+                    attributes = new String[]{"Reservation ID", "Customer ID", "Branch ID", "Host", "Date", "Time", "Number of People", "Reservation Name"};
             case "Branch" -> attributes = new String[]{"Branch ID", "Address", "City", "Province"};
             default -> {
             }
@@ -1034,11 +1034,11 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             }
 
 //            if (!Objects.equals(enterTime.getText(), "")) {
-//                filterConditions.add("rTime = '" + enterTime.getText() + "'");
+//                filterConditions.add("rTime = '" + Time.valueOf(enterTime.getText()) + "'");
 //            }
 
             if (!Objects.equals(enterNumOfPeople.getText(), "")) {
-                filterConditions.add("numOfPeopl = " + enterNumOfPeople.getText());
+                filterConditions.add("numOfPeople = " + enterNumOfPeople.getText());
             }
 
             if (!Objects.equals(enterReservationName.getText(), "")) {

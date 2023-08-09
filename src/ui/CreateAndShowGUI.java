@@ -695,7 +695,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             groupByButton();
         }
         if(e.getSource() == moreButton) {
-            //tba
+            new MoreWindow(delegate);
         }
     }
 

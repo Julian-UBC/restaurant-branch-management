@@ -1,11 +1,13 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Reservation {
     private int rId;
     private int cId;
     private int locId;
     private int wId;
-    private String date;
+    private LocalDate date;
     private String time;
     private int numOfPeople;
     private String reservationName;
@@ -15,13 +17,13 @@ public class Reservation {
         this.cId = cId;
         this.locId = locId;
         this.wId = wId;
-        this.date = "";
+        this.date = LocalDate.now();
         this.time = "";
         this.numOfPeople = 0;
         this.reservationName = "";
     }
 
-    public Reservation(int rId, int cId, int locId, int wId, String date, String time, int numOfPeople, String reservationName) {
+    public Reservation(int rId, int cId, int locId, int wId, LocalDate date, String time, int numOfPeople, String reservationName) {
         this.rId = rId;
         this.cId = cId;
         this.locId = locId;
@@ -48,7 +50,7 @@ public class Reservation {
         return wId;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

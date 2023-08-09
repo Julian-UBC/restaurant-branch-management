@@ -17,6 +17,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CreateAndShowGUI implements ActionListener, ItemListener {
     private static final int WIDTH=1200;
@@ -31,7 +34,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton insertButton;
     private JButton deleteButton;
     private JButton updateButton;
-    private JButton showButton;
     private JButton filterButton;
     private JButton projectionButton;
     private JButton groupByButton;
@@ -99,8 +101,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         updateButton.addActionListener(this);
         deleteButton = new JButton("Delete");
         deleteButton.addActionListener(this);
-        showButton = new JButton("Show");
-        showButton.addActionListener(this);
         filterButton = new JButton("Filter");
         filterButton.addActionListener(this);
         projectionButton = new JButton("Projection");
@@ -119,8 +119,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(updateButton, g);
         g.gridy++;
         panel.add(deleteButton,g);
-        g.gridy++;
-        panel.add(showButton,g);
         g.gridy++;
         panel.add(filterButton,g);
         g.gridy++;

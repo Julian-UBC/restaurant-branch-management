@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseConnectionHandler {
     private static final String ORACLE_URL = "jdbc:oracle:thin:@localhost:1522:stu";
@@ -366,7 +368,7 @@ public class DatabaseConnectionHandler {
 
         return menus;
     }
-    /*
+
     public MenusAvgCost showAvgCostMenu() {
         MenusAvgCost menus = new MenusAvgCost();
 
@@ -379,7 +381,7 @@ public class DatabaseConnectionHandler {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                AvgCostHaving menu = new AvgCostHaving(rs.getString("category"), rs.getInt("avgCost"));
+                AvgCostHaving menu = new AvgCostHaving(rs.getString("category"), rs.getFloat("avgCost"));
                 menus.addAvgCostHaving(menu);
             }
 
@@ -391,5 +393,59 @@ public class DatabaseConnectionHandler {
 
         return menus;
     }
-    */
+
+    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected) {
+        List<List<String>> filteredMenus = new ArrayList<>();
+        String selectColumns = columnsSelected.get(0);
+
+        for (int i = 1; i < columnsSelected.size(); i++) {
+            selectColumns = selectColumns + ", " + columnsSelected.get(i);
+        }
+
+        try {
+            String query = "SELECT " + selectColumns + " " +
+                    "FROM " + tableSelected + " s";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                List<String> filteredMenu = new ArrayList<>();
+                for (int i = 0; i < columnsDomain.size(); i++) {
+                    String domain = columnsDomain.get(i);
+                    String data;
+
+                    switch (domain) {
+                        case "float" -> {
+                            data = String.valueOf(rs.getFloat(columnsSelected.get(i)));
+                        }
+                        case "int" -> {
+                            data = String.valueOf(rs.getInt(columnsSelected.get(i)));
+                        }
+                        case "date" -> {
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            data = dateFormat.format(rs.getDate(columnsSelected.get(i)));
+                        }
+                        case "time" -> {
+                            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                            data = timeFormat.format(rs.getDate(columnsSelected.get(i)));
+                        }
+                        default -> {
+                            data = rs.getString(columnsSelected.get(i));
+                        }
+                    }
+
+                    filteredMenu.add(data);
+                }
+
+                filteredMenus.add(filteredMenu);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return filteredMenus;
+    }
 }

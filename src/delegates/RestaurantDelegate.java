@@ -4,6 +4,7 @@ import model.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * This interface uses the delegation design pattern where instead of having
@@ -35,5 +36,9 @@ public interface RestaurantDelegate {
 
     Menus showMenusFromAllBranches();
 
-    //MenusAvgCost showAvgCostMenuHaving();
+    MenusAvgCost showAvgCostMenuHaving();
+
+    List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected);
+
+//    void filterMenus(List<String> columnsSelected);
 }

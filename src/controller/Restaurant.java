@@ -9,6 +9,7 @@ import ui.LoginWindow;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     private DatabaseConnectionHandler dbHandler;
@@ -18,7 +19,6 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
         dbHandler = new DatabaseConnectionHandler();
         loginWindow = new LoginWindow();
         loginWindow.showFrame(this);
-//        new CreateAndShowGUI(this);
     }
 
     /**
@@ -115,21 +115,15 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     public Menus showMenusFromAllBranches() {
         return dbHandler.showDivision();
     }
-    /*
+
     @Override
     public MenusAvgCost showAvgCostMenuHaving() {
         return dbHandler.showAvgCostMenu();
     }
-    
-     */
 
-    /**
-     * Main method called at launch time
-     */
-    public static void main(String[] args) {
-        new Restaurant();
+    @Override
+    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected) {
+        return dbHandler.filter(columnsSelected, columnsDomain, tableSelected);
     }
-
-    
 }
 

@@ -15,6 +15,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -631,19 +633,210 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
 
     private void filter(JPanel popUp) {
-        JPanel dropDownPane = new JPanel();
-        String[] attribute = {"attribute1", "attribute2"};
-        JComboBox dropDown = new JComboBox(attribute);
-        dropDown.setEditable(false);
-        dropDown.addActionListener(this);
-        dropDownPane.add(dropDown);
-        popUp.add(dropDownPane);
-        Object[] options = { "Show", "Cancel" };
-        int n = JOptionPane.showOptionDialog(null, popUp, "Join", JOptionPane.YES_NO_OPTION,
-                JOptionPane.PLAIN_MESSAGE, null, options, null);
+        // creates panel containing insert to branch, menu and reservation
+        JPanel filterPanel = new JPanel(new CardLayout());
+        JPanel filterBranches = filterBranches(new JPanel());
+        filterPanel.add(filterBranches, "Filter Branch");
+        JPanel filterMenu = filterMenus(new JPanel());
+        filterPanel.add(filterMenu, "Filter Menu");
+        JPanel filterReservations = filterReservations(new JPanel());
+        filterPanel.add(filterReservations, "Filter Reservation");
 
-        if (n==1) {//tba
+        if (Objects.equals(tableShown, "Branch")) {
+            CardLayout cl = (CardLayout)(filterPanel.getLayout());
+            cl.show(filterPanel, "Filter Branch");
+
+        } else if (Objects.equals(tableShown, "Menu")) {
+            CardLayout cl = (CardLayout)(filterPanel.getLayout());
+            cl.show(filterPanel, "Filter Menu");
+        } else {
+            CardLayout cl = (CardLayout)(filterPanel.getLayout());
+            cl.show(filterPanel, "Filter Reservation");
         }
+        popUp.add(filterPanel, BorderLayout.CENTER);
+        JOptionPane.showOptionDialog(null, popUp,"Filter", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
+    }
+
+    private JPanel filterMenus(JPanel panel) {
+        //create the checkboxes for each attribute
+        JLabel label = new JLabel("Menu: ");
+        JCheckBox nameBox = new JCheckBox("Name");
+        JCheckBox categoryBox = new JCheckBox("Category");
+        JCheckBox costBox = new JCheckBox("Cost");
+
+        JButton filterButton = new JButton("Filter");
+        filterButton.addActionListener(e -> {
+            List<String> columnsSelected = new ArrayList<>();
+            List<String> columnsDomain = new ArrayList<>();
+            if (nameBox.isSelected()) {
+                columnsSelected.add("Name");
+                columnsDomain.add("String");
+            }
+            if (costBox.isSelected()) {
+                columnsSelected.add("Cost");
+                columnsDomain.add("float");
+            }
+            if (categoryBox.isSelected()) {
+                columnsSelected.add("Category");
+                columnsDomain.add("String");
+            }
+
+            handleFilter(columnsSelected, columnsDomain, "Menu");
+        });
+
+        //add to popUp
+        panel.add(label);
+        panel.add(nameBox);
+        panel.add(categoryBox);
+        panel.add(costBox);
+        panel.add(filterButton);
+
+        return panel;
+    }
+
+    private JPanel filterBranches(JPanel panel) {
+        //create the checkboxes for each attribute
+        JLabel label = new JLabel("Branch: ");
+        JCheckBox locIDBox = new JCheckBox("Location ID");
+        JCheckBox streetAddressBox = new JCheckBox("Street Address");
+        JCheckBox cityBox = new JCheckBox("City");
+        JCheckBox provinceBox = new JCheckBox("Province");
+
+        JButton filterButton = new JButton("Filter");
+        filterButton.addActionListener(e -> {
+            List<String> columnsSelected = new ArrayList<>();
+            List<String> columnsDomain = new ArrayList<>();
+            if (locIDBox.isSelected()) {
+                columnsSelected.add("LocID");
+                columnsDomain.add("int");
+            }
+            if (streetAddressBox.isSelected()) {
+                columnsSelected.add("StreetAddress");
+                columnsDomain.add("String");
+            }
+            if (cityBox.isSelected()) {
+                columnsSelected.add("City");
+                columnsDomain.add("String");
+            }
+            if (provinceBox.isSelected()) {
+                columnsSelected.add("Province");
+                columnsDomain.add("String");
+            }
+
+            handleFilter(columnsSelected, columnsDomain, "Branches");
+        });
+
+        //add to popUp
+        panel.add(label);
+        panel.add(locIDBox);
+        panel.add(streetAddressBox);
+        panel.add(cityBox);
+        panel.add(provinceBox);
+        panel.add(filterButton);
+
+        return panel;
+    }
+
+    private JPanel filterReservations(JPanel panel) {
+        //create the checkboxes for each attribute
+        JLabel label = new JLabel("Reservation: ");
+        JCheckBox rIdBox = new JCheckBox("Reservation ID");
+        JCheckBox cIDBox = new JCheckBox("Customer ID");
+        JCheckBox locIDBox = new JCheckBox("Location ID");
+        JCheckBox widBox = new JCheckBox("Employee ID");
+        JCheckBox dateBox = new JCheckBox("Date");
+        JCheckBox timeBox = new JCheckBox("Time");
+        JCheckBox numOfPeopleBox = new JCheckBox("Number of People");
+        JCheckBox resNameBox = new JCheckBox("Reservation Name");
+
+        JButton filterButton = new JButton("Filter");
+        filterButton.addActionListener(e -> {
+            List<String> columnsSelected = new ArrayList<>();
+            List<String> columnsDomain = new ArrayList<>();
+            if (rIdBox.isSelected()) {
+                columnsSelected.add("rID");
+                columnsDomain.add("int");
+            }
+            if (cIDBox.isSelected()) {
+                columnsSelected.add("cID");
+                columnsDomain.add("int");
+            }
+            if (locIDBox.isSelected()) {
+                columnsSelected.add("LocID");
+                columnsDomain.add("int");
+            }
+            if (widBox.isSelected()) {
+                columnsSelected.add("wID");
+                columnsDomain.add("int");
+            }
+            if (dateBox.isSelected()) {
+                columnsSelected.add("rDate");
+                columnsDomain.add("date");
+            }
+            if (timeBox.isSelected()) {
+                columnsSelected.add("rTime");
+                columnsDomain.add("time");
+            }
+            if (numOfPeopleBox.isSelected()) {
+                columnsSelected.add("NumOfPeople");
+                columnsDomain.add("int");
+            }
+            if (resNameBox.isSelected()) {
+                columnsSelected.add("ReservationName");
+                columnsDomain.add("String");
+            }
+
+            handleFilter(columnsSelected, columnsDomain, "Reservations");
+        });
+
+        //add to popUp
+        panel.add(label);
+        panel.add(rIdBox);
+        panel.add(cIDBox);
+        panel.add(locIDBox);
+        panel.add(widBox);
+        panel.add(dateBox);
+        panel.add(timeBox);
+        panel.add(numOfPeopleBox);
+        panel.add(resNameBox);
+        panel.add(filterButton);
+
+        return panel;
+    }
+
+    private void handleFilter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected) {
+        List<List<String>> tuples = delegate.filter(columnsSelected, columnsDomain, tableSelected);
+
+        // clear table
+        model = new DefaultTableModel();
+
+        for (String column: columnsSelected) {
+            model.addColumn(column);
+        }
+
+        for (List<String> tuple : tuples) {
+            Vector<Object> newTuple = new Vector<>();
+
+            for (int i = 0; i < columnsDomain.size(); i++) {
+                switch (columnsDomain.get(i)) {
+                    case "float" -> {
+                        newTuple.add(Float.valueOf(tuple.get(i)));
+                    }
+                    case "int" -> {
+                        newTuple.add(Integer.valueOf(tuple.get(i)));
+                    }
+                    default -> {
+                        newTuple.add(tuple.get(i));
+                    }
+                }
+            }
+
+            model.addRow(newTuple);
+        }
+
+        table.setModel(model);
+
     }
 
     private void groupByButton() {

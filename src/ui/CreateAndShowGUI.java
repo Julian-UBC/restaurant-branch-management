@@ -35,8 +35,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     private JButton updateButton;
     private JButton filterButton;
     private JButton projectionButton;
-    private JButton groupByButton;
-    private JButton nestedButton;
     private JButton joinButton;
     private JButton moreButton;
 
@@ -105,10 +103,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         filterButton.addActionListener(this);
         projectionButton = new JButton("Projection");
         projectionButton.addActionListener(this);
-        groupByButton = new JButton("Group By");
-        groupByButton.addActionListener(this);
-        nestedButton = new JButton("Nested");
-        nestedButton.addActionListener(this);
         joinButton = new JButton("Join");
         joinButton.addActionListener(this);
         moreButton = new JButton("More");
@@ -125,10 +119,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(filterButton,g);
         g.gridy++;
         panel.add(projectionButton, g);
-        g.gridy++;
-        panel.add(groupByButton, g);
-        g.gridy++;
-        panel.add(nestedButton, g);
         g.gridy++;
         panel.add(joinButton, g);
         g.gridy++;
@@ -1102,32 +1092,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         table.setModel(model);
 
     }
-
-    private void groupByButton() {
-        //clear table
-        model = new DefaultTableModel();
-        MenuSorted groupMenu = delegate.showGroupBy();
-        model.addColumn("Category");
-        model.addColumn("Cost");
-        for (Vector<Object> tuple : groupMenu.getTuples()) {
-            model.addRow(tuple);
-        }
-
-        table.setModel(model);
-    }
     
-    private void nestedGroupButton() {
-        // clear table
-        model = new DefaultTableModel();
-        MenuSorted groupMenu = delegate.showNestedAggregation();
-        model.addColumn("Category");
-        model.addColumn("Cost");
-        for (Vector<Object> tuple : groupMenu.getTuples()) {
-            model.addRow(tuple);
-        }
-
-        table.setModel(model);
-    }
     private void join(JPanel popUp) {
 
         JLabel info = new JLabel("View all reservations during given time for every branch.");
@@ -1157,7 +1122,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             table.setModel(model);
         }
     }
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectButton) {
@@ -1178,14 +1142,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         if (e.getSource() == projectionButton) {
             projectionButton(new JPanel());
         }
-        if(e.getSource() == groupByButton) {
-            groupByButton();
-        }
         if (e.getSource() == joinButton) {
             join(new JPanel());
-        }
-        if(e.getSource() == nestedButton) {
-            nestedGroupButton();
         }
         if(e.getSource() == moreButton) {
             new MoreWindow(delegate);

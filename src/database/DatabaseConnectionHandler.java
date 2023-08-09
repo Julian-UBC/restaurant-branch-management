@@ -343,6 +343,7 @@ public class DatabaseConnectionHandler {
         }
         return JoinedBranchReservation;
     }
+   
     public List<List<String>> projection(List<String> attributes, List<String> columnsDomain, String tableSelected) {
         List<List<String>> tuples = new ArrayList<>();
         String selectColumns = attributes.get(0);
@@ -397,6 +398,7 @@ public class DatabaseConnectionHandler {
 
         return tuples;
     }
+    
     public MenuSorted showNestedAggregation() {
         MenuSorted MenuSorted = new MenuSorted();
         try {
@@ -422,6 +424,7 @@ public class DatabaseConnectionHandler {
         }
         return MenuSorted;
     }
+    
     public MenuSorted showGroupBy() {
         MenuSorted MenuSorted = new MenuSorted();
         try {

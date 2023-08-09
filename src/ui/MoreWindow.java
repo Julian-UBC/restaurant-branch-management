@@ -12,8 +12,9 @@ public class MoreWindow extends JFrame implements ActionListener {
     private static final int HEIGHT=300;
 
     private RestaurantDelegate delegate;
-
+    private JButton groupByButton;
     private JButton avgCostMenuButton;
+    private JButton nestedGroupButton;
     private JButton divisionButton;
 
     public MoreWindow(RestaurantDelegate delegate) {
@@ -36,12 +37,21 @@ public class MoreWindow extends JFrame implements ActionListener {
         g.fill = GridBagConstraints.HORIZONTAL;
         g.insets = new Insets(5,5,5,5);
 
+        groupByButton = new JButton("Average cost for each menu category");
+        groupByButton.addActionListener(this);
         avgCostMenuButton = new JButton("Average Cost of Each Category which have more than one menu item");
         avgCostMenuButton.addActionListener(this);
+        nestedGroupButton = new JButton("Average cost of each category which is less than or equal to " +
+                "all average cost for each category");
+        nestedGroupButton.addActionListener(this);
         divisionButton = new JButton("Show menus that are served in all branches");
         divisionButton.addActionListener(this);
-
+    
+        panel.add(groupByButton,  g);
+        g.gridy++;
         panel.add(avgCostMenuButton, g);
+        g.gridy++;
+        panel.add(nestedGroupButton, g);
         g.gridy++;
         panel.add(divisionButton, g);
         g.gridy++;
@@ -56,11 +66,21 @@ public class MoreWindow extends JFrame implements ActionListener {
     private void division() {
         new ShowDivision(delegate);
     }
+    
+    private void groupBy() { new showGroupBy(delegate);}
+
+    private void nestedGroupBy() { new nestedGroupBy(delegate);}
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == groupByButton) {
+            groupBy();
+        }
         if (e.getSource() == avgCostMenuButton) {
             showAggWithHaving();
+        }
+        if (e.getSource() == nestedGroupButton) {
+            nestedGroupBy();
         }
         if (e.getSource() == divisionButton) {
             division();

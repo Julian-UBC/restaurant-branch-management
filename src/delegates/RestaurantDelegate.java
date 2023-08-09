@@ -33,6 +33,8 @@ public interface RestaurantDelegate {
 
     MenuSorted showGroupBy();
 
+    MenuSorted showNestedAggregation();
+
     Menus showMenusFromAllBranches();
 
     //MenusAvgCost showAvgCostMenuHaving();

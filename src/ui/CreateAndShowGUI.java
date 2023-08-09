@@ -552,22 +552,33 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
     
     private JPanel projectBranch(JPanel panel) {
+        // clear model
+        model = new DefaultTableModel();
         //create the checkboxes for each attribute
         JLabel label = new JLabel("Branch: ");
-        CheckboxGroup branchGroup = new CheckboxGroup();
-        Checkbox locIdBox = new Checkbox("location id", false, branchGroup);
-        Checkbox streetAddressBox = new Checkbox("street address", false, branchGroup);
-        Checkbox cityBox = new Checkbox("C", false, branchGroup);
-        Checkbox provinceBox = new Checkbox("province", false, branchGroup);
+        JCheckBox locIdBox = new JCheckBox("location id");
+        JCheckBox streetAddressBox = new JCheckBox("street address");
+        JCheckBox cityBox = new JCheckBox("city");
+        JCheckBox provinceBox = new JCheckBox("province");
         
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
-            if (locIdBox.getState()) 
-            // if locIdBox.getState() { // add column locIdBox to table
-            // if streetAddressBox.getState() { // add column locIdBox to table
-            // if cityBox.getState() { // add column locIdBox to table
-            // if provinceBox.getState() { // add column locIdBox to table
-            JOptionPane.showMessageDialog(null,"Added");
+            List<String> columnSelected = new ArrayList<>();
+            List<String> columnsDomain = new ArrayList<>();
+            if (locIdBox.isSelected()) {
+                columnsDomain.add("int");
+                columnSelected.add("LocID");}
+            if (streetAddressBox.isSelected()) {
+                columnsDomain.add("String");
+                columnSelected.add("StreetAddress");}
+            if (cityBox.isSelected()) {
+                columnsDomain.add("String");
+                columnSelected.add("City");}
+            if (provinceBox.isSelected()) {
+                columnsDomain.add("String");
+                columnSelected.add("Province");}
+            projection(columnSelected, columnsDomain, "Branches");
+            
         });
         
         //add to popUp
@@ -577,6 +588,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(cityBox);
         panel.add(provinceBox);
         panel.add(insertButton);
+        
+        table.setModel(model);
         
         return panel;
     }
@@ -590,11 +603,21 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
-            // if locIdBox.getState() { // add column locIdBox to table
-            // if streetAddressBox.getState() { // add column locIdBox to table
-            // if cityBox.getState() { // add column locIdBox to table
-            // if provinceBox.getState() { // add column locIdBox to table
-            JOptionPane.showMessageDialog(null,"Added");
+            List<String> columnsSelected = new ArrayList<>();
+            List<String> columnsDomain = new ArrayList<>();
+            if (nameBox.isSelected()) {
+                columnsSelected.add("Name");
+                columnsDomain.add("String");
+            }
+            if (costBox.isSelected()) {
+                columnsSelected.add("Cost");
+                columnsDomain.add("float");
+            }
+            if (categoryBox.isSelected()) {
+                columnsSelected.add("Category");
+                columnsDomain.add("String");
+            }
+            projection(columnsSelected, columnsDomain, "Menu");
         });
 
         //add to popUp
@@ -612,18 +635,50 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JLabel label = new JLabel("Reservation: ");
         JCheckBox rIdBox = new JCheckBox("reservation id");
         JCheckBox cIDBox = new JCheckBox("customer id");
+        JCheckBox locIDBox = new JCheckBox("location id");
         JCheckBox widBox = new JCheckBox("employee id");
         JCheckBox dateBox = new JCheckBox("date");
         JCheckBox timeBox = new JCheckBox("date");
         JCheckBox numOfPeopleBox = new JCheckBox("number of people");
+        JCheckBox reservationNameBox = new JCheckBox("name of reservation");
 
         JButton insertButton = new JButton("Insert");
         insertButton.addActionListener(e -> {
-            // if locIdBox.getState() { // add column locIdBox to table
-            // if streetAddressBox.getState() { // add column locIdBox to table
-            // if cityBox.getState() { // add column locIdBox to table
-            // if provinceBox.getState() { // add column locIdBox to table
-            JOptionPane.showMessageDialog(null,"Added");
+            List<String> columnsSelected = new ArrayList<>();
+            List<String> columnsDomain = new ArrayList<>();
+            if (rIdBox.isSelected()) {
+                columnsSelected.add("rID");
+                columnsDomain.add("int");
+            }
+            if (cIDBox.isSelected()) {
+                columnsSelected.add("cID");
+                columnsDomain.add("int");
+            }
+            if (locIDBox.isSelected()) {
+                columnsSelected.add("LocID");
+                columnsDomain.add("int");
+            }
+            if (widBox.isSelected()) {
+                columnsSelected.add("wID");
+                columnsDomain.add("int");
+            }
+            if (dateBox.isSelected()) {
+                columnsSelected.add("rDate");
+                columnsDomain.add("date");
+            }
+            if (timeBox.isSelected()) {
+                columnsSelected.add("rTime");
+                columnsDomain.add("time");
+            }
+            if (numOfPeopleBox.isSelected()) {
+                columnsSelected.add("NumOfPeople");
+                columnsDomain.add("int");
+            }
+            if (reservationNameBox.isSelected()) {
+                columnsSelected.add("ReservationName");
+                columnsDomain.add("String");
+            }
+            projection(columnsSelected, columnsDomain, "Reservations");
         });
 
         //add to popUp
@@ -637,6 +692,39 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(insertButton);
         
         return panel;
+    }
+    
+    private void projection(List<String> attributes, List<String> columnsDomain, String tableSelected) {
+        List<List<String>> tuples = delegate.projection(attributes, columnsDomain, tableSelected);
+
+        // clear table
+        model = new DefaultTableModel();
+
+        for (String column: attributes) {
+            model.addColumn(column);
+        }
+
+        for (List<String> tuple : tuples) {
+            Vector<Object> newTuple = new Vector<>();
+
+            for (int i = 0; i < columnsDomain.size(); i++) {
+                switch (columnsDomain.get(i)) {
+                    case "float" -> {
+                        newTuple.add(Float.valueOf(tuple.get(i)));
+                    }
+                    case "int" -> {
+                        newTuple.add(Integer.valueOf(tuple.get(i)));
+                    }
+                    default -> {
+                        newTuple.add(tuple.get(i));
+                    }
+                }
+            }
+
+            model.addRow(newTuple);
+        }
+
+        table.setModel(model);
     }
 
     private void filter(JPanel popUp) {

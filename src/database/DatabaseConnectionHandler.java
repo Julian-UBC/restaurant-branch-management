@@ -318,37 +318,60 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
     }
-    
-    public void projectBranch(List<String> attributes) {
+
+    public List<List<String>> projection(List<String> attributes, List<String> columnsDomain, String tableSelected) {
+        List<List<String>> tuples = new ArrayList<>();
+        String selectColumns = attributes.get(0);
+
+        for (int i = 1; i < attributes.size(); i++) {
+            selectColumns = selectColumns + ", " + attributes.get(i);
+        }
+
         try {
-            StringBuilder query = new StringBuilder("SELECT 1=1");
-            for (String attr: attributes) {
-                if (attr.equals("locId")) { query.append(" AND locID");}
-                if (attr.equals("streetAddress")) { query.append(" AND streetAddress");}
-                if (attr.equals("city")) { query.append(" AND city");}
-                if (attr.equals("province")) { query.append(" AND province");}
-            }
-            query.append(", FROM BRANCHES");
-
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query.toString()), query.toString(), false);
+            String query = "SELECT DISTINCT " + selectColumns + " " +
+                    "FROM " + tableSelected + " s";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
 
+            while(rs.next()) {
+                List<String> tuple = new ArrayList<>();
+                for (int i = 0; i < columnsDomain.size(); i++) {
+                    String domain = columnsDomain.get(i);
+                    String data;
+
+                    switch (domain) {
+                        case "float" -> {
+                            data = String.valueOf(rs.getFloat(attributes.get(i)));
+                        }
+                        case "int" -> {
+                            data = String.valueOf(rs.getInt(attributes.get(i)));
+                        }
+                        case "date" -> {
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            data = dateFormat.format(rs.getDate(attributes.get(i)));
+                        }
+                        case "time" -> {
+                            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                            data = timeFormat.format(rs.getDate(attributes.get(i)));
+                        }
+                        default -> {
+                            data = rs.getString(attributes.get(i));
+                        }
+                    }
+
+                    tuple.add(data);
+                }
+
+                tuples.add(tuple);
             }
 
             rs.close();
             ps.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
-    }
 
-    public void projectMenu() {
-
-    }
-
-    public void projectReservation() {
-
+        return tuples;
     }
     public MenuSorted showNestedAggregation() {
         MenuSorted MenuSorted = new MenuSorted();

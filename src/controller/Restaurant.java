@@ -20,6 +20,10 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
         loginWindow = new LoginWindow();
         loginWindow.showFrame(this);
     }
+    
+    public static void main(String[] args) {
+        new Restaurant();
+    }
 
     /**
      * LoginWindowDelegate Implementation
@@ -104,6 +108,11 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     @Override
     public void updateBranch(int oglocID, int locID, String streetAddress, String city, String province) {
         dbHandler.updateBranch(oglocID, locID, streetAddress, city, province);
+    }
+
+    @Override
+    public List<List<String>> projection(List<String> attributes, List<String> columnsDomain, String tableSelected) {
+        return dbHandler.projection(attributes, columnsDomain, tableSelected);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package model;
 
 public class Menu {
-    protected String name;
-    protected float cost;
-    protected String category;
+    private String name;
+    private float cost;
+    private String category;
 
     public Menu(String name) {
         this.name = name;

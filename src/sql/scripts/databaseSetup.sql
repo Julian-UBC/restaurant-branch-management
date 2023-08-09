@@ -43,11 +43,9 @@ CREATE TABLE IngredientsRequired (
     FOREIGN KEY (menuName)
         REFERENCES Menu (name)
         ON DELETE CASCADE,
---        ON UPDATE CASCADE,
     FOREIGN KEY (ingredientsName)
         REFERENCES Ingredients (name)
         ON DELETE CASCADE
---        ON UPDATE CASCADE
 );
 
 CREATE TABLE Branches (
@@ -65,11 +63,9 @@ CREATE TABLE MenuServed (
     FOREIGN KEY (menuName)
         REFERENCES Menu (name)
         ON DELETE CASCADE,
---        ON UPDATE CASCADE,
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE CASCADE
---        ON UPDATE CASCADE
 );
 
 -- Customers
@@ -131,12 +127,11 @@ CREATE TABLE ChefInfo(
     lastName    VARCHAR2(50),
     SIN         CHAR(9)         NOT NULL,
     specialty   VARCHAR2(50),
---    specialty   VARCHAR2(50)    DEFAULT 'Cook',
     locID       INTEGER,
     UNIQUE (SIN),
     FOREIGN KEY (specialty)
-        REFERENCES ChefSpecialty (specialty),
---        ON DELETE SET DEFAULT,
+        REFERENCES ChefSpecialty (specialty)
+        ON DELETE SET NULL,
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE SET NULL
@@ -154,7 +149,6 @@ CREATE TABLE Hosts(
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE SET NULL
---        ON UPDATE CASCADE
 );
 
 -- Managers

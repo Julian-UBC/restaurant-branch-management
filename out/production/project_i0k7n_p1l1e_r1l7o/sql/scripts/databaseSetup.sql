@@ -43,11 +43,9 @@ CREATE TABLE IngredientsRequired (
     FOREIGN KEY (menuName)
         REFERENCES Menu (name)
         ON DELETE CASCADE,
---        ON UPDATE CASCADE,
     FOREIGN KEY (ingredientsName)
         REFERENCES Ingredients (name)
         ON DELETE CASCADE
---        ON UPDATE CASCADE
 );
 
 CREATE TABLE Branches (
@@ -65,11 +63,9 @@ CREATE TABLE MenuServed (
     FOREIGN KEY (menuName)
         REFERENCES Menu (name)
         ON DELETE CASCADE,
---        ON UPDATE CASCADE,
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE CASCADE
---        ON UPDATE CASCADE
 );
 
 -- Customers
@@ -131,12 +127,11 @@ CREATE TABLE ChefInfo(
     lastName    VARCHAR2(50),
     SIN         CHAR(9)         NOT NULL,
     specialty   VARCHAR2(50),
---    specialty   VARCHAR2(50)    DEFAULT 'Cook',
     locID       INTEGER,
     UNIQUE (SIN),
     FOREIGN KEY (specialty)
-        REFERENCES ChefSpecialty (specialty),
---        ON DELETE SET DEFAULT,
+        REFERENCES ChefSpecialty (specialty)
+        ON DELETE SET NULL,
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE SET NULL
@@ -154,7 +149,6 @@ CREATE TABLE Hosts(
     FOREIGN KEY (locID)
         REFERENCES Branches (locID)
         ON DELETE SET NULL
---        ON UPDATE CASCADE
 );
 
 -- Managers
@@ -442,12 +436,12 @@ INSERT INTO ChefInfo VALUES(226, 'Edmun', 'Gordon', '888887654', 'Sous', 115);
 INSERT INTO ChefInfo VALUES(228, 'Essa', 'Cantrell', '888888765', 'Prep', 115);
 
 -- populate table for Reservations
-INSERT INTO Reservations VALUES (1000, 1, 111, 11, to_date('2023-08-01', 'YYYY-MM-DD'), to_date('18:20:00', 'HH24:MI:SS'), 4, 'John');
-INSERT INTO Reservations VALUES (1001, 2, 113, 13, to_date('2023-08-01', 'YYYY-MM-DD'), to_date('19:00:00', 'HH24:MI:SS'), 3, 'Bob''s birthday');
-INSERT INTO Reservations VALUES (1002, 1, 111, 11, to_date('2023-08-03', 'YYYY-MM-DD'), to_date('19:30:00', 'HH24:MI:SS'), 8, 'Marketing team social');
+INSERT INTO Reservations VALUES (1000, 1, 111, 11, to_date('2023-08-20', 'YYYY-MM-DD'), to_date('18:20:00', 'HH24:MI:SS'), 4, 'John');
+INSERT INTO Reservations VALUES (1001, 2, 113, 13, to_date('2023-08-10', 'YYYY-MM-DD'), to_date('19:00:00', 'HH24:MI:SS'), 3, 'Bob''s birthday');
+INSERT INTO Reservations VALUES (1002, 1, 111, 11, to_date('2023-08-11', 'YYYY-MM-DD'), to_date('19:30:00', 'HH24:MI:SS'), 8, 'Marketing team social');
 INSERT INTO Reservations VALUES (1003, 4, 112, 12, to_date('2023-08-04', 'YYYY-MM-DD'), to_date('18:00:00', 'HH24:MI:SS'), 2, 'Wang''s anniversary');
 INSERT INTO Reservations VALUES (1004, 3, 113, 13, to_date('2023-08-04', 'YYYY-MM-DD'), to_date('18:20:00', 'HH24:MI:SS'), 3, 'Tracy');
-INSERT INTO Reservations VALUES (1005, 2, 114, 14, to_date('2023-08-05', 'YYYY-MM-DD'), to_date('19:00:00', 'HH24:MI:SS'), 6, 'Bob''s birthday');
+INSERT INTO Reservations VALUES (1005, 2, 114, 14, to_date('2023-08-11', 'YYYY-MM-DD'), to_date('19:00:00', 'HH24:MI:SS'), 6, 'Bob''s birthday');
 
 -- populate table for EquipmentsName
 INSERT INTO EquipmentsName VALUES ('Table', 'Furniture');

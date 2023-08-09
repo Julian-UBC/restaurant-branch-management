@@ -18,6 +18,18 @@ public class Menus {
         tuples = new ArrayList<>();
     }
 
+    public List<Menu> getMenus() {
+        List<Menu> a = new ArrayList<Menu>();
+        for (Vector<Object> b: tuples) {
+            String name = (String) b.get(0);
+            Float cost = (Float) b.get(1);
+            String category = (String) b.get(2);
+            Menu m = new Menu(name, cost, category);
+            a.add(m);
+        }
+        return a;
+    }
+    
     public List<String> getColumns() {
         return Collections.unmodifiableList(columns);
     }

@@ -15,6 +15,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CreateAndShowGUI implements ActionListener, ItemListener {
     private static final int WIDTH=1200;
@@ -97,8 +100,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         updateButton.addActionListener(this);
         deleteButton = new JButton("Delete");
         deleteButton.addActionListener(this);
-        showButton = new JButton("Show");
-        showButton.addActionListener(this);
         filterButton = new JButton("Filter");
         filterButton.addActionListener(this);
         projectionButton = new JButton("Projection");
@@ -117,8 +118,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(updateButton, g);
         g.gridy++;
         panel.add(deleteButton,g);
-        g.gridy++;
-        panel.add(showButton,g);
         g.gridy++;
         panel.add(filterButton,g);
         g.gridy++;
@@ -443,16 +442,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         refreshTable();
     }
 
-    private void show(JPanel popUp) {
-        popUp.add(new JLabel("Show the Earliest Reservation Times Grouped by Location"));
-        Object[] options = {"Show", "Cancel"};
-        int n = JOptionPane.showOptionDialog(null, popUp, "Show", JOptionPane.YES_NO_OPTION,
-                JOptionPane.PLAIN_MESSAGE, null, options, null);
-
-        if (n == 1) {//tba
-        }
-    }
-
     private void projectionButton(JPanel popUp) {
         // creates panel containing insert to branch, menu and reservation
         JPanel projectPanel = new JPanel(new CardLayout());
@@ -580,17 +569,34 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         if (n==1) {//tba
         }
     }
-    
+
     private void groupByButton() {
-        // show to table 
-    }
-    
-    private void having() {
-        
-    }
-    
-    private void nestedAggregation() {
-        
+        // get list of menus
+        Menus menus = delegate.showMenus();
+        //clear table
+        model = new DefaultTableModel();
+
+        List<Menu> menuData = menus.getMenus();
+
+        // use collection function of group by and average 
+        Map<String, Double> map = menuData.stream().collect(Collectors.groupingBy(
+                Menu::getCategory, Collectors.averagingDouble(Menu::getCost)));
+        model.addColumn("Category");
+        model.addColumn("Cost");
+        // make map to vector<object> tuple
+        List<Vector<Object>> groupBy = new ArrayList<>();
+        for(Map.Entry<String,Double> entry : map.entrySet()) {
+            Vector<Object> tuple = new Vector<>();
+            tuple.add(0, entry.getKey());
+            tuple.add(1, entry.getValue());
+            groupBy.add(tuple);
+        }
+        // add category and cost to model
+        for (Vector<Object> tuple : groupBy) {
+            model.addRow(tuple);
+        }
+
+        table.setModel(model);
     }
     
     @Override
@@ -607,9 +613,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         if (e.getSource() == deleteButton) {
             delete();
         }
-        if (e.getSource() == showButton) {
-            show(new JPanel());
-        }
         if (e.getSource() == filterButton) {
             filter(new JPanel());
         }
@@ -620,7 +623,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             groupByButton();
         }
         if(e.getSource() == moreButton) {
-            new MoreWindow(delegate);
+            //tba
         }
     }
 

@@ -348,7 +348,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             // turn string getTime to LocalTime
             
             Reservation newReservation = new Reservation(getRId, getCId, getLocId, getWId, 
-                    getDate, getTime, getNum, getName);
+                   LocalDate.parse(getDate), getTime, getNum, getName);
             delegate.insertReservation(newReservation);
 
             // Remove inputs
@@ -392,8 +392,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         switch (tableShown) {
             case "Menu" -> attributes = new String[]{"Name", "Cost", "Category"};
             case "Reservations" ->
-                    attributes = new String[]{"Reservation ID", "Customer ID", "Worker ID", "Reservation Date", "Reservation Time", "Number of People", "Reservation Name"};
-            case "Branch" -> attributes = new String[]{"LocID", "StreetAddress", "City", "Province"};
+                    attributes = new String[]{"Reservation ID", "Customer ID", "BranchID", "Host", "Date", "Time", "Number of People", "Reservation Name"};
+            case "Branch" -> attributes = new String[]{"Branch ID", "Address", "City", "Province"};
             default -> {
             }
         }
@@ -871,6 +871,35 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
         table.setModel(model);
     }
+    private void join(JPanel popUp) {
+
+        JLabel info = new JLabel("View all reservations during given time for every branch.");
+        JLabel instruction = new JLabel("Insert the number of days from current day:");
+        JTextField numOfDays = new JTextField();
+        popUp.setLayout(new BorderLayout());
+        popUp.add(info, BorderLayout.PAGE_START);
+        popUp.add(instruction, BorderLayout.LINE_START);
+        popUp.add(numOfDays, BorderLayout.CENTER);
+        Object[] options = {"Confirm", "Cancel"};
+        int n = JOptionPane.showOptionDialog(null, popUp, "Join", JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+        if (n == 0) {
+
+            LocalDate currentDate = LocalDate.now();
+            JoinedBranchReservation resultOfJoin = delegate.joinBranchReservation(currentDate, currentDate.plusDays(Integer.parseInt(numOfDays.getText())));
+
+            model = new DefaultTableModel();
+
+            for (String column : resultOfJoin.getColumns()) {
+                model.addColumn(column);
+            }
+            for (Vector<Object> tuple : resultOfJoin.getTuples()) {
+                model.addRow(tuple);
+            }
+            table.setModel(model);
+        }
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -894,6 +923,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
         if(e.getSource() == groupByButton) {
             groupByButton();
+        }
+        if (e.getSource() == joinButton) {
+            join(new JPanel());
         }
         if(e.getSource() == nestedButton) {
             nestedGroupButton();

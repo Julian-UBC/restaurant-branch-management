@@ -105,6 +105,11 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     public void updateBranch(int oglocID, int locID, String streetAddress, String city, String province) {
         dbHandler.updateBranch(oglocID, locID, streetAddress, city, province);
     }
+    
+    @Override
+    public JoinedBranchReservation joinBranchReservation(LocalDate currentDate, LocalDate lastDate){
+        return dbHandler.joinBranchReservation(currentDate,lastDate);
+    }
 
     @Override
     public MenuSorted showGroupBy() {

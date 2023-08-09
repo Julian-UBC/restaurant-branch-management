@@ -505,7 +505,7 @@ public class DatabaseConnectionHandler {
         for (int i = 1; i < columnsSelected.size(); i++) {
             selectColumns = selectColumns + ", " + columnsSelected.get(i);
         }
-
+ 
         String conditions;
         if (filterConditions.size() == 0) {
             conditions = "";

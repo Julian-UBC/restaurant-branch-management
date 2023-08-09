@@ -320,14 +320,13 @@ public class DatabaseConnectionHandler {
     public MenuSorted showGroupBy() {
         MenuSorted MenuSorted = new MenuSorted();
         try {
-            String query = "SELECT AVG(cost), category " +
-                    "FROM Menu m " +
-                    "GROUP BY category"; 
+            String query = "SELECT category, AVG(cost) " +
+                           "FROM Menu m " +
+                           "GROUP BY category"; 
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
-
             while(rs.next()) {
-                Menu menu = new Menu(rs.getString("name"));
+                AvgCostHaving menu = new AvgCostHaving(rs.getString("CATEGORY"), rs.getFloat("AVG(COST)"));
                 MenuSorted.addSortedMenu(menu);
             }
 

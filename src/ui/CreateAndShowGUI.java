@@ -17,9 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.Vector;
-import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class CreateAndShowGUI implements ActionListener, ItemListener {
     private static final int WIDTH=1200;
@@ -650,28 +647,12 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
 
     private void groupByButton() {
-        // get list of menus
-        Menus menus = delegate.showMenus();
         //clear table
         model = new DefaultTableModel();
-
-        List<Menu> menuData = menus.getMenus();
-
-        // use collection function of group by and average
-        Map<String, Double> map = menuData.stream().collect(Collectors.groupingBy(
-                Menu::getCategory, Collectors.averagingDouble(Menu::getCost)));
+        MenuSorted groupMenu = delegate.showGroupBy();
         model.addColumn("Category");
         model.addColumn("Cost");
-        // make map to vector<object> tuple
-        List<Vector<Object>> groupBy = new ArrayList<>();
-        for(Map.Entry<String,Double> entry : map.entrySet()) {
-            Vector<Object> tuple = new Vector<>();
-            tuple.add(0, entry.getKey());
-            tuple.add(1, entry.getValue());
-            groupBy.add(tuple);
-        }
-        // add category and cost to model
-        for (Vector<Object> tuple : groupBy) {
+        for (Vector<Object> tuple : groupMenu.getTuples()) {
             model.addRow(tuple);
         }
 

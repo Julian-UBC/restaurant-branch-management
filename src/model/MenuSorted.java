@@ -26,10 +26,10 @@ public class MenuSorted {
     }
 
 
-    public void addSortedMenu(Menu menu) {
+    public void addSortedMenu(AvgCostHaving menu) {
         Vector<Object> tuple = new Vector<>();
         tuple.add(0, menu.getCategory());
-        tuple.add(1, menu.getCost());
+        tuple.add(1, menu.getAvgCost());
 
         tuples.add(tuple);
     }

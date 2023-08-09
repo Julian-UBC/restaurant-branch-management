@@ -31,6 +31,7 @@ public interface RestaurantDelegate {
     void updateMenu(String ogName, String name, float cost, String category);
     void updateReservation(int ogrID, int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople, String reservationName);
     void updateBranch(int oglocID, int locID, String streetAddress, String city, String province);
+    JoinedBranchReservation joinBranchReservation(LocalDate currentDate, LocalDate lastDate);
 
     MenuSorted showGroupBy();
 

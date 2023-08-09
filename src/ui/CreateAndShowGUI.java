@@ -673,9 +673,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         topPanel.add(label);
 
         JPanel middlePanel = new JPanel();
-        JCheckBox nameBox = new JCheckBox("Name");
-        JCheckBox costBox = new JCheckBox("Cost");
-        JCheckBox categoryBox = new JCheckBox("Category");
+        JCheckBox nameBox = new JCheckBox("Name", true);
+        JCheckBox costBox = new JCheckBox("Cost", true);
+        JCheckBox categoryBox = new JCheckBox("Category", true);
 
         middlePanel.add(nameBox);
         middlePanel.add(costBox);
@@ -749,10 +749,10 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         topPanel.add(label);
 
         JPanel middlePanel = new JPanel();
-        JCheckBox locIDBox = new JCheckBox("Location ID");
-        JCheckBox streetAddressBox = new JCheckBox("Street Address");
-        JCheckBox cityBox = new JCheckBox("City");
-        JCheckBox provinceBox = new JCheckBox("Province");
+        JCheckBox locIDBox = new JCheckBox("Location ID", true);
+        JCheckBox streetAddressBox = new JCheckBox("Street Address", true);
+        JCheckBox cityBox = new JCheckBox("City", true);
+        JCheckBox provinceBox = new JCheckBox("Province", true);
 
         middlePanel.add(locIDBox);
         middlePanel.add(streetAddressBox);
@@ -805,16 +805,16 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             }
 
             if (!Objects.equals(enterLocID.getText(), "")) {
-                filterConditions.add("name = '" + enterLocID.getText() + "'");
+                filterConditions.add("LocID = '" + enterLocID.getText() + "'");
             }
             if (!Objects.equals(enterStreetAddress.getText(), "")) {
-                filterConditions.add("name = '" + enterStreetAddress.getText() + "'");
+                filterConditions.add("StreetAddress = '" + enterStreetAddress.getText() + "'");
             }
             if (!Objects.equals(enterCity.getText(), "")) {
-                filterConditions.add("name = '" + enterCity.getText() + "'");
+                filterConditions.add("City = '" + enterCity.getText() + "'");
             }
             if (!Objects.equals(enterProvince.getText(), "")) {
-                filterConditions.add("name = '" + enterProvince.getText() + "'");
+                filterConditions.add("Province = '" + enterProvince.getText() + "'");
             }
 
             handleFilter(columnsSelected, columnsDomain, filterConditions, "Branches");
@@ -839,14 +839,14 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         topPanel.add(label);
 
         JPanel middlePanel = new JPanel();
-        JCheckBox rIdBox = new JCheckBox("Reservation ID");
-        JCheckBox cIDBox = new JCheckBox("Customer ID");
-        JCheckBox locIDBox = new JCheckBox("Location ID");
-        JCheckBox widBox = new JCheckBox("Employee ID");
-        JCheckBox dateBox = new JCheckBox("Date");
-        JCheckBox timeBox = new JCheckBox("Time");
-        JCheckBox numOfPeopleBox = new JCheckBox("Number of People");
-        JCheckBox resNameBox = new JCheckBox("Reservation Name");
+        JCheckBox rIdBox = new JCheckBox("Reservation ID", true);
+        JCheckBox cIDBox = new JCheckBox("Customer ID", true);
+        JCheckBox locIDBox = new JCheckBox("Location ID", true);
+        JCheckBox widBox = new JCheckBox("Employee ID", true);
+        JCheckBox dateBox = new JCheckBox("Date", true);
+        JCheckBox timeBox = new JCheckBox("Time", true);
+        JCheckBox numOfPeopleBox = new JCheckBox("Number of People", true);
+        JCheckBox resNameBox = new JCheckBox("Reservation Name", true);
 
         middlePanel.add(rIdBox);
         middlePanel.add(cIDBox);

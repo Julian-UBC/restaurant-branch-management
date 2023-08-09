@@ -578,7 +578,6 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 columnsDomain.add("String");
                 columnSelected.add("Province");}
             projection(columnSelected, columnsDomain, "Branches");
-            
         });
         
         //add to popUp

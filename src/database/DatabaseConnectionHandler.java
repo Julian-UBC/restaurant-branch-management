@@ -85,7 +85,7 @@ public class DatabaseConnectionHandler {
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
             while(rs.next()) {
@@ -93,7 +93,7 @@ public class DatabaseConnectionHandler {
                                                             rs.getInt("cID"),
                                                             rs.getInt("locID"),
                                                             rs.getInt("wID"),
-                                                            dateFormat.format(rs.getDate("rDate")),
+                                                            rs.getDate("rDate").toLocalDate(),
                                                             timeFormat.format(rs.getDate("rTime")),
                                                             rs.getInt("numOfPeople"),
                                                             rs.getString("reservationName"));
@@ -317,6 +317,31 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();
         }
+    }
+    
+    public JoinedBranchReservation joinBranchReservation(LocalDate currentDate, LocalDate lastDate){
+
+        JoinedBranchReservation JoinedBranchReservation = new JoinedBranchReservation();
+        try{
+            String query = "SELECT* FROM Branches b, Reservations r WHERE r.locID = b.locID AND rDATE >= ? AND rDate <= ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setDate(1,Date.valueOf(currentDate));
+            ps.setDate(2,Date.valueOf(lastDate));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Branch branch = new Branch(rs.getInt("locID"), rs.getString("streetAddress"), rs.getString("city"), rs.getString("Province"));
+                Reservation reservation = new Reservation(rs.getInt("rID"), rs.getInt("cID"), rs.getInt("locID"), rs.getInt("wID"), rs.getDate("rDate").toLocalDate(), rs.getString("rTime"), rs.getInt("numOfPeople"), rs.getString("reservationName"));
+                JoinedBranchReservation.addJoinedBranchReservation(branch,reservation);
+            }
+            connection.commit();
+            rs.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+        return JoinedBranchReservation;
     }
     
     public void projectBranch(List<String> attributes) {

@@ -1,10 +1,12 @@
 package ui;
 
 import delegates.RestaurantDelegate;
+import model.MenusAvgCost;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.Vector;
 
 public class ShowAggWithHaving extends JFrame {
     private static final int WIDTH=800;
@@ -21,7 +23,7 @@ public class ShowAggWithHaving extends JFrame {
 
         this.add(tablePanel);
 
-        this.setTitle("Menus that are served in all branches");
+        this.setTitle("Average Price of Menu Category which has more than one item");
         this.setSize(WIDTH,HEIGHT);
         this.setBackground(Color.decode("#FE5F55"));
         this.setVisible(true);
@@ -34,7 +36,7 @@ public class ShowAggWithHaving extends JFrame {
         panel.setLayout(new BorderLayout());
 
         model = new DefaultTableModel();
-        //showAggWithHaving();
+        showAggWithHaving();
         table.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -44,13 +46,13 @@ public class ShowAggWithHaving extends JFrame {
         return panel;
     }
 
-//    private void showAggWithHaving() {
-//        MenusAvgCost menus = delegate.showAvgCostMenuHaving();
-//        for (String column : menus.getColumns()) {
-//            model.addColumn(column);
-//        }
-//        for (Vector<Object> tuple : menus.getTuples()) {
-//            model.addRow(tuple);
-//        }
-//    }
+    private void showAggWithHaving() {
+        MenusAvgCost menus = delegate.showAvgCostMenuHaving();
+        for (String column : menus.getColumns()) {
+            model.addColumn(column);
+        }
+        for (Vector<Object> tuple : menus.getTuples()) {
+            model.addRow(tuple);
+        }
+    }
 }

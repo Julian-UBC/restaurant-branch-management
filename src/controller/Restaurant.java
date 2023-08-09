@@ -93,6 +93,11 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
         return dbHandler.showDivision();
     }
 
+    @Override
+    public MenusAvgCost showAvgCostMenuHaving() {
+        return dbHandler.showAvgCostMenu();
+    }
+
     /**
      * Main method called at launch time
      */

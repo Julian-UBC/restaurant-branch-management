@@ -26,4 +26,6 @@ public interface RestaurantDelegate {
     void deleteBranch(int tblLocId);
 
     Menus showMenusFromAllBranches();
+
+    MenusAvgCost showAvgCostMenuHaving();
 }

@@ -280,4 +280,29 @@ public class DatabaseConnectionHandler {
 
         return menus;
     }
+
+    public MenusAvgCost showAvgCostMenu() {
+        MenusAvgCost menus = new MenusAvgCost();
+
+        try {
+            String query = "SELECT category, AVG(cost) as avgCost " +
+                    "FROM Menu m " +
+                    "GROUP BY category " +
+                    "HAVING COUNT(category) > 1";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                AvgCostHaving menu = new AvgCostHaving(rs.getString("category"), rs.getInt("avgCost"));
+                menus.addAvgCostHaving(menu);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return menus;
+    }
 }

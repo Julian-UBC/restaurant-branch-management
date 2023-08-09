@@ -17,9 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.Vector;
-import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class CreateAndShowGUI implements ActionListener, ItemListener {
     private static final int WIDTH=1200;
@@ -102,6 +99,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         updateButton.addActionListener(this);
         deleteButton = new JButton("Delete");
         deleteButton.addActionListener(this);
+        showButton = new JButton("Show");
+        showButton.addActionListener(this);
         filterButton = new JButton("Filter");
         filterButton.addActionListener(this);
         projectionButton = new JButton("Projection");
@@ -120,6 +119,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         panel.add(updateButton, g);
         g.gridy++;
         panel.add(deleteButton,g);
+        g.gridy++;
+        panel.add(showButton,g);
         g.gridy++;
         panel.add(filterButton,g);
         g.gridy++;
@@ -413,73 +414,72 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 int columnNum = table.getColumn(Objects.requireNonNull(dropDown.getSelectedItem())).getModelIndex();
                 switch (tableShown) {
                     case "Menu" -> {
-                        System.out.println(selectedTuple.getValueAt(table.getSelectedRow(), 1));
-                        String currentName = (String) selectedTuple.getValueAt(table.getSelectedRow(),0);
-                        float currentCost = (float) selectedTuple.getValueAt(table.getSelectedRow(), 1);
+                        String currentName = (String) selectedTuple.getValueAt(table.getSelectedRow(), 0);
+                        float currentCost = Float.parseFloat(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 1)));
                         String currentCategory = (String) selectedTuple.getValueAt(table.getSelectedRow(), 2);
-                        if (columnNum == 0){
-                            delegate.updateMenu(currentName ,updatedValue, currentCost,currentCategory);
+                        if (columnNum == 0) {
+                            delegate.updateMenu(currentName, updatedValue, currentCost, currentCategory);
                         }
-                        if (columnNum == 1){
+                        if (columnNum == 1) {
                             delegate.updateMenu(currentName, currentName, Float.parseFloat(updatedValue), currentCategory);
                         }
-                        if (columnNum == 2){
-                            delegate.updateMenu(currentName, currentName,currentCost,updatedValue);
+                        if (columnNum == 2) {
+                            delegate.updateMenu(currentName, currentName, currentCost, updatedValue);
                         }
 
                     }
                     case "Reservations" -> {
-                        Integer currentRID = (Integer) selectedTuple.getValueAt(table.getSelectedRow(), 0);
-                        Integer currentCID = (Integer) selectedTuple.getValueAt(table.getSelectedRow(), 1);
-                        Integer currentLocID = (Integer) selectedTuple.getValueAt(table.getSelectedRow(), 2);
-                        Integer currentWID = (Integer) selectedTuple.getValueAt(table.getSelectedRow(), 3);
-                        LocalDate currentRDate = (LocalDate) selectedTuple.getValueAt(table.getSelectedRow(),4);
-                        LocalTime currentRTime = (LocalTime) selectedTuple.getValueAt(table.getSelectedRow(),5);
-                        Integer currentNumOfPeople = (Integer) selectedTuple.getValueAt(table.getSelectedRow(),6);
-                        String currentReservationName = (String) selectedTuple.getValueAt(table.getSelectedRow(),7);
+                        int currentRID = Integer.parseInt(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 0)));
+                        int currentCID = Integer.parseInt(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 1)));
+                        int currentLocID = Integer.parseInt(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 2)));
+                        int currentWID = Integer.parseInt(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 3)));
+                        LocalDate currentRDate = LocalDate.parse(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 4)));
+                        LocalTime currentRTime = LocalTime.parse(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 5)));
+                        int currentNumOfPeople = Integer.parseInt(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 6)));
+                        String currentReservationName = (String) selectedTuple.getValueAt(table.getSelectedRow(), 7);
 
-                        if (columnNum == 0){
-                            delegate.updateReservation(currentRID,Integer.parseInt(updatedValue), currentCID, currentLocID, currentWID, currentRDate, currentRTime,currentNumOfPeople,currentReservationName);
+                        if (columnNum == 0) {
+                            delegate.updateReservation(currentRID, Integer.parseInt(updatedValue), currentCID, currentLocID, currentWID, currentRDate, currentRTime, currentNumOfPeople, currentReservationName);
                         }
-                        if (columnNum == 1){
-                            delegate.updateReservation(currentRID, currentRID,Integer.parseInt(updatedValue) , currentLocID, currentWID, currentRDate, currentRTime,currentNumOfPeople,currentReservationName);
+                        if (columnNum == 1) {
+                            delegate.updateReservation(currentRID, currentRID, Integer.parseInt(updatedValue), currentLocID, currentWID, currentRDate, currentRTime, currentNumOfPeople, currentReservationName);
                         }
                         if (columnNum == 2) {
-                            delegate.updateReservation(currentRID, currentRID, currentCID,Integer.parseInt(updatedValue), currentWID,currentRDate,currentRTime,currentNumOfPeople,currentReservationName);
+                            delegate.updateReservation(currentRID, currentRID, currentCID, Integer.parseInt(updatedValue), currentWID, currentRDate, currentRTime, currentNumOfPeople, currentReservationName);
                         }
-                        if (columnNum == 3){
-                            delegate.updateReservation(currentRID,currentRID,currentCID,currentLocID,Integer.parseInt(updatedValue),currentRDate,currentRTime,currentNumOfPeople,currentReservationName);
+                        if (columnNum == 3) {
+                            delegate.updateReservation(currentRID, currentRID, currentCID, currentLocID, Integer.parseInt(updatedValue), currentRDate, currentRTime, currentNumOfPeople, currentReservationName);
                         }
-                        if (columnNum == 4){
-                            delegate.updateReservation(currentRID,currentRID,currentCID,currentLocID,currentWID,LocalDate.parse(updatedValue), currentRTime,currentNumOfPeople,currentReservationName);
+                        if (columnNum == 4) {
+                            delegate.updateReservation(currentRID, currentRID, currentCID, currentLocID, currentWID, LocalDate.parse(updatedValue), currentRTime, currentNumOfPeople, currentReservationName);
                         }
-                        if (columnNum == 5){
-                            delegate.updateReservation(currentRID,currentRID,currentCID,currentLocID,currentWID,currentRDate,LocalTime.parse(updatedValue), currentNumOfPeople,currentReservationName);
+                        if (columnNum == 5) {
+                            delegate.updateReservation(currentRID, currentRID, currentCID, currentLocID, currentWID, currentRDate, LocalTime.parse(updatedValue), currentNumOfPeople, currentReservationName);
                         }
-                        if (columnNum == 6){
-                            delegate.updateReservation(currentRID,currentRID,currentCID,currentLocID,currentWID,currentRDate,currentRTime,Integer.parseInt(updatedValue),currentReservationName);
+                        if (columnNum == 6) {
+                            delegate.updateReservation(currentRID, currentRID, currentCID, currentLocID, currentWID, currentRDate, currentRTime, Integer.parseInt(updatedValue), currentReservationName);
                         }
-                        if (columnNum == 7){
-                            delegate.updateReservation(currentRID,currentRID,currentCID,currentLocID,currentWID,currentRDate,currentRTime,currentNumOfPeople,updatedValue);
+                        if (columnNum == 7) {
+                            delegate.updateReservation(currentRID, currentRID, currentCID, currentLocID, currentWID, currentRDate, currentRTime, currentNumOfPeople, updatedValue);
                         }
                     }
                     case "Branch" -> {
-                        Integer currentLocID = (Integer) selectedTuple.getValueAt(table.getSelectedRow(), 0);
+                        int currentLocID = Integer.parseInt(String.valueOf(selectedTuple.getValueAt(table.getSelectedRow(), 0)));
                         String currentAddress = (String) selectedTuple.getValueAt(table.getSelectedRow(), 1);
                         String currentCity = (String) selectedTuple.getValueAt(table.getSelectedRow(), 2);
                         String currentProvince = (String) selectedTuple.getValueAt(table.getSelectedRow(), 3);
 
-                        if (columnNum == 0){
-                            delegate.updateBranch(currentLocID, Integer.parseInt(updatedValue), currentAddress,currentCity,currentProvince);
+                        if (columnNum == 0) {
+                            delegate.updateBranch(currentLocID, Integer.parseInt(updatedValue), currentAddress, currentCity, currentProvince);
                         }
-                        if (columnNum == 1){
-                            delegate.updateBranch(currentLocID,currentLocID,updatedValue, currentCity,currentProvince);
+                        if (columnNum == 1) {
+                            delegate.updateBranch(currentLocID, currentLocID, updatedValue, currentCity, currentProvince);
                         }
-                        if (columnNum == 2){
-                            delegate.updateBranch(currentLocID,currentLocID, currentAddress,updatedValue,currentProvince);
+                        if (columnNum == 2) {
+                            delegate.updateBranch(currentLocID, currentLocID, currentAddress, updatedValue, currentProvince);
                         }
-                        if (columnNum == 3){
-                            delegate.updateBranch(currentLocID,currentLocID,currentAddress,currentCity,updatedValue);
+                        if (columnNum == 3) {
+                            delegate.updateBranch(currentLocID, currentLocID, currentAddress, currentCity, updatedValue);
                         }
                     }
                     default -> {
@@ -491,7 +491,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
 
     }
-    
+
     private void delete() {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 
@@ -652,7 +652,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
         List<Menu> menuData = menus.getMenus();
 
-        // use collection function of group by and average 
+        // use collection function of group by and average
         Map<String, Double> map = menuData.stream().collect(Collectors.groupingBy(
                 Menu::getCategory, Collectors.averagingDouble(Menu::getCost)));
         model.addColumn("Category");

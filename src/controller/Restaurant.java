@@ -132,8 +132,8 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     }
 
     @Override
-    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected) {
-        return dbHandler.filter(columnsSelected, columnsDomain, tableSelected);
+    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, List<String> filterConditions, String tableSelected) {
+        return dbHandler.filter(columnsSelected, columnsDomain, filterConditions, tableSelected);
     }
 }
 

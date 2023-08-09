@@ -475,7 +475,7 @@ public class DatabaseConnectionHandler {
         return menus;
     }
 
-    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected) {
+    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, List<String> filterConditions, String tableSelected) {
         List<List<String>> filteredMenus = new ArrayList<>();
         String selectColumns = columnsSelected.get(0);
 
@@ -483,9 +483,27 @@ public class DatabaseConnectionHandler {
             selectColumns = selectColumns + ", " + columnsSelected.get(i);
         }
 
+        String conditions;
+        if (filterConditions.size() == 0) {
+            conditions = "";
+        } else {
+            conditions = filterConditions.get(0);
+
+            for (int i = 1; i < filterConditions.size(); i++) {
+                conditions = conditions + " AND " + filterConditions.get(i);
+            }
+        }
+
         try {
-            String query = "SELECT " + selectColumns + " " +
-                    "FROM " + tableSelected + " s";
+            String query;
+            if (filterConditions.size() == 0) {
+                query = "SELECT " + selectColumns + " " +
+                        "FROM " + tableSelected + " s";
+            } else {
+                query = "SELECT " + selectColumns + " " +
+                        "FROM " + tableSelected + " s " +
+                        "WHERE " + conditions;
+            }
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 

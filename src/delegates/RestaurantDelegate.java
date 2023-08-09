@@ -41,7 +41,7 @@ public interface RestaurantDelegate {
 
     MenusAvgCost showAvgCostMenuHaving();
 
-    List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected);
+    List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, List<String> filterConditions, String tableSelected);
 
 //    void filterMenus(List<String> columnsSelected);
 }

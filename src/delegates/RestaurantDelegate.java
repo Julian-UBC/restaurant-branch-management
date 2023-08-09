@@ -31,7 +31,8 @@ public interface RestaurantDelegate {
     void updateMenu(String ogName, String name, float cost, String category);
     void updateReservation(int ogrID, int rID, int cID, int locID, int wID, LocalDate rDate, LocalTime rTime, int numOfPeople, String reservationName);
     void updateBranch(int oglocID, int locID, String streetAddress, String city, String province);
-    List<List<String>> projection(List<String> columnsSelected, List<String> columnsDomain, String tableSelected);
+    JoinedBranchReservation joinBranchReservation(LocalDate currentDate, LocalDate lastDate);
+
     MenuSorted showGroupBy();
 
     MenuSorted showNestedAggregation();
@@ -40,7 +41,7 @@ public interface RestaurantDelegate {
 
     MenusAvgCost showAvgCostMenuHaving();
 
-    List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected);
+    List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, List<String> filterConditions, String tableSelected);
 
 //    void filterMenus(List<String> columnsSelected);
 }

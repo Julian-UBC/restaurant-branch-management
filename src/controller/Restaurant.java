@@ -109,6 +109,11 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     public void updateBranch(int oglocID, int locID, String streetAddress, String city, String province) {
         dbHandler.updateBranch(oglocID, locID, streetAddress, city, province);
     }
+    
+    @Override
+    public JoinedBranchReservation joinBranchReservation(LocalDate currentDate, LocalDate lastDate){
+        return dbHandler.joinBranchReservation(currentDate,lastDate);
+    }
 
     @Override
     public List<List<String>> projection(List<String> attributes, List<String> columnsDomain, String tableSelected) {
@@ -136,8 +141,8 @@ public class Restaurant implements RestaurantDelegate, LoginWindowDelegate {
     }
 
     @Override
-    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected) {
-        return dbHandler.filter(columnsSelected, columnsDomain, tableSelected);
+    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, List<String> filterConditions, String tableSelected) {
+        return dbHandler.filter(columnsSelected, columnsDomain, filterConditions, tableSelected);
     }
 }
 

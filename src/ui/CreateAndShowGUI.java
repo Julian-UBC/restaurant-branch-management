@@ -348,7 +348,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
             // turn string getTime to LocalTime
             
             Reservation newReservation = new Reservation(getRId, getCId, getLocId, getWId, 
-                    getDate, getTime, getNum, getName);
+                   LocalDate.parse(getDate), getTime, getNum, getName);
             delegate.insertReservation(newReservation);
 
             // Remove inputs
@@ -392,8 +392,8 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         switch (tableShown) {
             case "Menu" -> attributes = new String[]{"Name", "Cost", "Category"};
             case "Reservations" ->
-                    attributes = new String[]{"Reservation ID", "Customer ID", "Worker ID", "Reservation Date", "Reservation Time", "Number of People", "Reservation Name"};
-            case "Branch" -> attributes = new String[]{"LocID", "StreetAddress", "City", "Province"};
+                    attributes = new String[]{"Reservation ID", "Customer ID", "BranchID", "Host", "Date", "Time", "Number of People", "Reservation Name"};
+            case "Branch" -> attributes = new String[]{"Branch ID", "Address", "City", "Province"};
             default -> {
             }
         }
@@ -754,16 +754,45 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
     }
 
     private JPanel filterMenus(JPanel panel) {
-        //create the checkboxes for each attribute
-        JLabel label = new JLabel("Menu: ");
-        JCheckBox nameBox = new JCheckBox("Name");
-        JCheckBox categoryBox = new JCheckBox("Category");
-        JCheckBox costBox = new JCheckBox("Cost");
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        JPanel topPanel = new JPanel();
+        JLabel label = new JLabel("Menu: ");
+        topPanel.add(label);
+
+        JPanel middlePanel = new JPanel();
+        JCheckBox nameBox = new JCheckBox("Name", true);
+        JCheckBox costBox = new JCheckBox("Cost", true);
+        JCheckBox categoryBox = new JCheckBox("Category", true);
+
+        middlePanel.add(nameBox);
+        middlePanel.add(costBox);
+        middlePanel.add(categoryBox);
+
+        JPanel filterPanel = new JPanel();
+        filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
+
+        JLabel name = new JLabel("name:");
+        JTextField enterName = new JTextField();
+        JLabel cost = new JLabel("cost:");
+        JTextField enterCost = new JTextField();
+        JLabel category = new JLabel("category:");
+        JTextField enterCategory = new JTextField();
+
+        filterPanel.add(name);
+        filterPanel.add(enterName);
+        filterPanel.add(cost);
+        filterPanel.add(enterCost);
+        filterPanel.add(category);
+        filterPanel.add(enterCategory);
+
+        JPanel bottomPanel = new JPanel();
         JButton filterButton = new JButton("Filter");
         filterButton.addActionListener(e -> {
             List<String> columnsSelected = new ArrayList<>();
             List<String> columnsDomain = new ArrayList<>();
+            List<String> filterConditions = new ArrayList<>();
+
             if (nameBox.isSelected()) {
                 columnsSelected.add("Name");
                 columnsDomain.add("String");
@@ -777,31 +806,75 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 columnsDomain.add("String");
             }
 
-            handleFilter(columnsSelected, columnsDomain, "Menu");
+            if (!Objects.equals(enterName.getText(), "")) {
+                filterConditions.add("name = '" + enterName.getText() + "'");
+            }
+            if (!Objects.equals(enterCost.getText(), "")) {
+                filterConditions.add("cost = " + enterCost.getText());
+            }
+            if (!Objects.equals(enterCategory.getText(), "")) {
+                filterConditions.add("category = '" + enterCategory.getText() + "'");
+            }
+
+            handleFilter(columnsSelected, columnsDomain, filterConditions, "Menu");
         });
+        bottomPanel.add(filterButton);
 
         //add to popUp
-        panel.add(label);
-        panel.add(nameBox);
-        panel.add(categoryBox);
-        panel.add(costBox);
-        panel.add(filterButton);
+        panel.add(topPanel);
+        panel.add(middlePanel);
+        panel.add(filterPanel);
+        panel.add(bottomPanel);
 
         return panel;
     }
 
     private JPanel filterBranches(JPanel panel) {
-        //create the checkboxes for each attribute
-        JLabel label = new JLabel("Branch: ");
-        JCheckBox locIDBox = new JCheckBox("Location ID");
-        JCheckBox streetAddressBox = new JCheckBox("Street Address");
-        JCheckBox cityBox = new JCheckBox("City");
-        JCheckBox provinceBox = new JCheckBox("Province");
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        JPanel topPanel = new JPanel();
+        JLabel label = new JLabel("Branch: ");
+        topPanel.add(label);
+
+        JPanel middlePanel = new JPanel();
+        JCheckBox locIDBox = new JCheckBox("Location ID", true);
+        JCheckBox streetAddressBox = new JCheckBox("Street Address", true);
+        JCheckBox cityBox = new JCheckBox("City", true);
+        JCheckBox provinceBox = new JCheckBox("Province", true);
+
+        middlePanel.add(locIDBox);
+        middlePanel.add(streetAddressBox);
+        middlePanel.add(cityBox);
+        middlePanel.add(provinceBox);
+
+        JPanel filterPanel = new JPanel();
+        filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
+
+        JLabel locId = new JLabel("Location ID:");
+        JTextField enterLocID = new JTextField();
+        JLabel streetAddress = new JLabel("Street Address:");
+        JTextField enterStreetAddress = new JTextField();
+        JLabel city = new JLabel("City:");
+        JTextField enterCity = new JTextField();
+        JLabel province = new JLabel("Province:");
+        JTextField enterProvince = new JTextField();
+
+        filterPanel.add(locId);
+        filterPanel.add(enterLocID);
+        filterPanel.add(streetAddress);
+        filterPanel.add(enterStreetAddress);
+        filterPanel.add(city);
+        filterPanel.add(enterCity);
+        filterPanel.add(province);
+        filterPanel.add(enterProvince);
+
+        JPanel bottomPanel = new JPanel();
         JButton filterButton = new JButton("Filter");
         filterButton.addActionListener(e -> {
             List<String> columnsSelected = new ArrayList<>();
             List<String> columnsDomain = new ArrayList<>();
+            List<String> filterConditions = new ArrayList<>();
+
             if (locIDBox.isSelected()) {
                 columnsSelected.add("LocID");
                 columnsDomain.add("int");
@@ -819,36 +892,105 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 columnsDomain.add("String");
             }
 
-            handleFilter(columnsSelected, columnsDomain, "Branches");
+            if (!Objects.equals(enterLocID.getText(), "")) {
+                filterConditions.add("LocID = '" + enterLocID.getText() + "'");
+            }
+            if (!Objects.equals(enterStreetAddress.getText(), "")) {
+                filterConditions.add("StreetAddress = '" + enterStreetAddress.getText() + "'");
+            }
+            if (!Objects.equals(enterCity.getText(), "")) {
+                filterConditions.add("City = '" + enterCity.getText() + "'");
+            }
+            if (!Objects.equals(enterProvince.getText(), "")) {
+                filterConditions.add("Province = '" + enterProvince.getText() + "'");
+            }
+
+            handleFilter(columnsSelected, columnsDomain, filterConditions, "Branches");
         });
 
+        bottomPanel.add(filterButton);
+
         //add to popUp
-        panel.add(label);
-        panel.add(locIDBox);
-        panel.add(streetAddressBox);
-        panel.add(cityBox);
-        panel.add(provinceBox);
-        panel.add(filterButton);
+        panel.add(topPanel);
+        panel.add(middlePanel);
+        panel.add(filterPanel);
+        panel.add(bottomPanel);
 
         return panel;
     }
 
     private JPanel filterReservations(JPanel panel) {
-        //create the checkboxes for each attribute
-        JLabel label = new JLabel("Reservation: ");
-        JCheckBox rIdBox = new JCheckBox("Reservation ID");
-        JCheckBox cIDBox = new JCheckBox("Customer ID");
-        JCheckBox locIDBox = new JCheckBox("Location ID");
-        JCheckBox widBox = new JCheckBox("Employee ID");
-        JCheckBox dateBox = new JCheckBox("Date");
-        JCheckBox timeBox = new JCheckBox("Time");
-        JCheckBox numOfPeopleBox = new JCheckBox("Number of People");
-        JCheckBox resNameBox = new JCheckBox("Reservation Name");
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        JPanel topPanel = new JPanel();
+        JLabel label = new JLabel("Reservation: ");
+        topPanel.add(label);
+
+        JPanel middlePanel = new JPanel();
+        JCheckBox rIdBox = new JCheckBox("Reservation ID", true);
+        JCheckBox cIDBox = new JCheckBox("Customer ID", true);
+        JCheckBox locIDBox = new JCheckBox("Location ID", true);
+        JCheckBox widBox = new JCheckBox("Employee ID", true);
+        JCheckBox dateBox = new JCheckBox("Date", true);
+        JCheckBox timeBox = new JCheckBox("Time", true);
+        JCheckBox numOfPeopleBox = new JCheckBox("Number of People", true);
+        JCheckBox resNameBox = new JCheckBox("Reservation Name", true);
+
+        middlePanel.add(rIdBox);
+        middlePanel.add(cIDBox);
+        middlePanel.add(locIDBox);
+        middlePanel.add(widBox);
+        middlePanel.add(dateBox);
+        middlePanel.add(timeBox);
+        middlePanel.add(numOfPeopleBox);
+        middlePanel.add(resNameBox);
+
+        JPanel filterPanel = new JPanel();
+        filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
+
+        JLabel rId = new JLabel("Reservation ID:");
+        JTextField enterRId = new JTextField();
+        JLabel cId = new JLabel("Customer ID:");
+        JTextField enterCId = new JTextField();
+        JLabel locId = new JLabel("Location ID:");
+        JTextField enterLocID = new JTextField();
+        JLabel wId = new JLabel("Employee ID:");
+        JTextField enterWId = new JTextField();
+        JLabel date = new JLabel("Date:");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        JFormattedTextField enterDate = new JFormattedTextField (dateFormat);
+        JLabel time = new JLabel("Time:");
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        JFormattedTextField  enterTime = new JFormattedTextField (timeFormat);
+        JLabel numOfPeople = new JLabel("Number of People:");
+        JTextField enterNumOfPeople = new JTextField();
+        JLabel reservationName = new JLabel("Reservation Name:");
+        JTextField enterReservationName = new JTextField();
+
+        filterPanel.add(rId);
+        filterPanel.add(enterRId);
+        filterPanel.add(cId);
+        filterPanel.add(enterCId);
+        filterPanel.add(locId);
+        filterPanel.add(enterLocID);
+        filterPanel.add(wId);
+        filterPanel.add(enterWId);
+        filterPanel.add(date);
+        filterPanel.add(enterDate);
+        filterPanel.add(time);
+        filterPanel.add(enterTime);
+        filterPanel.add(numOfPeople);
+        filterPanel.add(enterNumOfPeople);
+        filterPanel.add(reservationName);
+        filterPanel.add(enterReservationName);
+
+        JPanel bottomPanel = new JPanel();
         JButton filterButton = new JButton("Filter");
         filterButton.addActionListener(e -> {
             List<String> columnsSelected = new ArrayList<>();
             List<String> columnsDomain = new ArrayList<>();
+            List<String> filterConditions = new ArrayList<>();
+
             if (rIdBox.isSelected()) {
                 columnsSelected.add("rID");
                 columnsDomain.add("int");
@@ -882,26 +1024,54 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 columnsDomain.add("String");
             }
 
-            handleFilter(columnsSelected, columnsDomain, "Reservations");
+            if (!Objects.equals(enterRId.getText(), "")) {
+                filterConditions.add("rID = " + enterRId.getText());
+            }
+
+            if (!Objects.equals(enterCId.getText(), "")) {
+                filterConditions.add("cID = " + enterCId.getText());
+            }
+
+            if (!Objects.equals(enterLocID.getText(), "")) {
+                filterConditions.add("locID = " + enterLocID.getText());
+            }
+
+            if (!Objects.equals(enterWId.getText(), "")) {
+                filterConditions.add("wID = " + enterWId.getText());
+            }
+
+            if (!Objects.equals(enterDate.getText(), "")) {
+                filterConditions.add("rDate = '" + enterDate.getText() + "'");
+            }
+
+//            if (!Objects.equals(enterTime.getText(), "")) {
+//                filterConditions.add("rTime = '" + enterTime.getText() + "'");
+//            }
+
+            if (!Objects.equals(enterNumOfPeople.getText(), "")) {
+                filterConditions.add("numOfPeopl = " + enterNumOfPeople.getText());
+            }
+
+            if (!Objects.equals(enterReservationName.getText(), "")) {
+                filterConditions.add("reservationName = '" + enterReservationName.getText() + "'");
+            }
+
+            handleFilter(columnsSelected, columnsDomain, filterConditions, "Reservations");
         });
 
+        bottomPanel.add(filterButton);
+
         //add to popUp
-        panel.add(label);
-        panel.add(rIdBox);
-        panel.add(cIDBox);
-        panel.add(locIDBox);
-        panel.add(widBox);
-        panel.add(dateBox);
-        panel.add(timeBox);
-        panel.add(numOfPeopleBox);
-        panel.add(resNameBox);
-        panel.add(filterButton);
+        panel.add(topPanel);
+        panel.add(middlePanel);
+        panel.add(filterPanel);
+        panel.add(bottomPanel);
 
         return panel;
     }
 
-    private void handleFilter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected) {
-        List<List<String>> tuples = delegate.filter(columnsSelected, columnsDomain, tableSelected);
+    private void handleFilter(List<String> columnsSelected, List<String> columnsDomain, List<String> filterConditions, String tableSelected) {
+        List<List<String>> tuples = delegate.filter(columnsSelected, columnsDomain, filterConditions, tableSelected);
 
         // clear table
         model = new DefaultTableModel();
@@ -959,6 +1129,35 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
 
         table.setModel(model);
     }
+    private void join(JPanel popUp) {
+
+        JLabel info = new JLabel("View all reservations during given time for every branch.");
+        JLabel instruction = new JLabel("Insert the number of days from current day:");
+        JTextField numOfDays = new JTextField();
+        popUp.setLayout(new BorderLayout());
+        popUp.add(info, BorderLayout.PAGE_START);
+        popUp.add(instruction, BorderLayout.LINE_START);
+        popUp.add(numOfDays, BorderLayout.CENTER);
+        Object[] options = {"Confirm", "Cancel"};
+        int n = JOptionPane.showOptionDialog(null, popUp, "Join", JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, options, null);
+
+        if (n == 0) {
+
+            LocalDate currentDate = LocalDate.now();
+            JoinedBranchReservation resultOfJoin = delegate.joinBranchReservation(currentDate, currentDate.plusDays(Integer.parseInt(numOfDays.getText())));
+
+            model = new DefaultTableModel();
+
+            for (String column : resultOfJoin.getColumns()) {
+                model.addColumn(column);
+            }
+            for (Vector<Object> tuple : resultOfJoin.getTuples()) {
+                model.addRow(tuple);
+            }
+            table.setModel(model);
+        }
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -982,6 +1181,9 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         }
         if(e.getSource() == groupByButton) {
             groupByButton();
+        }
+        if (e.getSource() == joinButton) {
+            join(new JPanel());
         }
         if(e.getSource() == nestedButton) {
             nestedGroupButton();

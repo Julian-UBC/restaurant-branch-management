@@ -85,7 +85,7 @@ public class DatabaseConnectionHandler {
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
             while(rs.next()) {
@@ -93,7 +93,7 @@ public class DatabaseConnectionHandler {
                                                             rs.getInt("cID"),
                                                             rs.getInt("locID"),
                                                             rs.getInt("wID"),
-                                                            dateFormat.format(rs.getDate("rDate")),
+                                                            rs.getDate("rDate").toLocalDate(),
                                                             timeFormat.format(rs.getDate("rTime")),
                                                             rs.getInt("numOfPeople"),
                                                             rs.getString("reservationName"));
@@ -318,60 +318,62 @@ public class DatabaseConnectionHandler {
             rollbackConnection();
         }
     }
+    
+    public JoinedBranchReservation joinBranchReservation(LocalDate currentDate, LocalDate lastDate){
 
-    public List<List<String>> projection(List<String> attributes, List<String> columnsDomain, String tableSelected) {
-        List<List<String>> tuples = new ArrayList<>();
-        String selectColumns = attributes.get(0);
-
-        for (int i = 1; i < attributes.size(); i++) {
-            selectColumns = selectColumns + ", " + attributes.get(i);
-        }
-
-        try {
-            String query = "SELECT DISTINCT " + selectColumns + " " +
-                    "FROM " + tableSelected + " s";
+        JoinedBranchReservation JoinedBranchReservation = new JoinedBranchReservation();
+        try{
+            String query = "SELECT* FROM Branches b, Reservations r WHERE r.locID = b.locID AND rDATE >= ? AND rDate <= ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setDate(1,Date.valueOf(currentDate));
+            ps.setDate(2,Date.valueOf(lastDate));
             ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Branch branch = new Branch(rs.getInt("locID"), rs.getString("streetAddress"), rs.getString("city"), rs.getString("Province"));
+                Reservation reservation = new Reservation(rs.getInt("rID"), rs.getInt("cID"), rs.getInt("locID"), rs.getInt("wID"), rs.getDate("rDate").toLocalDate(), rs.getString("rTime"), rs.getInt("numOfPeople"), rs.getString("reservationName"));
+                JoinedBranchReservation.addJoinedBranchReservation(branch,reservation);
+            }
+            connection.commit();
+            rs.close();
+            ps.close();
 
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+        return JoinedBranchReservation;
+    }
+    
+    public void projectBranch(List<String> attributes) {
+        try {
+            StringBuilder query = new StringBuilder("SELECT 1=1");
+            for (String attr: attributes) {
+                if (attr.equals("locId")) { query.append(" AND locID");}
+                if (attr.equals("streetAddress")) { query.append(" AND streetAddress");}
+                if (attr.equals("city")) { query.append(" AND city");}
+                if (attr.equals("province")) { query.append(" AND province");}
+            }
+            query.append(", FROM BRANCHES");
+
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query.toString()), query.toString(), false);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                List<String> tuple = new ArrayList<>();
-                for (int i = 0; i < columnsDomain.size(); i++) {
-                    String domain = columnsDomain.get(i);
-                    String data;
 
-                    switch (domain) {
-                        case "float" -> {
-                            data = String.valueOf(rs.getFloat(attributes.get(i)));
-                        }
-                        case "int" -> {
-                            data = String.valueOf(rs.getInt(attributes.get(i)));
-                        }
-                        case "date" -> {
-                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                            data = dateFormat.format(rs.getDate(attributes.get(i)));
-                        }
-                        case "time" -> {
-                            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-                            data = timeFormat.format(rs.getDate(attributes.get(i)));
-                        }
-                        default -> {
-                            data = rs.getString(attributes.get(i));
-                        }
-                    }
-
-                    tuple.add(data);
-                }
-
-                tuples.add(tuple);
             }
 
             rs.close();
             ps.close();
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+    }
 
-        return tuples;
+    public void projectMenu() {
+
+    }
+
+    public void projectReservation() {
+
     }
     public MenuSorted showNestedAggregation() {
         MenuSorted MenuSorted = new MenuSorted();
@@ -444,7 +446,6 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
-
         return menus;
     }
 
@@ -473,7 +474,7 @@ public class DatabaseConnectionHandler {
         return menus;
     }
 
-    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, String tableSelected) {
+    public List<List<String>> filter(List<String> columnsSelected, List<String> columnsDomain, List<String> filterConditions, String tableSelected) {
         List<List<String>> filteredMenus = new ArrayList<>();
         String selectColumns = columnsSelected.get(0);
 
@@ -481,9 +482,27 @@ public class DatabaseConnectionHandler {
             selectColumns = selectColumns + ", " + columnsSelected.get(i);
         }
 
+        String conditions;
+        if (filterConditions.size() == 0) {
+            conditions = "";
+        } else {
+            conditions = filterConditions.get(0);
+
+            for (int i = 1; i < filterConditions.size(); i++) {
+                conditions = conditions + " AND " + filterConditions.get(i);
+            }
+        }
+
         try {
-            String query = "SELECT " + selectColumns + " " +
-                    "FROM " + tableSelected + " s";
+            String query;
+            if (filterConditions.size() == 0) {
+                query = "SELECT " + selectColumns + " " +
+                        "FROM " + tableSelected + " s";
+            } else {
+                query = "SELECT " + selectColumns + " " +
+                        "FROM " + tableSelected + " s " +
+                        "WHERE " + conditions;
+            }
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
 

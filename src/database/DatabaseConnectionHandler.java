@@ -511,9 +511,20 @@ public class DatabaseConnectionHandler {
             conditions = "";
         } else {
             conditions = filterConditions.get(0);
-
+            if (conditions.contains("rTime =")) {
+                String time = conditions.replace("rTime = '", "");
+                time = time.replace("'","");
+                conditions = "rTime = to_date('1970-01-01 " + time + "' ,'yyyy-mm-dd HH24:MI:SS')";
+            }
             for (int i = 1; i < filterConditions.size(); i++) {
-                conditions = conditions + " AND " + filterConditions.get(i);
+                String temp = filterConditions.get(i);
+                if (temp.contains("rTime =")) {
+                    String time = temp.replace("rTime = '", "");
+                    time = time.replace("'","");
+                    conditions = conditions + " AND " + "rTime = " + "to_date('1970-01-01" + time + "' ,'yyyy-mm-dd HH24:MI:SS')";
+                } else {
+                    conditions = conditions + " AND " + filterConditions.get(i);
+                }
             }
         }
 

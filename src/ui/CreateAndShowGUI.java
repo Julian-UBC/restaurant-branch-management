@@ -1005,7 +1005,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 columnsDomain.add("time");
             }
             if (numOfPeopleBox.isSelected()) {
-                columnsSelected.add("NumOfPeople");
+                columnsSelected.add("numOfPeople");
                 columnsDomain.add("int");
             }
             if (resNameBox.isSelected()) {
@@ -1033,12 +1033,12 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
                 filterConditions.add("rDate = '" + enterDate.getText() + "'");
             }
 
-//            if (!Objects.equals(enterTime.getText(), "")) {
-//                filterConditions.add("rTime = '" + enterTime.getText() + "'");
-//            }
+            if (!Objects.equals(enterTime.getText(), "")) {
+                filterConditions.add("rTime = '" + enterTime.getText() + "'");
+            }
 
             if (!Objects.equals(enterNumOfPeople.getText(), "")) {
-                filterConditions.add("numOfPeopl = " + enterNumOfPeople.getText());
+                filterConditions.add("numOfPeople = " + enterNumOfPeople.getText());
             }
 
             if (!Objects.equals(enterReservationName.getText(), "")) {

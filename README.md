@@ -15,7 +15,7 @@ We have a table on the left and several buttons on the right with the following 
 4. Delete: users can select row and delete the row
 5. Projection: users can choose which attributes to show in the table
 6. Filter: users can filter the attributes
-7. Join: 
+7. Join: users can input number of days to view all reservations during given time for every branch
 8. MoreWindow: user can click the table and it will each show a table
     1. Average cost for each menu category
     2. Average Cost of Each Category which have more than one menu item

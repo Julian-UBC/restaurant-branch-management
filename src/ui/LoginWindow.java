@@ -17,9 +17,6 @@ public class LoginWindow extends JFrame implements ActionListener {
     private static final int TEXT_FIELD_WIDTH = 10;
     private static final int MAX_LOGIN_ATTEMPTS = 3;
 
-    private static final String USERNAME = "ora_CWL";
-    private static final String PASSWORD = "aSID";
-
     // running accumulator for login attempts
     private int loginAttempts;
 
@@ -42,9 +39,7 @@ public class LoginWindow extends JFrame implements ActionListener {
         JLabel passwordLabel = new JLabel("Enter password: ");
 
         usernameField = new JTextField(TEXT_FIELD_WIDTH);
-        usernameField.setText(USERNAME);
         passwordField = new JPasswordField(TEXT_FIELD_WIDTH);
-        passwordField.setText(PASSWORD);
         passwordField.setEchoChar('*');
 
         JButton loginButton = new JButton("Log In");

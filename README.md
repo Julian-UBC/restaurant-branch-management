@@ -9,14 +9,16 @@ a list of menus offered at each branch and its associated ingredients, the custo
 ## GUI Guide
 Due to time constraint, we decided to only implement some model: branch, menu, and reservation. 
 We have a table on the left and several buttons on the right with the following functionality:
-1. Selection: users can choose which table they want to see
+1. Selection: users can choose to view menu, branch, or reservation table
 2. Insert: users can insert values to attributes of the table they choose
 3. Update: users can select row and update the attributes of the table
 4. Delete: users can select row and delete the row
-5. Projection: users can choose which attributes to show in the table
-6. Filter: users can filter the attributes
+5. Projection: users need to click on selection button to select which table they want, then 
+click on the projection button to choose which attributes to show in the table
+6. Filter: users need to click on selection button to choose the table, then click on the 
+filter button to filter the attributes (only implemented '=' operator; i.e: cost = 5.99)
 7. Join: users can input number of days to view all reservations during given time for every branch
-8. MoreWindow: user can click the table and it will each show a table
+8. MoreWindow: user can click the table, and it will each show another panel with a table
     1. Average cost for each menu category
     2. Average Cost of Each Category which have more than one menu item
     3. average cost for each category where the average cost is less than or equal to all the average costs calculated for each category

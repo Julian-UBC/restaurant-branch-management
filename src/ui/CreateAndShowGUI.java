@@ -553,7 +553,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JCheckBox cityBox = new JCheckBox("city");
         JCheckBox provinceBox = new JCheckBox("province");
         
-        JButton insertButton = new JButton("Insert");
+        JButton insertButton = new JButton("Show");
         insertButton.addActionListener(e -> {
             List<String> columnSelected = new ArrayList<>();
             List<String> columnsDomain = new ArrayList<>();
@@ -592,7 +592,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JCheckBox categoryBox = new JCheckBox("Category");
         JCheckBox costBox = new JCheckBox("Cost");
 
-        JButton insertButton = new JButton("Insert");
+        JButton insertButton = new JButton("Show");
         insertButton.addActionListener(e -> {
             List<String> columnsSelected = new ArrayList<>();
             List<String> columnsDomain = new ArrayList<>();
@@ -633,7 +633,7 @@ public class CreateAndShowGUI implements ActionListener, ItemListener {
         JCheckBox numOfPeopleBox = new JCheckBox("number of people");
         JCheckBox reservationNameBox = new JCheckBox("name of reservation");
 
-        JButton insertButton = new JButton("Insert");
+        JButton insertButton = new JButton("Show");
         insertButton.addActionListener(e -> {
             List<String> columnsSelected = new ArrayList<>();
             List<String> columnsDomain = new ArrayList<>();
